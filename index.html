@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudState</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.5.3/css/foundation.min.css"/>
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+
+    <h1>CloudState</h1>
+
+    <p>State handling in a serverless world</p>
+
+    <ul>
+        <li><a href="#why">Why?</a></li>
+        <li><a href="#what">What?</a></li>
+        <li><a href="#contribute">Contribute</a></li>
+    </ul>
+
+    <h2 id="why">Why?</h2>
+
+    <p>Serverless computing makes developers more productive by taking care
+    of operational concerns for them.</p>
+
+    <p>However, serverless functions fail to address the challenges associated
+    with managing state.</p>
+
+    <p>CloudState sits at the confluence between serverless and state, making
+    developers more productive by handling the operational and distribution
+    concerns of state for them.</p>
+
+    <p>Jonas Bonér, CTO and co-founder of <a
+                                           href="https://www.lightbend.com">Lightbend</a>
+    and creator of <a href="https://akka.io">Akka</a>, talks about the need
+    for serverless to evolve to handle state at KubeCon Barcelona 2019:</p>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/J3PyYmdTsnQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <h2 id="what">What?</h2>
+    
+    <p>CloudState provides an architectural approach and associated protocol
+    for providing common distributed state management patterns. There are no
+    limits on which patterns can be supported, however current and envisioned
+    supported patterns include:</p>
+
+    <ul>
+        <li>Event Sourcing</li>
+        <li>CRDTs</li>
+        <li>P2P messaging</li>
+        <li>CQRS read side projections</li>
+    </ul>
+
+    <p>A sidecar is provided that handles all incoming communication, as well
+    as communiaction to other services and databases. The sidecar is also
+    responsible for concerns such as clustering, sharding, P2P messaging, and
+    replication.</p>
+
+    <p>The protocol allows the multiplexing of state and incoming
+    communication on the same channel, allowing developers to focus only on
+    their business logic, and not how state is managed, distributed, and
+    stored.</p>
+
+    <p>The sidecars have an intimate understanding of the state management
+    patterns being used, and consequently are able to apply intelligent
+    autoscaling based on that knowledge, and are able to give in depth
+    observabiility into exactly what is happening.</p>
+
+    <p>CloudState can be used either by itself, in combination with a service
+    mesh, or it is in envisioned that it will integrated with other serverless
+    technologies such as <a href="https://knative.dev">Knative</a>.</p>
+
+    <p>Watch this screencast by James Roper to learn more:</p>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/AOY8yRC6dVY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <h2 id="contribute">Contribute</h2>
+
+    <p>If you're interested, please collaborate via the
+    <a href="https://github.com/cloudstateio">CloudStateIO GitHub
+        organization</a>.
+
+    <footer>&copy; CloudState 2019</footer>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
