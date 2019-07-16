@@ -1,0 +1,31 @@
+{
+  "name": "cloudstate.io",
+  "description": "CloudState website",
+  "version": "1.0.0",
+  "devDependencies": {
+    "stylus": "^0.54.5"
+  },
+  "scripts": {
+    "build": "stylus -o dist/css -c -m src/stylus/*.styl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudstateio/cloudstate.io"
+  },
+  "keywords": [],
+  "contributors": [
+    {
+      "name": "James Roper",
+      "url": "https://jazzy.id.au"
+    },
+    {
+      "name": "Richard Summerhayes",
+      "url": "https://github.com/rasummer"
+    }
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cloudstate/cloudstate.io/issues"
+  },
+  "homepage": "https://cloudstate.io"
+}

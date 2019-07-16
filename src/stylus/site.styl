@@ -1,0 +1,273 @@
+cs-blue = #1070b2
+
+@import "modules/modern-normalize"
+
+mediumOn = "only screen and (min-width: 40.063em)"
+largeOn = "only screen and (min-width: 64.063em)" //1025
+xlargeOn = "only screen and (min-width: 80.063em)" //1281
+
+shadow = 0 0 10px rgba(0,0,0,0.1)
+list-shadow = 0 0 6px rgba(0,0,0,0.15)
+soft-shadow = 0 0 50px rgba(0,0,0,0.2)
+shadow-dkr = 0 0 10px rgba(0,0,0,0.5)
+panel-shadow = 0px 2px 4px 0px rgba(0,0,0,0.3)
+
+anime = all 300ms ease-in-out
+anime-border = border 300ms ease-in-out
+anime-opacity = opacity 300ms ease-in-out
+
+
+/*! 
+==== site styles ======================= 
+*/
+body
+	
+	background: #68a2b9
+	background: #d8dfe1
+	background: #8cb7c9
+	background: #ffffff
+	background-image: linear-gradient(#1070b2, #1070b2)
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300
+	line-height: 1.7
+	color: #1070b2
+	font-size: 20px
+	
+main
+	text-align: center
+	background: rgba(white, 1)
+	color: #4d4d4d
+	padding: 1rem
+	display: flex
+	flex-direction: column
+	align-items: center
+	> section
+		max-width: 50rem
+		margin: 3rem 0
+		&.icons
+			max-width: 90rem
+			margin: 3rem 0 0 0
+		
+	h3
+		color: #1070b2
+		font-weight: 300
+		font-size: 2.5rem
+		margin: 1rem 0
+		text-align: center
+	p
+		margin-bottom: 2rem
+	ul
+		margin-bottom: 3rem
+	
+	a:link
+		color: cs-blue
+		text-decoration: none
+		font-weight: 400
+	a:visited
+		color: rgba(cs-blue, 1)
+	a:hover
+		text-decoration: underline
+	a:active
+		color: cs-blue
+
+header
+	text-align: center
+	padding: 4rem 2rem
+	h1,h2
+		color: white
+	h1.logo
+		color: rgba(white, 0)
+		width: 100%
+		height: 120px
+		background: transparent url(../images/logos/cloudstate-stacked-white.svg) no-repeat center center
+		background-size: contain
+		display: inline-block
+		@media mediumOn
+			width: auto
+			min-width: 300px
+			min-height: 160px
+		a, a#visited, a#hover
+			color: rgba(white, 0)
+			display: inline-block
+			width: 100%
+			height: 100%
+	h2
+		font-weight: 300
+		text-transform: default
+		font-size: 1.5rem
+		margin: 0
+footer
+	padding: 8rem 0 3rem 0
+	text-align: center
+	color: white
+	font-size: .875rem
+	img
+		max-width: 200px
+nav.toc
+	padding: 2rem 0
+	ul
+		margin: 0
+		padding: 0
+		border-top: 0px solid rgba(white, .25)
+		list-style: none
+		display: flex
+		flex-direction: column
+		justify-content: center
+		li
+			padding: .5rem 1rem
+			display: block
+			a
+				color: white
+				text-decoration: none
+				display: block
+				border: 1px solid rgba(white,.6)
+				background: cs-blue	
+				padding: .5rem 2rem
+				border-radius: 250px
+				text-align: center
+				transition: anime-border
+	@media mediumOn
+		padding: 0
+		margin-top: 3rem
+		ul	
+			background: rgba(black, .2)
+			flex-direction: row
+			li
+				padding: 2rem 
+				a
+					border: 1px solid rgba(white,.2)
+					background: cs-blue
+					&:hover
+						border: 1px solid rgba(white,.6)
+						background: cs-blue
+						transition: anime-border
+							
+	@media largeOn
+		ul
+			li 
+				a
+					border: 1px solid rgba(white,.2)
+					background: cs-blue
+					min-width: 170px
+
+ul.center-bullets
+	padding-left: 0 
+	li
+		display: block
+		&:before
+			content: "\2022"
+			margin-right: .5rem
+			font-weight: 700
+			font-size: 1.5rem
+			vertical-align: middle
+			color: cs-blue
+
+		
+
+.what-list
+	margin: 2rem 0 1rem 0
+	display: flex
+	flex-direction: column
+	justify-content: space-between
+	@media mediumOn
+		flex-direction: row
+	dl
+		text-align: center
+		border: 0px solid blue
+		padding: 0 2rem
+		@media mediumOn
+			max-width: 325px
+			flex-basis: 33%
+			&:first-child
+				padding-left: 0
+			&:last-child
+				padding-right: 0
+		dt
+			color: cs-blue
+			font-weight: 700
+			font-size: 1.5rem 
+			span
+				background: cs-blue
+				display: flex
+				justify-content: center
+				align-items: center
+				border-radius: 50%
+				width: 100px
+				height: 100px
+				margin: 0 auto .5rem auto
+				img
+					width: 60px
+					height: 60px
+					
+		dd
+			margin: 1rem 0 0 0
+
+.contribute img
+	width: 60px
+	height: 60px		
+
+.cs-video
+	margin: 4rem 0rem 1rem 0rem
+	@media mediumOn
+		margin: 4rem 3rem 1rem 3rem
+
+.flex-video
+	border: 0px solid cs-blue
+	text-align: center
+	background: cs-blue
+	position: relative
+	padding-top: 1.5625rem
+	padding-bottom: 57.25%
+	height: 0
+	overflow: hidden
+	&.thumb
+		box-shadow: shadow
+
+.flex-video.fourbythree
+		padding-bottom: 67.5%
+.flex-video.vimeo
+		padding-top: 0
+
+.flex-video iframe,
+.flex-video object,
+.flex-video embed,
+.flex-video video
+	position: absolute
+	top: 0
+	left: 0
+	width: 100%
+	height: 100%
+
+#top .flex-video
+	box-shadow: 0 0 0 10px rgba(255,255,255,0.3)
+	margin-bottom: 2em
+
+.video-shadow
+	width: auto
+	height: 6px
+	background-color: rgba(0,0,0,0.1)
+	border-radius: 200px
+	margin: 10px -10px 0 -10px
+
+.logos-table
+
+	border-collapse: collapse
+
+	td, th
+		margin: 0px
+		border: 1px solid lightgray
+		padding: 10px 10px 0
+		vertical-align: middle
+
+	.white-logos
+		background-color: cs-blue
+		color: white
+
+	.horizontal-logo
+		width: 150px
+
+	.stacked-logo
+		width: 100px
+
+	.icon-logo
+		width: 50px
