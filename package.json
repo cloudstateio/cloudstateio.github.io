@@ -6,7 +6,8 @@
     "stylus": "^0.54.5"
   },
   "scripts": {
-    "build": "stylus -o dist/css -c -m src/stylus/*.styl"
+    "build": "stylus -o dist/css -c -m src/stylus/*.styl",
+    "develop": "stylus -w src/stylus/site.styl -o dist/css -c -m"
   },
   "repository": {
     "type": "git",
