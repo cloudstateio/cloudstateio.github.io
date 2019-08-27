@@ -7,14 +7,40 @@
 		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="dist/css/site.css">
 		<link rel="icon" type="image/x-icon" href="favicon.ico"/>
-		<title>CloudState - State handling in a serverless world</title>
+        <link rel="canonical" href="https://cloudstate.io" />
+		<title>CloudState - Towards Serverless 2.0</title>
+		<meta name="description" content="CloudState sits at the confluence between serverless and state, making developers more productive by handling the operational and distribution concerns of state for them." />
+
+		<!-- Schema.org markup for Google+ -->
+		<meta itemprop="name" content="CloudState - Towards Serverless 2.0">
+		<meta itemprop="description" content="CloudState sits at the confluence between serverless and state, making developers more productive by handling the operational and distribution concerns of state for them.">
+		<meta itemprop="image" content="https://cloudstate.io/dist/images/cloudstate-state-handling-in-a-serverless-world.png">
+
+		<!-- Twitter Card data -->
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:site" content="@cloudstateio">
+		<meta name="twitter:title" content="CloudState - Towards Serverless 2.0">
+		<meta name="twitter:description" content="CloudState sits at the confluence between serverless and state, making developers more productive by handling the operational and distribution concerns of state for them.">
+		<meta name="twitter:creator" content="@cloudstateio">
+		<!-- Twitter summary card with large image must be at least 280x150px -->
+		<meta name="twitter:image:src" content="https://cloudstate.io/dist/images/cloudstate-state-handling-in-a-serverless-world.png">
+
+		<!-- Open Graph data -->
+		<meta property="og:title" content="CloudState - Towards Serverless 2.0" />
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content="https://cloudstate.io" />
+		<meta property="og:image" content="https://cloudstate.io/dist/images/cloudstate-state-handling-in-a-serverless-world.png" />
+		<meta property="og:description" content="CloudState sits at the confluence between serverless and state, making developers more productive by handling the operational and distribution concerns of state for them." />
+		<meta property="og:site_name" content="CloudState" />
+
+		
 	</head>
 	<body>
 		<article>
 
 			<header>
 				<h1 class="logo">CloudState</h1>
-				<h2>State handling in a serverless world</h2>
+				<h2>Towards Serverless 2.0</h2>
 			</header>
 
 			<nav class="toc">
@@ -29,17 +55,55 @@
 
 				<section id="why" class="why">
 					<h3>Why?</h3>
-					<p>Serverless computing makes developers more productive by taking care of operational concerns for them. However, serverless functions fail to address the challenges associated with managing state.</p>
-					<p>CloudState sits at the confluence between serverless and state, making developers more productive by handling the operational and distribution concerns of state for them.</p>
-					<p>Jonas Bonér, CTO and co-founder of <a href="https://www.lightbend.com">Lightbend</a> and creator of <a href="https://akka.io">Akka</a>, talks about the need for serverless to evolve to handle state at KubeCon Barcelona 2019:</p>
+
+					<em>
+					"We predict that serverless computing will grow to dominate the future of cloud computing."
+					</em>
+					—Jonas et al, <a href="https://arxiv.org/abs/1902.03383">Cloud computing simplified: a Berkeley view on serverless computing</a>
+
+					<p>~~~~~</p>
+										
+					<p>
+					Bringing stateful services, fast data/streaming, and the power of reactive technologies to the Cloud Native ecosystem breaks down the final impediment standing in the way of a <em>Serverless platform for general-purpose application development</em>—with true elastic scalability, high resilience, and global deployment, in the Kubernetes ecosystem.						
+					</p>
+
+					<p>
+					The Serverless movement today is very focused on the automation of the underlying infrastructure, but it has to some extent ignored the equally complicated requirements at the application layer, where the move towards Fast Data, streaming, and event-driven stateful architectures creates all sorts of new challenges for operating systems in production.
+					</p>
+					<p>
+					Stateless functions is a great tool that has its place in the cloud computing toolkit, but for Serverless to reach the grand vision that the industry is demanding of a Serverless world while allowing us to build modern data-centric real-time applications, we can't continue to ignore the hardest problem in distributed systems: managing state—your data. 
+					</p>
+
+					<p>
+					The CloudState project takes on this challenge and paves the way for Serverless 2.0. It consists of two things:
+						<ul class="center-bullets">
+					    <ol>1. <em>A standards effort</em> — defining a specification, protocol between the user functions and the backend, and a TCK.</ol>
+					    <ol>2. <em>A reference implementation</em> — implementing the backend and a set of client API libraries in different languages.</ol>
+						</ul>
+					</p>
+
+					<p>
+					CloudState's reference implementation is leveraging <a href="https://cloud.google.com/knative/">Knative</a>, <a href="https://grpc.io/">gRPC</a>, <a href="https://doc.akka.io/docs/akka/current/index-cluster.html">Akka Cluster</a>, and <a href="https://www.graalvm.org/">GraalVM</a> running on <a href="https://kubernetes.io/">Kubernetes</a>, allowing applications to not only scale efficiently, but to manage distributed state reliably at scale while maintaining its global or local level of data consistency, opening up for a whole range of new addressable use-cases.						
+					</p>
+
+					<p>
+					Read more about why we started the CloudState project, the limitations of current Serverless platforms, and the way CloudState are addressing them, and the new use-cases it opens up for in <a href="https://github.com/cloudstateio/cloudstate/blob/master/README.md#why-cloudstate">this section in the documentation</a>.  
+					</p>
+					
+					<p>
+					<a href="https://cloudstate.io/index.html#contribute">Join us</a> in making this vision a reality!
+					</p>
+
+					<p>~~~~~</p>
+
+					<p>Jonas Bonér, CTO and co-founder of <a href="https://www.lightbend.com">Lightbend</a> and creator of <a href="https://akka.io">Akka</a>, talks about the need for Serverless to evolve to handle state at KubeCon Barcelona 2019:</p>
 					<div class="cs-video">
 						<div class="flex-video">
 							<iframe src="https://www.youtube.com/embed/J3PyYmdTsnQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 						</div>
 					</div>
+
 				</section>
-
-
 
 				<section id="what" class="icons">
 					<h3>What?</h3>
@@ -47,7 +111,7 @@
 					<div class="what-list">
 						<dl>
 							<dt><span><img src="dist/images/state.svg"></span>State</dt>
-							<dd>Provide distributed state management patterns that ensure scalability and resilience.</dd>
+							<dd>Provides scalable, configurable, state management strategies to relieve this responsibility from the developers.</dd>
 						</dl>
 						<dl class="what-icons">
 							<dt><span><img src="dist/images/operations.svg"></span>Operations</dt>
@@ -61,25 +125,37 @@
 				</section>
 
 				<section class="what">
-					<p>CloudState is an architectural approach and implementation of that approach for providing distributed state management patterns suitable for serverless computing. Current supported and envisioned patterns include:</p>
+					<p>CloudState is an specification, protocol, and reference implementation for providing distributed state management patterns suitable for Serverless computing. The current supported and envisioned patterns include:</p>
 					<ul class="center-bullets">
 						<li>Event Sourcing</li>
-						<li>CRDTs</li>
+						<li>Conflict-Free Replicated Data Types (<a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">CRDTs</a>)</li>
+						<li>Key-Value storage</li>
 						<li>P2P messaging</li>
 						<li>CQRS read side projections</li>
 					</ul>
-					<p>CloudState services can be written in any language that supports gRPC, with language specific libraries provided that allow idiomatic use of the patterns in each language. CloudState can be used either by itself, in combination with a service mesh, or it is in envisioned that it will be integrated with other serverless technologies such as <a href="https://knative.dev">Knative</a>.</p>
-					<p>Watch this screencast by James Roper to learn more:</p>
+					<p>CloudState is polyglot, which means that services can be written in any language that supports gRPC, and with language specific libraries provided that allow idiomatic use of the patterns in each language. CloudState can be used either by itself, in combination with a Service Mesh, or it is in envisioned that it will be integrated with other Serverless technologies such as <a href="https://knative.dev">Knative</a>.</p>
+
+					<p>
+					Read more about the design, architecture, techniques, and technologies behind CloudState in <a href="https://github.com/cloudstateio/cloudstate/blob/master/README.md#enter-cloudstate">this section in the documentation</a>.  
+					</p>
+
+					<p>~~~~~</p>
+
+					<p>Watch this live-coding screencast by James Roper to learn more:</p>
 					<div class="cs-video">
 						<div class="flex-video">
 							<iframe src="https://www.youtube.com/embed/AOY8yRC6dVY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 						</div>
 					</div>
+
 				</section>
 
 				<section id="contribute" class="contribute">
 					<h3>Contribute</h3>
-					<p>If you're interested, please collaborate via the <a href="https://github.com/cloudstateio">CloudStateIO GitHub Organization</a>.</p>
+                    <p>
+                    Are you interested in being part of CloudState? We would love to have you! Our <a href="https://groups.google.com/forum/#!forum/cloudstate">mailing list</a> is a good place to start with open ended discussions about CloudState. The <a href="https://github.com/cloudstateio/cloudstate/issues">GitHub issue tracker</a> is a good place to raise issues, including bug reports and feature requests. You can also <a href="https://twitter.com/CloudstateIO">follow us on Twitter</a>.
+                    </p> 
+
 					<a href="https://github.com/cloudstateio"><img src="dist/images/github-blue.svg"></a>
 				</section>
 
