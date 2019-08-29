@@ -27,44 +27,6 @@ body
 	line-height: 1.7
 	color: #1070b2
 	font-size: 20px
-	
-main
-	text-align: center
-	background: rgba(white, 1)
-	color: #4d4d4d
-	padding: 1rem
-	display: flex
-	flex-direction: column
-	align-items: center
-	> section
-		max-width: 50rem
-		margin: 3rem 0
-		&.icons
-			max-width: 90rem
-			margin: 3rem 0 0 0
-		
-	h3
-		color: #1070b2
-		font-weight: 300
-		font-size: 2.5rem
-		margin: 1rem 0
-		text-align: center
-	p
-		margin-bottom: 2rem
-	ul
-		margin-bottom: 3rem
-	
-	a:link
-		color: cs-blue
-		text-decoration: none
-		font-weight: 400
-	a:visited
-		color: rgba(cs-blue, 1)
-	a:hover
-		text-decoration: underline
-	a:active
-		color: cs-blue
-
 header
 	text-align: center
 	padding: 4rem 2rem
@@ -91,13 +53,76 @@ header
 		text-transform: default
 		font-size: 1.5rem
 		margin: 0
-footer
+		
+main
+	text-align: left
+	background: rgba(white, 1)
+	color: #4d4d4d
+	padding: 1rem
+	display: flex
+	flex-direction: column
+	align-items: center
+	> section
+		max-width: 50rem
+		margin: 3rem 0
+		&.icons
+			max-width: 90rem
+			margin: 3rem 0 0 0
+		
+	h3
+		color: #1070b2
+		font-weight: 300
+		font-size: 2.5rem
+		margin: 1rem 0
+		text-align: center
+		border-bottom: 2px solid rgba(cs-blue, 0)
+	h4
+		color: #4d4d4d
+	.cookie-listing
+		h2
+			color: #4d4d4d
+			font-size: 1rem
+	p
+		margin-bottom: 2rem
+	ul
+		margin-bottom: 3rem
+	
+	a:link
+		color: cs-blue
+		text-decoration: none
+		font-weight: 400
+	a:visited
+		color: rgba(cs-blue, 1)
+	a:hover
+		text-decoration: underline
+	a:active
+		color: cs-blue
+	
+blockquote
+	border-left: 4px solid rgba(cs-blue, .5)
+	margin: 2rem 0 4rem 0
+	padding: 0 2rem
+	p
+		font-weight: 400
+		font-size: 1.5rem
+		font-style: italic
+		margin-bottom: 1rem
+	footer
+		font-size: 1rem
+
+body > footer
 	padding: 8rem 0 3rem 0
 	text-align: center
 	color: white
 	font-size: .875rem
 	img
 		max-width: 200px
+	a, .optanon-toggle-display
+		cursor: pointer
+		color: white
+		text-decoration: none
+		&:hover
+			text-decoration: underline
 nav.toc
 	padding: 2rem 0
 	ul
@@ -144,6 +169,14 @@ nav.toc
 					border: 1px solid rgba(white,.2)
 					background: cs-blue
 					min-width: 170px
+
+
+.tilde
+	color: rgba(cs-blue,.8)
+	font-size: 4rem
+	display: block
+	text-align: center
+	margin: 2rem 0
 
 ul.center-bullets
 	padding-left: 0 
@@ -207,7 +240,6 @@ ul.center-bullets
 		margin: 4rem 3rem 1rem 3rem
 
 .flex-video
-	border: 0px solid cs-blue
 	text-align: center
 	background: cs-blue
 	position: relative
@@ -217,6 +249,33 @@ ul.center-bullets
 	overflow: hidden
 	&.thumb
 		box-shadow: shadow
+	.cookie-warning
+		margin-top: 3rem
+		display: flex
+		flex-direction: column
+		align-items: center
+		line-height: 2
+		> a
+			color: cs-blue
+			background: rgba(white,1)
+			display: inline-block
+			padding: .5rem 1rem .25rem 1rem
+			border-radius: 250px
+			margin: 1rem
+			cursor: pointer
+			text-transform: uppercase
+			font-size: 1rem
+			font-weight: 700
+			&:hover
+				text-decoration: none
+				background: rgba(white,.8)
+				
+		span
+			color: white
+			font-size: 1rem
+			a
+				color: white
+				text-decoration: underline
 
 .flex-video.fourbythree
 		padding-bottom: 67.5%
@@ -266,3 +325,7 @@ ul.center-bullets
 
 	.icon-logo
 		width: 50px
+
+.text-center
+	text-align: center
+			
