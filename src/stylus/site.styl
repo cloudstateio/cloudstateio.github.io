@@ -1,4 +1,6 @@
-cs-blue = #1070b2
+cloudstate-blue = #15a9ce
+cloudstate-blue-dkr = #107f9b
+cloudstate-dark-blue = #0b5567
 
 @import "modules/modern-normalize"
 
@@ -21,54 +23,53 @@ anime-opacity = opacity 300ms ease-in-out
 ==== site styles ======================= 
 */
 body
-	background: cs-blue
-	font-family: 'Roboto', sans-serif;
+	background: white
+	font-family: 'Source Sans Pro', sans-serif;
 	font-weight: 300
 	line-height: 1.7
 	color: #1070b2
 	font-size: 20px
 header
+	background: cloudstate-blue
 	text-align: center
-	padding: 4rem 2rem
-	h1,h2
+	padding: 4rem 2rem 2rem 2rem
+	@media mediumOn
+		background: cloudstate-blue url(/dist/images/logos/cloudstate-icon-white-fade.svg) no-repeat center center
+		background-size: 640px
+	span
+		position: relative
+		display: inline-block
+		border: 0px solid white
+	h1,h2, p
 		color: white
 	img
 		width: 100%
-		height: 120px
+		height: 80px
 		display: inline-block
 		@media mediumOn
 			width: auto
-			min-width: 300px
-			min-height: 160px
-	
-	h1.logo
-		color: rgba(white, 0)
-		width: 100%
-		height: 120px
-		background: transparent url(../images/logos/cloudstate-stacked-white.svg) no-repeat center center
-		background-size: contain
-		display: inline-block
-		@media mediumOn
-			width: auto
-			min-width: 300px
-			min-height: 160px
-		a, a#visited, a#hover
-			color: rgba(white, 0)
-			display: inline-block
-			width: 100%
-			height: 100%
-	h1,span
-		font-weight: 300
+			height: 100px
+	h1, p
+		font-weight: 400
 		text-transform: default
-		font-size: 1.5rem
-		margin: 0
+		font-size: 1.125rem
+		margin: 1rem 0 0 0
 		display: block
-		color: rgba(white, .85)
+		color: rgba(white, .75)
+		
+	@media mediumOn
+		padding: 8rem 2rem
+		h1, p
+			position: absolute
+			margin: 0
+			bottom: 5px
+			right: 5px
+			font-size: 1.064rem
 		
 main
 	text-align: left
 	background: rgba(white, 1)
-	color: #4d4d4d
+	color: cloudstate-dark-blue
 	padding: 1rem
 	display: flex
 	flex-direction: column
@@ -81,17 +82,17 @@ main
 			margin: 3rem 0 0 0
 		
 	h3
-		color: #1070b2
+		color: cloudstate-dark-blue
 		font-weight: 300
 		font-size: 2.5rem
 		margin: 1rem 0
 		text-align: center
-		border-bottom: 2px solid rgba(cs-blue, 0)
+		border-bottom: 2px solid rgba(cloudstate-blue, 0)
 	h4
-		color: #4d4d4d
+		color: cloudstate-dark-blue
 	.cookie-listing
 		h2
-			color: #4d4d4d
+			color: cloudstate-dark-blue
 			font-size: 1rem
 	p
 		margin-bottom: 2rem
@@ -99,18 +100,18 @@ main
 		margin-bottom: 3rem
 	
 	a:link
-		color: cs-blue
+		color: cloudstate-blue
 		text-decoration: none
 		font-weight: 400
 	a:visited
-		color: rgba(cs-blue, 1)
+		color: rgba(cloudstate-blue, 1)
 	a:hover
 		text-decoration: underline
 	a:active
-		color: cs-blue
+		color: cloudstate-blue
 	
 blockquote
-	border-left: 4px solid rgba(cs-blue, .5)
+	border-left: 4px solid rgba(cloudstate-blue, .5)
 	margin: 2rem 0 4rem 0
 	padding: 0 2rem
 	p
@@ -122,10 +123,11 @@ blockquote
 		font-size: 1rem
 
 body > footer
-	padding: 8rem 0 3rem 0
+	padding: 6rem 0 3rem 0
 	text-align: center
 	color: white
 	font-size: .875rem
+	background: cloudstate-blue
 	img
 		max-width: 200px
 	a, .optanon-toggle-display
@@ -136,6 +138,7 @@ body > footer
 			text-decoration: underline
 nav.toc
 	padding: 2rem 0
+	background: rgba(cloudstate-blue,1)
 	ul
 		margin: 0
 		padding: 0
@@ -152,38 +155,52 @@ nav.toc
 				text-decoration: none
 				display: block
 				border: 1px solid rgba(white,.6)
-				background: cs-blue	
+				background: cloudstate-blue	
 				padding: .5rem 2rem
 				border-radius: 250px
 				text-align: center
-				transition: anime-border
+				font-weight: 400
 	@media mediumOn
 		padding: 0
-		margin-top: 3rem
+		background: rgba(cloudstate-dark-blue,1)
 		ul	
-			background: rgba(black, .2)
 			flex-direction: row
 			li
-				padding: 2rem 
+				padding: 2rem .25rem
 				a
-					border: 1px solid rgba(white,.2)
-					background: cs-blue
+					padding: .5rem 2rem
+
+					border: none
+					border: 1px solid rgba(white,.5)
+					background: transparent
+					transition: all 200ms ease-in-out 
 					&:hover
-						border: 1px solid rgba(white,.6)
-						background: cs-blue
-						transition: anime-border
-							
+						background: darken(cloudstate-dark-blue, 2)
+						transition: all 200ms ease-in-out
+						color: lighten(cloudstate-blue, 10)
+						border-color: lighten(cloudstate-blue, 10)
+					
 	@media largeOn
 		ul
-			li 
+			li
+				padding: 2rem 1rem 
 				a
-					border: 1px solid rgba(white,.2)
-					background: cs-blue
+					background: transparent
 					min-width: 170px
 
 
+hr.icon
+	height: 80px
+	display: block
+	text-align: center
+	margin: 4rem 0
+	border: none
+	background: transparent url(/dist/images/logos/cloudstate-icon-color.svg) no-repeat center center
+	background-size: 50px
+
+
 .tilde
-	color: rgba(cs-blue,.8)
+	color: rgba(cloudstate-blue,.8)
 	font-size: 4rem
 	display: block
 	text-align: center
@@ -199,7 +216,7 @@ ul.center-bullets
 			font-weight: 700
 			font-size: 1.5rem
 			vertical-align: middle
-			color: cs-blue
+			color: cloudstate-blue
 
 		
 
@@ -222,11 +239,11 @@ ul.center-bullets
 			&:last-child
 				padding-right: 0
 		dt
-			color: cs-blue
+			color: cloudstate-blue
 			font-weight: 700
 			font-size: 1.5rem 
 			span
-				background: cs-blue
+				background: cloudstate-blue
 				display: flex
 				justify-content: center
 				align-items: center
@@ -252,7 +269,7 @@ ul.center-bullets
 
 .flex-video
 	text-align: center
-	background: cs-blue
+	background: cloudstate-blue
 	position: relative
 	padding-top: 1.5625rem
 	padding-bottom: 57.25%
@@ -267,7 +284,7 @@ ul.center-bullets
 		align-items: center
 		line-height: 2
 		> a
-			color: cs-blue
+			color: cloudstate-blue
 			background: rgba(white,1)
 			display: inline-block
 			padding: .5rem 1rem .25rem 1rem
@@ -325,7 +342,7 @@ ul.center-bullets
 		vertical-align: middle
 
 	.white-logos
-		background-color: cs-blue
+		background-color: cloudstate-blue
 		color: white
 
 	.horizontal-logo
