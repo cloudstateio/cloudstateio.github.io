@@ -2,7 +2,25 @@ cloudstate-blue = #15a9ce
 cloudstate-blue-dkr = #107f9b
 cloudstate-dark-blue = #0b5567
 
+lb-orange = #ff931e
+lb-orange-dkr = #f48122
+lb-orange-ltr = #ffa94b
+lb-slate = #1c3b47
+lb-slate-dkr = #0c323b
+lb-slate-ltr = #406972
+lb-grey = #454e57
+lb-grey-dkr = #31373B
+lb-off-white = #f5f6f7
+lb-off-white-dkr = #ebeef0
+lb-light-grey = #c5d0d4
+lb-light-grey-dkr = #9eb1b7
+lb-light-grey-ltr = #f3f6f6
+
+@import "oss-banners.css"
+
 @import "modules/modern-normalize"
+
+
 
 mediumOn = "only screen and (min-width: 40.063em)"
 largeOn = "only screen and (min-width: 64.063em)" //1025
@@ -17,25 +35,31 @@ panel-shadow = 0px 2px 4px 0px rgba(0,0,0,0.3)
 anime = all 300ms ease-in-out
 anime-border = border 300ms ease-in-out
 anime-opacity = opacity 300ms ease-in-out
-
-
 /*! 
 ==== site styles ======================= 
 */
+html
+	font-size: 16px
 body
 	background: white
 	font-family: 'Source Sans Pro', sans-serif;
-	font-weight: 300
+	font-weight: 400
 	line-height: 1.7
 	color: #1070b2
-	font-size: 20px
+	font-size: 16px
+	text-rendering: auto
+	-webkit-font-smoothing: auto
 header
 	background: cloudstate-blue
 	text-align: center
-	padding: 4rem 2rem 2rem 2rem
+	padding: 2rem 1rem
+	display: flex
+	justify-content: center
+	align-items: center
 	@media mediumOn
 		background: cloudstate-blue url(/dist/images/logos/cloudstate-icon-white-fade.svg) no-repeat center center
 		background-size: 640px
+		height: 350px
 	span
 		position: relative
 		display: inline-block
@@ -74,6 +98,8 @@ main
 	display: flex
 	flex-direction: column
 	align-items: center
+	font-weight: 300
+	font-size: 1.25rem
 	> section
 		max-width: 50rem
 		margin: 3rem 0
@@ -87,7 +113,6 @@ main
 		font-size: 2.5rem
 		margin: 1rem 0
 		text-align: center
-		border-bottom: 2px solid rgba(cloudstate-blue, 0)
 	h4
 		color: cloudstate-dark-blue
 	.cookie-listing
@@ -110,17 +135,17 @@ main
 	a:active
 		color: cloudstate-blue
 	
-blockquote
-	border-left: 4px solid rgba(cloudstate-blue, .5)
-	margin: 2rem 0 4rem 0
-	padding: 0 2rem
-	p
-		font-weight: 400
-		font-size: 1.5rem
-		font-style: italic
-		margin-bottom: 1rem
-	footer
-		font-size: 1rem
+	blockquote
+		border-left: 4px solid rgba(cloudstate-blue, .5)
+		margin: 2rem 0 4rem 0
+		padding: 0 2rem
+		p
+			font-weight: 400
+			font-size: 1.5rem
+			font-style: italic
+			margin-bottom: 1rem
+		footer
+			font-size: 1rem
 
 body > footer
 	padding: 6rem 0 3rem 0
@@ -163,31 +188,52 @@ nav.toc
 	@media mediumOn
 		padding: 0
 		background: rgba(cloudstate-dark-blue,1)
+		background: linear-gradient(#ffffff, lb-off-white)
+		border-bottom: 1px solid lb-off-white-dkr
+		box-shadow: 0px -8px 12px 0 rgba(255, 255, 255, 0.2);
 		ul	
 			flex-direction: row
 			li
-				padding: 2rem .25rem
+				padding: 2rem 0rem
+				padding: 0rem
+				
 				a
+					height: 80px
+					vertical-align: center
+					line-height: 70px
+					color: cloudstate-blue
+					font-weight: 700
 					padding: .5rem 2rem
-
 					border: none
-					border: 1px solid rgba(white,.5)
+					border: 0px solid rgba(white,.5)
+					border-left: 0px solid rgba(white,1)
+					border-right: 1px solid rgba(lb-off-white-dkr,1)
+					border-radius: 0
 					background: transparent
 					transition: all 200ms ease-in-out 
+					text-transform: uppercase
+					
 					&:hover
-						background: darken(cloudstate-dark-blue, 2)
+						background: lb-off-white
 						transition: all 200ms ease-in-out
-						color: lighten(cloudstate-blue, 10)
-						border-color: lighten(cloudstate-blue, 10)
+						box-shadow: inset 0 -4px 0 cloudstate-blue, inset 0 0 3px lb-off-white-dkr
+				&:first-child 
+					a
+						border-left: none
+						border-left: 1px solid rgba(lb-off-white-dkr,1)
+				&:last-child
+					a
+						border-right: none
+						border-right: 1px solid rgba(lb-off-white-dkr,1)
 					
 	@media largeOn
 		ul
 			li
-				padding: 2rem 1rem 
+				padding: 2rem 0rem
+				padding: 0rem 
 				a
 					background: transparent
 					min-width: 170px
-
 
 hr.icon
 	height: 80px
@@ -275,6 +321,7 @@ ul.center-bullets
 	padding-bottom: 57.25%
 	height: 0
 	overflow: hidden
+	border: 1px solid lb-off-white-dkr
 	&.thumb
 		box-shadow: shadow
 	.cookie-warning
@@ -356,4 +403,3 @@ ul.center-bullets
 
 .text-center
 	text-align: center
-			
