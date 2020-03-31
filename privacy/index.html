@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="../dist/css/site.css?v=01">
+		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap' rel='stylesheet'>
+		<link rel="stylesheet" type="text/css" href="../dist/css/site.css?v=02">
 		<!-- OneTrust Cookies Consent Notice start -->
-		<script src="https://optanon.blob.core.windows.net/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js" type="text/javascript" charset="UTF-8"></script>
+		<script src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js" type="text/javascript" charset="UTF-8"></script>
 		<script type="text/javascript">
 			function OptanonWrapper() { }
 		</script>
@@ -51,11 +51,14 @@
 		
 	</head>
 	<body>
-		<article>
+
+		<article id="scrollarea">
 
 			<header>
-				<a href="/"><img src="/dist/images/logos/cloudstate-stacked-white.svg" alt="Cloudstate Logo" title="Cloudstate Logo"></a>
-				<span>Distributed State Management for Serverless</span>
+				<span>
+					<a href="/"><img src="../dist/images/logos/cloudstate-horizontal-white.svg" alt="Cloudstate Logo" title="Cloudstate Logo"></a>
+					<p>Distributed State Management for Serverless</p>
+				</span>
 			</header>
 
 			<main>
@@ -156,7 +159,7 @@
 		</article>
 		<footer>
 			<a href="/"><img src="/dist/images/logos/cloudstate-stacked-white.svg" alt="Cloudstate Logo" title="Cloudstate Logo"></a>
-			<p>&copy; Cloudstate 2019 | <a href="/privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
+			<p>&copy; Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="/privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
 		</footer>
 	</body>
 </html>
