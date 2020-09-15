@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Getting started with Spring Boot · Spring Boot</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='docs'/>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+
+<!-- OneTrust Cookies Consent Notice start -->
+<script type="text/javascript">
+(function(w,d,s){if(w.location.protocol!="file:"){var f=d.getElementsByTagName(s)[0],j=d.createElement(s);
+j.async=true;j.src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js";
+j.charset="UTF-8";f.parentNode.insertBefore(j,f);}})(window,document,"script");</script>
+<!-- OneTrust Cookies Consent Notice end -->
+
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+Spring Boot
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html" class="active page">Getting started with Spring Boot</a></li>
+  <li><a href="configuration.html" class="page">Configuration</a></li>
+  <li><a href="cdi.html" class="page">Context Injection</a></li>
+  <li><a href="conventions.html" class="page">Conventions and Restrictions</a></li>
+  <li><a href="examples.html" class="page">Examples</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+<div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+<div class="wrapper">
+<div class="brand">
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Cloudstate Banner" href="https://www.lightbend.com?r=oss-banner-cloudstate" target="_blank">
+<img class="lightbend-logo" src="images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+</div>
+<div class="nav">
+<a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your Cloudstate app with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/cloudstate-by-lightbend?r=oss-banner-cloudstate" target="_blank">
+<span>Enhance your Cloudstate app with</span>
+<img class="lightbend-logo" src="images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+<div class="drop-down">
+<svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<path fill="#ffffff" d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z M10,0.4
+c-5.302,0-9.6,4.298-9.6,9.6c0,5.303,4.298,9.6,9.6,9.6s9.6-4.297,9.6-9.6C19.6,4.698,15.302,0.4,10,0.4z M10,18.354
+c-4.615,0-8.354-3.74-8.354-8.354c0-4.614,3.739-8.354,8.354-8.354c4.613,0,8.354,3.74,8.354,8.354
+C18.354,14.614,14.613,18.354,10,18.354z" />
+</svg>
+<div class="drop-down-content">
+<div class="lightbend-family">
+<a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+<img class="akka-full-color-logo" src="images/banner-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+</a>
+<a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+<img class="cloudflow-full-color-logo" src="images/banner-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+</a>
+<a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+<img class="lagom-full-color-logo" src="images/banner-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+</a>
+<a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+<img class="play-full-color-logo" src="images/banner-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+</a>
+<a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+<img class="scala-full-color-logo" src="images/banner-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+</a>
+<div class="cloudstate current">
+<img class="cloudstate-full-color-logo" src="images/banner-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+<span>From the creators of <strong>Cloudstate</strong>, get developer assistance and expert support from Lightbend.</span>
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/cloudstate-by-lightbend?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+</div>
+</div>
+<div class="title">The Lightbend Family</div>
+</div>      
+</div>
+</div>
+</div>
+</div>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../.."><img src="images/cloudstate-horizontal-white.svg" alt="Spring Boot"/></a></div>
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column site-nav-container">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+Spring Boot
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html" class="active page">Getting started with Spring Boot</a></li>
+  <li><a href="configuration.html" class="page">Configuration</a></li>
+  <li><a href="cdi.html" class="page">Context Injection</a></li>
+  <li><a href="conventions.html" class="page">Conventions and Restrictions</a></li>
+  <li><a href="examples.html" class="page">Examples</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Spring Boot</a></li>
+  <li>Getting started with Spring Boot</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#getting-started-with-spring-boot" name="getting-started-with-spring-boot" class="anchor"><span class="anchor-link"></span></a>Getting started with Spring Boot</h1>
+<h2><a href="#prerequisites" name="prerequisites" class="anchor"><span class="anchor-link"></span></a>Prerequisites</h2>
+<h2><a href="#spring-boot-version" name="spring-boot-version" class="anchor"><span class="anchor-link"></span></a>Spring Boot version</h2>
+<p>Cloudstate Spring Boot support requires Spring Boot &gt;= 2.2.4.RELEASE.</p>
+<h2><a href="#build-configurations" name="build-configurations" class="anchor"><span class="anchor-link"></span></a>Build configurations</h2>
+<p>You must first add the Cloudstate dependency to your project:</p>
+<dl>
+  <dt>Maven</dt>
+  <dd>
+  <pre class="prettyprint"><code class="nocode">&lt;dependencies&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.cloudstate&lt;/groupId&gt;
+    &lt;artifactId&gt;cloudstate-springboot-support&lt;/artifactId&gt;
+    &lt;version&gt;0.5.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre></dd>
+  <dt>sbt</dt>
+  <dd>
+  <pre class="prettyprint"><code class="nocode">libraryDependencies += &quot;io.cloudstate&quot; % &quot;cloudstate-springboot-support&quot; % &quot;0.5.1&quot;
+</code></pre></dd>
+  <dt>gradle</dt>
+  <dd>
+  <pre class="prettyprint"><code class="nocode">compile group: &#39;io.cloudstate&#39;, name: &#39;cloudstate-springboot-support&#39;, version: &#39;0.5.1&#39;
+</code></pre></dd>
+</dl>
+<p>Cloudstate applications are based on contracts created via gRPC, in the case of Maven-based Spring Boot applications you can use the following plugins to assist in this task:</p>
+<pre class="prettyprint"><code class="language-xml"> &lt;build&gt;
+        &lt;extensions&gt;
+            &lt;extension&gt;
+                &lt;groupId&gt;kr.motd.maven&lt;/groupId&gt;
+                &lt;artifactId&gt;os-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.6.0&lt;/version&gt;
+            &lt;/extension&gt;
+        &lt;/extensions&gt;
+
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.xolstice.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;protobuf-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.6.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;protocExecutable&gt;/usr/local/bin/protoc&lt;/protocExecutable&gt;
+                    &lt;protocArtifact&gt;com.google.protobuf:protoc:3.9.1:exe:${os.detected.classifier}&lt;/protocArtifact&gt;
+                &lt;/configuration&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;compile&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>
+<p>Here we have an example of a pom.xml file with all the necessary parts present:</p>
+<pre class="prettyprint"><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.cloudstate&lt;/groupId&gt;
+    &lt;artifactId&gt;cloudstate-springboot-example&lt;/artifactId&gt;
+    &lt;version&gt;$cloudstate.springboot.lib.version$&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;main.class&gt;io.cloudstate.springboot.example.Main&lt;/main.class&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+                &lt;version&gt;$cloudstate.springboot.version$&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.cloudstate&lt;/groupId&gt;
+            &lt;artifactId&gt;cloudstate-springboot-support&lt;/artifactId&gt;
+            &lt;version&gt;$cloudstate.springboot.lib.version$&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;extensions&gt;
+            &lt;extension&gt;
+                &lt;groupId&gt;kr.motd.maven&lt;/groupId&gt;
+                &lt;artifactId&gt;os-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.6.0&lt;/version&gt;
+            &lt;/extension&gt;
+        &lt;/extensions&gt;
+
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+                &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;phase&gt;generate-sources&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;add-source&lt;/goal&gt;
+                        &lt;/goals&gt;
+                        &lt;configuration&gt;
+                            &lt;sources&gt;
+                                &lt;source&gt;${project.build.directory}/generated-sources/protobuf/java&lt;/source&gt;
+                            &lt;/sources&gt;
+                        &lt;/configuration&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.5.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.8&lt;/source&gt;
+                    &lt;target&gt;1.8&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.xolstice.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;protobuf-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.6.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;protocExecutable&gt;/usr/local/bin/protoc&lt;/protocExecutable&gt;
+                    &lt;protocArtifact&gt;com.google.protobuf:protoc:3.9.1:exe:${os.detected.classifier}&lt;/protocArtifact&gt;
+                &lt;/configuration&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;compile&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;com.google.cloud.tools&lt;/groupId&gt;
+                &lt;artifactId&gt;jib-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.7.0&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;build&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+                &lt;configuration&gt;
+                    &lt;from&gt;
+                        &lt;image&gt;adoptopenjdk/openjdk8-openj9:alpine-slim&lt;/image&gt;
+                        &lt;credHelper&gt;&lt;/credHelper&gt;
+                    &lt;/from&gt;
+                    &lt;to&gt;
+                        &lt;image&gt;cloudstateio/samples-springboot-shopping-cart&lt;/image&gt;
+                        &lt;credHelper&gt;&lt;/credHelper&gt;
+                        &lt;tags&gt;
+                            &lt;tag&gt;${project.version}&lt;/tag&gt;
+                        &lt;/tags&gt;
+                    &lt;/to&gt;
+                    &lt;container&gt;
+                        &lt;mainClass&gt;${main.class}&lt;/mainClass&gt;
+                        &lt;jvmFlags&gt;
+                            &lt;jvmFlag&gt;-XshareClasses&lt;/jvmFlag&gt;
+                            &lt;jvmFlag&gt;-Xquickstart&lt;/jvmFlag&gt;
+                            &lt;jvmFlag&gt;-XX:+UseG1GC&lt;/jvmFlag&gt;
+                            &lt;jvmFlag&gt;-XX:+UseStringDeduplication&lt;/jvmFlag&gt;
+                        &lt;/jvmFlags&gt;
+                        &lt;ports&gt;
+                            &lt;port&gt;8080&lt;/port&gt;
+                        &lt;/ports&gt;
+                    &lt;/container&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;
+</code></pre><div class="callout note "><div class="callout-title">Important</div>
+<p>Remember to change the values of the main.class, repo.name, and version tags to their respective values</p></div>
+<p>Subsequent source locations and build commands will assume the above Maven project, and may need to be adapted to your particular build tool and setup.</p>
+<h2><a href="#protobuf-files" name="protobuf-files" class="anchor"><span class="anchor-link"></span></a>Protobuf files</h2>
+<p>The Xolstice Maven plugin assumes a location of <code>src/main/proto</code> for your protobuf files. In addition, it includes any protobuf files from your application dependencies in the protoc include path, so there&rsquo;s nothing you need to do to pull in either the Cloudstate protobuf types, or any of the Google standard protobuf types, they are all automatically available for import.</p>
+<p>So, if you were to build the example shopping cart application shown earlier in <a href="https://cloudstate.io/docs/core/current/user/features/grpc.html">gRPC descriptors</a>, you could simply paste that protobuf into <code>src/main/proto/shoppingcart.proto</code>. You may wish to also define the java package, to ensure the package name used conforms to Java package naming conventions:</p>
+<pre class="prettyprint"><code class="language-proto">option java_package = &quot;com.example.shoppingcart&quot;;
+</code></pre>
+<p>Now if you run <code>mvn compile</code>, you&rsquo;ll find your generated protobuf files in <code>target/generated-sources/protobuf/java</code>.</p>
+<h2><a href="#write-your-cloudstate-function-" name="write-your-cloudstate-function-" class="anchor"><span class="anchor-link"></span></a>Write your Cloudstate function:</h2>
+<p>In general you will write your entity functions in the usual way as you would if you were using the version of java support. For more information on how to create entity functions, see the specific documentation <a href="https://cloudstate.io/docs/core/current/user/lang/java/eventsourced.html#event-sourcing">here</a>, and <a href="https://cloudstate.io/docs/core/current/user/lang/java/crdt.html#conflict-free-replicated-data-types">here</a>.</p>
+<p>The differences will be explained later in this documentation. Below is an example of an EventSourced user entity:</p>
+<pre class="prettyprint"><code class="language-java">/**
+ * An event sourced entity.
+ */
+@EventSourcedEntity
+@CloudstateEntityBean
+public class ShoppingCartEntity {
+    private final Map&lt;String, Shoppingcart.LineItem&gt; cart = new LinkedHashMap&lt;&gt;();
+
+    @EntityId
+    private String entityId;
+
+    @CloudstateContext
+    private EventSourcedContext context;
+
+    @Autowired
+    private RuleService ruleService;
+
+    @Autowired
+    private ShoppingCartTypeConverter typeConverter;
+
+    @Snapshot
+    public Domain.Cart snapshot() {
+        return Domain.Cart.newBuilder()
+                .addAllItems(cart.values().stream().map(typeConverter::convert).collect(Collectors.toList()))
+                .build();
+    }
+
+    @SnapshotHandler
+    public void handleSnapshot(Domain.Cart cart) {
+        this.cart.clear();
+        for (Domain.LineItem item : cart.getItemsList()) {
+            this.cart.put(item.getProductId(), typeConverter.convert(item));
+        }
+    }
+
+    @EventHandler
+    public void itemAdded(Domain.ItemAdded itemAdded) {
+        Shoppingcart.LineItem item = cart.get(itemAdded.getItem().getProductId());
+        if (item == null) {
+            item = typeConverter.convert(itemAdded.getItem());
+        } else {
+            item =
+                    item.toBuilder()
+                            .setQuantity(item.getQuantity() + itemAdded.getItem().getQuantity())
+                            .build();
+        }
+        cart.put(item.getProductId(), item);
+    }
+
+    @EventHandler
+    public void itemRemoved(Domain.ItemRemoved itemRemoved) {
+        cart.remove(itemRemoved.getProductId());
+    }
+
+    @CommandHandler
+    public Shoppingcart.Cart getCart() {
+        return Shoppingcart.Cart.newBuilder().addAllItems(cart.values()).build();
+    }
+
+    @CommandHandler
+    public Empty addItem(Shoppingcart.AddLineItem item, CommandContext ctx) {
+        if (!ruleService.isValidAmount(item)) {
+            ctx.fail(&quot;Cannot add negative quantity of to item&quot; + item.getProductId());
+        }
+        ctx.emit(
+                Domain.ItemAdded.newBuilder()
+                        .setItem(
+                                Domain.LineItem.newBuilder()
+                                        .setProductId(item.getProductId())
+                                        .setName(item.getName())
+                                        .setQuantity(item.getQuantity())
+                                        .build())
+                        .build());
+        return Empty.getDefaultInstance();
+    }
+
+    @CommandHandler
+    public Empty removeItem(Shoppingcart.RemoveLineItem item, CommandContext ctx) {
+        if (!cart.containsKey(item.getProductId())) {
+            ctx.fail(&quot;Cannot remove item &quot; + item.getProductId() + &quot; because it is not in the cart.&quot;);
+        }
+        ctx.emit(Domain.ItemRemoved.newBuilder().setProductId(item.getProductId()).build());
+        return Empty.getDefaultInstance();
+    }
+}</code></pre>
+<p>To work Cloudstate requires that the descriptors of the protobuf&rsquo;s files are explicitly registered. We have two ways to do this:</p>
+<ul>
+  <li>Via Spring Boot by creating a Spring Boot Configuration class and registering these types accordingly.</li>
+  <li>Programmatically, which we’ll explain later in <a href="conventions.html">Conventions and Restrictions</a>.</li>
+</ul>
+<p>Here is an example of a suitable configuration class:</p>
+<pre class="prettyprint"><code class="language-java">import com.example.shoppingcart.Shoppingcart;
+import com.google.protobuf.Descriptors;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class DescriptorsConfiguration {
+
+    @Bean
+    public Descriptors.ServiceDescriptor shoppingCartEntityServiceDescriptor() {
+        return Shoppingcart.getDescriptor().findServiceByName(&quot;ShoppingCart&quot;);
+    }
+
+    @Bean
+    public Descriptors.FileDescriptor[] shoppingCartEntityFileDescriptors() {
+        return new Descriptors.FileDescriptor[]{com.example.shoppingcart.persistence.Domain.getDescriptor()};
+    }
+}</code></pre>
+<p>Then write your simple main class in the Spring boot style:</p>
+<pre class="prettyprint"><code class="language-java">import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import io.cloudstate.springboot.starter.autoconfigure.EnableCloudstate;
+
+@EnableCloudstate
+@SpringBootApplication
+public class Main {
+    public static void main(String[] args) { SpringApplication.run(Main.class, args); }
+}</code></pre><div class="callout note "><div class="callout-title">Important</div>
+<p>In Cloudstate Spring Boot support it is not necessary to register your entities explicitly, instead you just use the annotation <code>@EnableCloudstate</code> to tell Spring what to do</p></div>
+<p>Then run the application in the same way as you would any other springboot application with <code>mvn spring-boot:run</code> command.</p>
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="configuration.html">Configuration</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html#getting-started-with-spring-boot" class="header">Getting started with Spring Boot</a>
+  <ul>
+    <li><a href="gettingstarted.html#prerequisites" class="header">Prerequisites</a></li>
+    <li><a href="gettingstarted.html#spring-boot-version" class="header">Spring Boot version</a></li>
+    <li><a href="gettingstarted.html#build-configurations" class="header">Build configurations</a></li>
+    <li><a href="gettingstarted.html#protobuf-files" class="header">Protobuf files</a></li>
+    <li><a href="gettingstarted.html#write-your-cloudstate-function-" class="header">Write your Cloudstate function:</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<a href="../../.."><img src="images/cloudstate-stacked-white.svg"></a>
+<p>© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="../../../privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
+
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+
+
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>The Cloudstate Build · Cloudstate</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Cloudstate Documentation'/>
+<link rel="canonical" href="https://cloudstate.io/docs/core/current/developer/thebuild.html"/>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+
+<!-- OneTrust Cookies Consent Notice start -->
+<script type="text/javascript">
+(function(w,d,s){if(w.location.protocol!="file:"){var f=d.getElementsByTagName(s)[0],j=d.createElement(s);
+j.async=true;j.src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js";
+j.charset="UTF-8";f.parentNode.insertBefore(j,f);}})(window,document,"script");</script>
+<!-- OneTrust Cookies Consent Notice end -->
+
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+Cloudstate Documentation
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../user/index.html" class="page">Using Cloudstate</a>
+  <ul>
+    <li><a href="../user/quickstart.html" class="page">Quickstart</a></li>
+    <li><a href="../user/features/index.html" class="page">Overview</a>
+    <ul>
+      <li><a href="../user/features/grpc.html" class="page">gRPC descriptors</a></li>
+      <li><a href="../user/features/eventsourced.html" class="page">Event sourcing</a></li>
+      <li><a href="../user/features/crdts.html" class="page">Conflict-free Replicated Data Types</a></li>
+      <li><a href="../user/features/effects.html" class="page">Forwarding and effects</a></li>
+    </ul></li>
+    <li><a href="../user/lang/index.html" class="page">Languages</a>
+    <ul>
+      <li><a href="../user/lang/javascript/index.html" class="page">JavaScript</a></li>
+      <li><a href="../user/lang/java/index.html" class="page">Java</a></li>
+      <li><a href="../user/lang/go/index.html" class="page">Go</a></li>
+      <li><a href="../user/lang/kotlin/index.html" class="page">Kotlin</a></li>
+      <li><a href="../user/lang/dart/index.html" class="page">Dart</a></li>
+      <li><a href="../user/lang/springboot/index.html" class="page">Spring Boot</a></li>
+      <li><a href="../user/lang/dotnet/index.html" class="page">.Net</a></li>
+    </ul></li>
+    <li><a href="../user/deployment/index.html" class="page">Deploying applications</a>
+    <ul>
+      <li><a href="../user/deployment/installing.html" class="page">Installing</a></li>
+      <li><a href="../user/deployment/deploying.html" class="page">Deploying a stateful service</a></li>
+      <li><a href="../user/deployment/stores/index.html" class="page">Stateful stores</a></li>
+      <li><a href="../user/deployment/monitoring.html" class="page">Monitoring</a></li>
+      <li><a href="../user/deployment/autoscaling.html" class="page">Autoscaling</a></li>
+      <li><a href="../user/deployment/security.html" class="page">Security</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="../spec/index.html" class="page">Protocol Specification</a></li>
+  <li><a href="../developer/index.html" class="page">Content for developers of Cloudstate</a>
+  <ul>
+    <li><a href="../developer/thebuild.html" class="active page">The Cloudstate Build</a></li>
+    <li><a href="../developer/nativeimage.html" class="page">Building native images in Cloudstate</a></li>
+    <li><a href="../developer/language-support/index.html" class="page">Language support</a>
+    <ul>
+      <li><a href="../developer/language-support/serialization.html" class="page">Cloudstate serialization convention</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+<div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+<div class="wrapper">
+<div class="brand">
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Cloudstate Banner" href="https://www.lightbend.com?r=oss-banner-cloudstate" target="_blank">
+<img class="lightbend-logo" src="../images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+</div>
+<div class="nav">
+<a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your apps with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">
+<span>Enhance your apps with</span>
+<img class="lightbend-logo" src="../images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+<div class="drop-down">
+<svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<path fill="#ffffff" d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z M10,0.4
+c-5.302,0-9.6,4.298-9.6,9.6c0,5.303,4.298,9.6,9.6,9.6s9.6-4.297,9.6-9.6C19.6,4.698,15.302,0.4,10,0.4z M10,18.354
+c-4.615,0-8.354-3.74-8.354-8.354c0-4.614,3.739-8.354,8.354-8.354c4.613,0,8.354,3.74,8.354,8.354
+C18.354,14.614,14.613,18.354,10,18.354z" />
+</svg>
+<div class="drop-down-content">
+<div class="lightbend-family">
+<a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+<img class="akka-full-color-logo" src="../images/banner-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+</a>
+<a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+<img class="cloudflow-full-color-logo" src="../images/banner-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+</a>
+<a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+<img class="lagom-full-color-logo" src="../images/banner-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+</a>
+<a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+<img class="play-full-color-logo" src="../images/banner-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+</a>
+<a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+<img class="scala-full-color-logo" src="../images/banner-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+</a>
+<div class="cloudstate current">
+<img class="cloudstate-full-color-logo" src="../images/banner-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+<span>Get developer assistance and expert support from Lightbend.</span>
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+</div>
+</div>
+<div class="title">The Lightbend Family</div>
+</div>      
+</div>
+</div>
+</div>
+</div>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../../.."><img src="../images/cloudstate-horizontal-white.svg" alt="Cloudstate"/></a></div>
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column site-nav-container">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+Cloudstate Documentation
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../user/index.html" class="page">Using Cloudstate</a>
+  <ul>
+    <li><a href="../user/quickstart.html" class="page">Quickstart</a></li>
+    <li><a href="../user/features/index.html" class="page">Overview</a>
+    <ul>
+      <li><a href="../user/features/grpc.html" class="page">gRPC descriptors</a></li>
+      <li><a href="../user/features/eventsourced.html" class="page">Event sourcing</a></li>
+      <li><a href="../user/features/crdts.html" class="page">Conflict-free Replicated Data Types</a></li>
+      <li><a href="../user/features/effects.html" class="page">Forwarding and effects</a></li>
+    </ul></li>
+    <li><a href="../user/lang/index.html" class="page">Languages</a>
+    <ul>
+      <li><a href="../user/lang/javascript/index.html" class="page">JavaScript</a></li>
+      <li><a href="../user/lang/java/index.html" class="page">Java</a></li>
+      <li><a href="../user/lang/go/index.html" class="page">Go</a></li>
+      <li><a href="../user/lang/kotlin/index.html" class="page">Kotlin</a></li>
+      <li><a href="../user/lang/dart/index.html" class="page">Dart</a></li>
+      <li><a href="../user/lang/springboot/index.html" class="page">Spring Boot</a></li>
+      <li><a href="../user/lang/dotnet/index.html" class="page">.Net</a></li>
+    </ul></li>
+    <li><a href="../user/deployment/index.html" class="page">Deploying applications</a>
+    <ul>
+      <li><a href="../user/deployment/installing.html" class="page">Installing</a></li>
+      <li><a href="../user/deployment/deploying.html" class="page">Deploying a stateful service</a></li>
+      <li><a href="../user/deployment/stores/index.html" class="page">Stateful stores</a></li>
+      <li><a href="../user/deployment/monitoring.html" class="page">Monitoring</a></li>
+      <li><a href="../user/deployment/autoscaling.html" class="page">Autoscaling</a></li>
+      <li><a href="../user/deployment/security.html" class="page">Security</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="../spec/index.html" class="page">Protocol Specification</a></li>
+  <li><a href="../developer/index.html" class="page">Content for developers of Cloudstate</a>
+  <ul>
+    <li><a href="../developer/thebuild.html" class="active page">The Cloudstate Build</a></li>
+    <li><a href="../developer/nativeimage.html" class="page">Building native images in Cloudstate</a></li>
+    <li><a href="../developer/language-support/index.html" class="page">Language support</a>
+    <ul>
+      <li><a href="../developer/language-support/serialization.html" class="page">Cloudstate serialization convention</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Cloudstate</a></li>
+  <li><a href="../developer/index.html">Content for developers of Cloudstate</a></li>
+  <li>The Cloudstate Build</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#the-cloudstate-build" name="the-cloudstate-build" class="anchor"><span class="anchor-link"></span></a>The Cloudstate Build</h1>
+<p>The Cloudstate Build uses <code>sbt</code> as its build tool.</p>
+<h2><a href="#installation-instructions" name="installation-instructions" class="anchor"><span class="anchor-link"></span></a>Installation instructions</h2>
+<ul>
+  <li>Install the <code>git</code> source code manager from <a href="https://git-scm.com/">here</a>.</li>
+  <li>Clone the Cloudstate repository using <code>git</code>: <code>git clone git@github.com:cloudstateio/cloudstate.git</code></li>
+  <li>Install <code>sbt</code>, follow <a href="https://www.scala-sbt.org/download.html">these instructions</a>.</li>
+</ul>
+<p>To build Native Images, you&rsquo;ll need the GraalVM CE as your JRE and <a href="https://clang.llvm.org/"><code>clang</code></a> as your <code>cc</code>. The GraalVM CE provides the <code>native-image</code> command, which must be on the $PATH when building Native Images. See <a href="https://github.com/cloudstateio/cloudstate/blob/master/README.md#user-content-graalvm-integration">GraalVM Integration</a> in the project README for further info.</p>
+<p>To build node.js related samples, you&rsquo;ll need <code>nvm</code> to install the corresponding node.js version by running command <code>nvm install</code> and <code>nvm use</code>, then run <code>npm install</code> to install required modules.</p>
+<p>To build the documentation using the <code>paradox</code> target, you&rsquo;ll need to use <code>npm</code> to install required modules from the <code>node-support</code> folder with <code>cd node-support &amp;&amp; nvm install &amp;&amp; nvm use &amp;&amp; npm install &amp;&amp; cd ..</code></p>
+<h2><a href="#getting-started" name="getting-started" class="anchor"><span class="anchor-link"></span></a>Getting started</h2>
+<p>It is possible to run <code>sbt</code> either on a command-by-command basis by running <code>sbt &lt;command&gt; parameters</code>. It is also possible to run <code>sbt</code> in interactive mode by running <code>sbt</code>, then you can interact with the build interactively by typing in commands and having them executed by pressing RETURN.</p>
+<p>The following is a list of sbt commands and use-cases:</p>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Command </th>
+      <th>Use-case </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">projects </td>
+      <td>Prints a list of all projects in the build </td>
+    </tr>
+    <tr>
+      <td align="right">project <NAME> </td>
+      <td>Makes <NAME> the current project </td>
+    </tr>
+    <tr>
+      <td align="right">clean </td>
+      <td>Deletes all generated files and compilation results for the current project and the projects it depends on </td>
+    </tr>
+    <tr>
+      <td align="right">compile </td>
+      <td>Compiles all non-test sources for the current project and the projects it depends on </td>
+    </tr>
+    <tr>
+      <td align="right">test:compile </td>
+      <td>Compiles all sources for the current project and the projects it depends on </td>
+    </tr>
+    <tr>
+      <td align="right">test </td>
+      <td>Executes all &ldquo;regular&rdquo; tests for the current project and the projects it depends on </td>
+    </tr>
+    <tr>
+      <td align="right">it:test </td>
+      <td>Executes all integration tests for the current project and the projects it depends on </td>
+    </tr>
+    <tr>
+      <td align="right">exit </td>
+      <td>Exits the interactive mode of <code>sbt</code> </td>
+    </tr>
+  </tbody>
+</table>
+<p>For more documentation about <code>sbt</code>, see <a href="https://www.scala-sbt.org/1.x/docs/index.html">this page</a>.</p>
+<h2><a href="#running-cloudstate-in-minikube" name="running-cloudstate-in-minikube" class="anchor"><span class="anchor-link"></span></a>Running Cloudstate in Minikube</h2>
+<p>Cloudstate can be easily run in Minikube. If you wish to use Istio, be aware that it can be quite resource intensive, we recommend not using Istio in development unless you have specific requirements to test with Istio.</p>
+<h3><a href="#installing-a-local-build-of-cloudstate" name="installing-a-local-build-of-cloudstate" class="anchor"><span class="anchor-link"></span></a>Installing a local build of Cloudstate</h3>
+<p>To install a local build of Cloudstate to Minikube, first setup your docker environment to use the Minikube Docker registry:</p>
+<pre><code>eval $(minikube docker-env)
+</code></pre>
+<p>Now, select a tag to deploy, we recommend <code>dev</code>. Do <em>not</em> use <code>latest</code>, Kubernetes will default the <code>imagePullPolicy</code> to <code>IfNotPresent</code>, unless the tag of the image you&rsquo;re using is <code>latest</code>, then it will use <code>Always</code>. The problem with <code>Always</code> is that it means your locally built docker images will never be used, Kubernetes will always attempt a pull first, which will either overwrite whatever you&rsquo;ve built locally, or fail if no image with that tag can be found remotely.</p>
+<p>Start sbt passing the selected tag as a system property:</p>
+<pre><code>sbt -Ddocker.tag=dev
+</code></pre>
+<p>Now build the operator image:</p>
+<pre><code>operator/docker:publishLocal
+</code></pre>
+<p>Now build one or more proxy images. Cloudstate has a different image for each database backend, and in most cases, is able to build either a native image, or an image that runs a regular JVM. It takes at least 5 minutes to compile the native images, so for most development purposes, we recommend using the regular JVM images. For example, to compile the <code>InMemory</code> proxy image, run:</p>
+<pre><code>dockerBuildInMemory publishLocal
+</code></pre>
+<p>The following commands are available:</p>
+<ul>
+  <li><code>dockerBuildInMemory</code></li>
+  <li><code>dockerBuildNativeInMemory</code></li>
+  <li><code>dockerBuildCassandra</code></li>
+  <li><code>dockerBuildNativeCassandra</code></li>
+  <li><code>dockerBuildNoStore</code></li>
+  <li><code>dockerBuildNativeNoStore</code></li>
+  <li><code>dockerBuildPostgres</code></li>
+  <li><code>dockerBuildNativePostgres</code></li>
+  <li><code>dockerBuildAllNonNative</code></li>
+  <li><code>dockerBuildAllNative</code></li>
+</ul>
+<p>To each of these, <code>publishLocal</code> can be passed which will build the image locally, while <code>publish</code> will build and then push the image. If you wish to configure the docker hub username to push to, pass <code>-Ddocker.username=my-username</code> to the sbt command. If you wish to configure the Docker registry to push to, pass <code>-Ddocker.registry=gcr.io</code> for example to publish to the Google Container Registry. However, for most Minikube based development, there should be no need to push the images anywhere.</p>
+<p>Now compile the Kubernetes deployment descriptor:</p>
+<pre><code>operator/compileK8sDescriptors
+</code></pre>
+<p>The task will tell you where it generated the deployment descriptor to. You can now install this in Minikube, first creating a <code>cloudstate</code> namespace for it:</p>
+<pre><code>kubectl create namespace cloudstate
+kubectl apply -n cloudstate -f operator/cloudstate-dev.yaml
+</code></pre>
+<p>This installs Cloudstate locally. You can tail the logs of the operator by running:</p>
+<pre><code>kubectl logs -n cloudstate -l app=cloudstate-operator -f
+</code></pre>
+<p>There is one more thing that needs to be done, assuming you did not build the native images, the default configuration for the Cloudstate operator is to use the native images. Update the config map it uses to tell it to use the regular JVM images:</p>
+<pre><code>kubectl edit -n cloudstate configmap cloudstate-operator-config
+</code></pre>
+<p>In the config, you should ensure the proxy image configuration looks like this:</p>
+<pre class="prettyprint"><code class="language-hocon">proxy {
+  image {
+    cassandra = &quot;cloudstateio/cloudstate-proxy-cassandra:dev&quot;
+    postgres =  &quot;cloudstateio/cloudstate-proxy-postgres:dev&quot;
+    no-store = &quot;cloudstateio/cloudstate-proxy-no-store:dev&quot;
+    in-memory = &quot;cloudstateio/cloudstate-proxy-in-memory:dev&quot;
+  }
+}
+</code></pre>
+<p>Once you have Cloudstate running, you will presumably want to deploy a stateful function to it. If your function needs a stateful store, then either install the necessary database along with a <code>StatefulStore</code> descriptor to point to it, or deploy an in memory store if you don&rsquo;t need to test any particular database:</p>
+<pre class="prettyprint"><code class="language-yaml">apiVersion: cloudstate.io/v1alpha1
+kind: StatefulStore
+metadata:
+  name: inmemory
+spec:
+  type: InMemory
+</code></pre>
+<p>Now you can deploy a function, for example, the shopping cart:</p>
+<pre class="prettyprint"><code class="language-yaml">apiVersion: cloudstate.io/v1alpha1
+kind: StatefulService
+metadata:
+  name: shopping-cart
+spec:
+  datastore:
+    name: inmemory
+  containers:
+  - image: cloudstateio/samples-js-shopping-cart:latest
+</code></pre>
+<p>The Cloudstate operator should now create the necessary deployment for the shopping cart. There are a few ways it can be accessed, one is to port forward into the pod, but perhaps the simpler way is to create a <code>NodePort</code> service for it, by running:</p>
+<pre><code>kubectl expose deployment shopping-cart-deployment --port=8013 --type=NodePort
+</code></pre>
+<p>Now, you can see the hostname/port to access it on by running:</p>
+<pre><code>$ minikube service shopping-cart-deployment --url
+http://192.168.39.186:32121
+</code></pre>
+<p>Using a tool like <a href="https://github.com/fullstorydev/grpcurl"><code>grpcurl</code></a>, you can now inspect the services on it:</p>
+<pre><code>$ ./grpcurl -plaintext 192.168.39.186:32121 describe
+com.example.shoppingcart.ShoppingCart is a service:
+service ShoppingCart {
+  rpc AddItem ( .com.example.shoppingcart.AddLineItem ) returns ( .google.protobuf.Empty ) {
+    option (.google.api.http) = { post:&quot;/cart/{user_id}/items/add&quot; body:&quot;*&quot; };
+  }
+  rpc GetCart ( .com.example.shoppingcart.GetShoppingCart ) returns ( .com.example.shoppingcart.Cart ) {
+    option (.google.api.http) = { get:&quot;/carts/{user_id}&quot; additional_bindings:&lt;get:&quot;/carts/{user_id}/items&quot; response_body:&quot;items&quot;&gt; };
+  }
+  rpc RemoveItem ( .com.example.shoppingcart.RemoveLineItem ) returns ( .google.protobuf.Empty ) {
+    option (.google.api.http) = { post:&quot;/cart/{user_id}/items/{product_id}/remove&quot; };
+  }
+}
+</code></pre>
+<p>For the shopping cart app, there is an Akka based client that can be used from a Scala REPL, here&rsquo;s an example session:</p>
+<pre><code>sbt:cloudstate&gt; akka-client/console
+...
+scala&gt; val client = new io.cloudstate.samples.ShoppingCartClient(&quot;192.168.39.186&quot;, 32121)
+Connecting to 192.168.39.186:32121
+client: io.cloudstate.samples.ShoppingCartClient = io.cloudstate.samples.ShoppingCartClient@2c11e42a
+
+scala&gt; client.getCart(&quot;foo&quot;)
+res0: com.example.shoppingcart.shoppingcart.Cart = Cart(Vector())
+
+scala&gt; client.addItem(&quot;foo&quot;, &quot;item-id-1&quot;, &quot;Eggs&quot;, 12)
+res1: com.google.protobuf.empty.Empty = Empty()
+
+scala&gt; client.addItem(&quot;foo&quot;, &quot;item-id-2&quot;, &quot;Milk&quot;, 3)
+res2: com.google.protobuf.empty.Empty = Empty()
+
+scala&gt; client.getCart(&quot;foo&quot;)
+res3: com.example.shoppingcart.shoppingcart.Cart = Cart(Vector(LineItem(item-id-1,Eggs,12), LineItem(item-id-2,Milk,3)))
+</code></pre>
+<h3><a href="#development-loops-for-the-proxy" name="development-loops-for-the-proxy" class="anchor"><span class="anchor-link"></span></a>Development loops for the proxy</h3>
+<p>Once you&rsquo;ve installed Cloudstate and got a user function running, the proxy can be iterated on by running the corresponding <code>dockerBuild*</code> command for the proxy backend you&rsquo;re using, for example, for the in memory proxy:</p>
+<pre><code>sbt:cloudstate&gt; dockerBuildInMemory publishLocal
+</code></pre>
+<p>Now, after each time you make changes and rebuild the docker image, the simplest way to ensure your Cloudstate functions pick it up is to delete the pods for it and let the deployment recreate them, eg:</p>
+<pre><code>kubectl delete pods --all
+</code></pre>
+<h3><a href="#development-loops-for-the-operator" name="development-loops-for-the-operator" class="anchor"><span class="anchor-link"></span></a>Development loops for the operator</h3>
+<p>The easiest way to iterate on the operator is to run it locally, from an IDE or from sbt, rather than deploying it to Minikube/Kubernetes. The only advantage to deploying to Kubernetes is that it will verify that the RBAC permissions that the operator has are correct. The Cloudstate operator uses <a href="https://github.com/doriordan/skuber">Skuber</a>, and when it runs outside of a Kubernetes container, it will use the credentials configured for <code>kubectl</code>. In the case of using Minikube, this will be the default cluster admin account.</p>
+<p>To use a locally running operator, first shutdown the operator running in Kubernetes, by scaling its deployment down to zero:</p>
+<pre><code>kubectl scale -n cloudstate deployment/cloudstate-operator --replicas 0
+</code></pre>
+<p>Now run the operator locally. You need to tell the operator which namespace it should be running in so that it knows which namespace to consume its config map from, this can be done by setting the <code>NAMESPACE</code> environment variable. To run it using sbt, run:</p>
+<pre><code>NAMESPACE=cloudstate sbt operator/run
+</code></pre>
+<p>Alternatively, run it in an IDE, ensuring to configure the <code>NAMESPACE</code> environment variable, by running the <code>io.cloudstate.operator.OperatorMain</code> class in the operator sub project.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/main/paradox/developer/thebuild.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../developer/nativeimage.html">Building native images in Cloudstate</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../developer/thebuild.html#the-cloudstate-build" class="header">The Cloudstate Build</a>
+  <ul>
+    <li><a href="../developer/thebuild.html#installation-instructions" class="header">Installation instructions</a></li>
+    <li><a href="../developer/thebuild.html#getting-started" class="header">Getting started</a></li>
+    <li><a href="../developer/thebuild.html#running-cloudstate-in-minikube" class="header">Running Cloudstate in Minikube</a>
+    <ul>
+      <li><a href="../developer/thebuild.html#installing-a-local-build-of-cloudstate" class="header">Installing a local build of Cloudstate</a></li>
+      <li><a href="../developer/thebuild.html#development-loops-for-the-proxy" class="header">Development loops for the proxy</a></li>
+      <li><a href="../developer/thebuild.html#development-loops-for-the-operator" class="header">Development loops for the operator</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<a href="../../../.."><img src="../images/cloudstate-stacked-white.svg"></a>
+<p>© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="../../../../privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
+
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+
+
+</html>

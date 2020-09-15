@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Event sourcing · Cloudstate</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Cloudstate Documentation'/>
+<link rel="canonical" href="https://cloudstate.io/docs/core/current/user/lang/kotlin/eventsourced.html"/>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+
+<!-- OneTrust Cookies Consent Notice start -->
+<script type="text/javascript">
+(function(w,d,s){if(w.location.protocol!="file:"){var f=d.getElementsByTagName(s)[0],j=d.createElement(s);
+j.async=true;j.src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js";
+j.charset="UTF-8";f.parentNode.insertBefore(j,f);}})(window,document,"script");</script>
+<!-- OneTrust Cookies Consent Notice end -->
+
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="../../../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../../js/page.js"></script>
+<script type="text/javascript" src="../../../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../../../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../../../css/page.css"/>
+
+<link rel="icon" type="image/x-icon" href="../../../../../../favicon.ico">
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../../../index.html" >
+Cloudstate Documentation
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../../user/index.html" class="page">Using Cloudstate</a>
+  <ul>
+    <li><a href="../../../user/quickstart.html" class="page">Quickstart</a></li>
+    <li><a href="../../../user/features/index.html" class="page">Overview</a>
+    <ul>
+      <li><a href="../../../user/features/grpc.html" class="page">gRPC descriptors</a></li>
+      <li><a href="../../../user/features/eventsourced.html" class="page">Event sourcing</a></li>
+      <li><a href="../../../user/features/crdts.html" class="page">Conflict-free Replicated Data Types</a></li>
+      <li><a href="../../../user/features/effects.html" class="page">Forwarding and effects</a></li>
+    </ul></li>
+    <li><a href="../../../user/lang/index.html" class="page">Languages</a>
+    <ul>
+      <li><a href="../../../user/lang/javascript/index.html" class="page">JavaScript</a></li>
+      <li><a href="../../../user/lang/java/index.html" class="page">Java</a></li>
+      <li><a href="../../../user/lang/go/index.html" class="page">Go</a></li>
+      <li><a href="../../../user/lang/kotlin/index.html" class="page">Kotlin</a></li>
+      <li><a href="../../../user/lang/dart/index.html" class="page">Dart</a></li>
+      <li><a href="../../../user/lang/springboot/index.html" class="page">Spring Boot</a></li>
+      <li><a href="../../../user/lang/dotnet/index.html" class="page">.Net</a></li>
+    </ul></li>
+    <li><a href="../../../user/deployment/index.html" class="page">Deploying applications</a>
+    <ul>
+      <li><a href="../../../user/deployment/installing.html" class="page">Installing</a></li>
+      <li><a href="../../../user/deployment/deploying.html" class="page">Deploying a stateful service</a></li>
+      <li><a href="../../../user/deployment/stores/index.html" class="page">Stateful stores</a></li>
+      <li><a href="../../../user/deployment/monitoring.html" class="page">Monitoring</a></li>
+      <li><a href="../../../user/deployment/autoscaling.html" class="page">Autoscaling</a></li>
+      <li><a href="../../../user/deployment/security.html" class="page">Security</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="../../../spec/index.html" class="page">Protocol Specification</a></li>
+  <li><a href="../../../developer/index.html" class="page">Content for developers of Cloudstate</a>
+  <ul>
+    <li><a href="../../../developer/thebuild.html" class="page">The Cloudstate Build</a></li>
+    <li><a href="../../../developer/nativeimage.html" class="page">Building native images in Cloudstate</a></li>
+    <li><a href="../../../developer/language-support/index.html" class="page">Language support</a>
+    <ul>
+      <li><a href="../../../developer/language-support/serialization.html" class="page">Cloudstate serialization convention</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+<div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+<div class="wrapper">
+<div class="brand">
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Cloudstate Banner" href="https://www.lightbend.com?r=oss-banner-cloudstate" target="_blank">
+<img class="lightbend-logo" src="../../../images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+</div>
+<div class="nav">
+<a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your apps with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">
+<span>Enhance your apps with</span>
+<img class="lightbend-logo" src="../../../images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+<div class="drop-down">
+<svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<path fill="#ffffff" d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z M10,0.4
+c-5.302,0-9.6,4.298-9.6,9.6c0,5.303,4.298,9.6,9.6,9.6s9.6-4.297,9.6-9.6C19.6,4.698,15.302,0.4,10,0.4z M10,18.354
+c-4.615,0-8.354-3.74-8.354-8.354c0-4.614,3.739-8.354,8.354-8.354c4.613,0,8.354,3.74,8.354,8.354
+C18.354,14.614,14.613,18.354,10,18.354z" />
+</svg>
+<div class="drop-down-content">
+<div class="lightbend-family">
+<a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+<img class="akka-full-color-logo" src="../../../images/banner-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+</a>
+<a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+<img class="cloudflow-full-color-logo" src="../../../images/banner-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+</a>
+<a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+<img class="lagom-full-color-logo" src="../../../images/banner-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+</a>
+<a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+<img class="play-full-color-logo" src="../../../images/banner-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+</a>
+<a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+<img class="scala-full-color-logo" src="../../../images/banner-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+</a>
+<div class="cloudstate current">
+<img class="cloudstate-full-color-logo" src="../../../images/banner-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+<span>Get developer assistance and expert support from Lightbend.</span>
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+</div>
+</div>
+<div class="title">The Lightbend Family</div>
+</div>      
+</div>
+</div>
+</div>
+</div>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../../../../.."><img src="../../../images/cloudstate-horizontal-white.svg" alt="Cloudstate"/></a></div>
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column site-nav-container">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../../../index.html" >
+Cloudstate Documentation
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../../user/index.html" class="page">Using Cloudstate</a>
+  <ul>
+    <li><a href="../../../user/quickstart.html" class="page">Quickstart</a></li>
+    <li><a href="../../../user/features/index.html" class="page">Overview</a>
+    <ul>
+      <li><a href="../../../user/features/grpc.html" class="page">gRPC descriptors</a></li>
+      <li><a href="../../../user/features/eventsourced.html" class="page">Event sourcing</a></li>
+      <li><a href="../../../user/features/crdts.html" class="page">Conflict-free Replicated Data Types</a></li>
+      <li><a href="../../../user/features/effects.html" class="page">Forwarding and effects</a></li>
+    </ul></li>
+    <li><a href="../../../user/lang/index.html" class="page">Languages</a>
+    <ul>
+      <li><a href="../../../user/lang/javascript/index.html" class="page">JavaScript</a></li>
+      <li><a href="../../../user/lang/java/index.html" class="page">Java</a></li>
+      <li><a href="../../../user/lang/go/index.html" class="page">Go</a></li>
+      <li><a href="../../../user/lang/kotlin/index.html" class="page">Kotlin</a></li>
+      <li><a href="../../../user/lang/dart/index.html" class="page">Dart</a></li>
+      <li><a href="../../../user/lang/springboot/index.html" class="page">Spring Boot</a></li>
+      <li><a href="../../../user/lang/dotnet/index.html" class="page">.Net</a></li>
+    </ul></li>
+    <li><a href="../../../user/deployment/index.html" class="page">Deploying applications</a>
+    <ul>
+      <li><a href="../../../user/deployment/installing.html" class="page">Installing</a></li>
+      <li><a href="../../../user/deployment/deploying.html" class="page">Deploying a stateful service</a></li>
+      <li><a href="../../../user/deployment/stores/index.html" class="page">Stateful stores</a></li>
+      <li><a href="../../../user/deployment/monitoring.html" class="page">Monitoring</a></li>
+      <li><a href="../../../user/deployment/autoscaling.html" class="page">Autoscaling</a></li>
+      <li><a href="../../../user/deployment/security.html" class="page">Security</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="../../../spec/index.html" class="page">Protocol Specification</a></li>
+  <li><a href="../../../developer/index.html" class="page">Content for developers of Cloudstate</a>
+  <ul>
+    <li><a href="../../../developer/thebuild.html" class="page">The Cloudstate Build</a></li>
+    <li><a href="../../../developer/nativeimage.html" class="page">Building native images in Cloudstate</a></li>
+    <li><a href="../../../developer/language-support/index.html" class="page">Language support</a>
+    <ul>
+      <li><a href="../../../developer/language-support/serialization.html" class="page">Cloudstate serialization convention</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../../../index.html">Cloudstate</a></li>
+  <li><a href="../../../user/index.html">Using Cloudstate</a></li>
+  <li><a href="../../../user/lang/index.html">Languages</a></li>
+  <li><a href="../../../user/lang/kotlin/index.html">Kotlin</a></li>
+  <li>Event sourcing</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#event-sourcing" name="event-sourcing" class="anchor"><span class="anchor-link"></span></a>Event sourcing</h1>
+<p>This page documents how to implement Cloudstate event sourced entities in Kotlin. For information on what Cloudstate event sourced entities are, please read the general <a href="../../features/eventsourced.html">Event sourcing</a> documentation first.</p>
+<p>An event sourced entity can be created by annotating it with the <code>@EventSourcedEntity</code> (io.cloudstate.kotlinsupport.api.eventsourced.EventSourcedEntity) annotation.</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L20-L21" target="_blank" title="Go to snippet source"></a><code class="language-kt">@EventSourcedEntity
+class ShoppingCartEntity(@EntityId private val entityId: String) {</code></pre>
+<p>The <code>persistenceId</code> is used to namespace events in the journal, useful for when you share the same database between multiple entities. It defaults to the simple name for the entity class (in this case, <code>ShoppingCartEntity</code>), it&rsquo;s good practice to select one explicitly, this means your database isn&rsquo;t depend on classnames in your code.</p>
+<p>The <code>snapshotEvery</code> parameter controls how often snapshots are taken, so that the entity doesn&rsquo;t need to be recovered from the whole journal each time it&rsquo;s loaded. If left unset, it defaults to 100. Setting it to a negative number will result in snapshots never being taken.</p>
+<h2><a href="#persistence-types-and-serialization" name="persistence-types-and-serialization" class="anchor"><span class="anchor-link"></span></a>Persistence types and serialization</h2>
+<p>Event sourced entities persist events and snapshots, and these need to be serialized when persisted. The most straightforward way to persist events and snapshots is to use protobufs. Cloudstate will automatically detect if an emitted event is a protobuf, and serialize it as such. For other serialization options, including JSON, see <a href="serialization.html">Serialization</a>.</p>
+<p>While protobufs are the recommended format for persisting events, it is recommended that you do not persist your services protobuf messages, rather, you should create new messages, even if they are identical to the services. While this may introduce some overhead in needing to convert from one type to the other, the reason for doing this is that it will allow the services public interface to evolve independently from its data storage format, which should be private.</p>
+<p>For our shopping cart example, we&rsquo;ll create a new file called <code>domain.proto</code>, the name domain is selected to indicate that these are my applications domain objects:</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/proto/domain.proto" target="_blank" title="Go to snippet source"></a><code class="language-proto">syntax = &quot;proto3&quot;;
+
+package example.shoppingcart.domain;
+
+option java_package = &quot;com.example&quot;;
+
+message LineItem {
+    string productId = 1;
+    string name = 2;
+    int32 quantity = 3;
+}
+
+message ItemAdded {
+    LineItem item = 1;
+}
+
+message ItemRemoved {
+    string productId = 1;
+}
+
+message CheckedOut {}
+
+message Cart {
+    repeated LineItem items = 1;
+    bool checkedout = 2;
+}</code></pre>
+<h2><a href="#state" name="state" class="anchor"><span class="anchor-link"></span></a>State</h2>
+<p>Each entity should store its state locally in a mutable variable, either a mutable field or a multiple structure such as a collection. For our shopping cart, the state is a map of product ids to products, so we&rsquo;ll create a map to contain that:</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L25" target="_blank" title="Go to snippet source"></a><code class="language-kt">private val cart: MutableMap&lt;String, Shoppingcart.LineItem?&gt; = mutableMapOf&lt;String, Shoppingcart.LineItem?&gt;()</code></pre>
+<h2><a href="#constructing" name="constructing" class="anchor"><span class="anchor-link"></span></a>Constructing</h2>
+<p>The context available for injection into the constructor is a <code>EventSourcedEntityCreationContext</code>. While you don&rsquo;t necessarily need to define a constructor, you can define one and have that context injected in. The constructor below shows having the entity id injected:</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L15-L16" target="_blank" title="Go to snippet source"></a><code class="language-kt">class ShoppingCartEntity(@EntityId private val entityId: String,
+                         context: EventSourcedEntityCreationContext)</code></pre>
+<h2><a href="#handling-commands" name="handling-commands" class="anchor"><span class="anchor-link"></span></a>Handling commands</h2>
+<p>Command handlers can be declared by annotating a method with <code>@CommandHandler</code> (io.cloudstate.kotlinsupport.api.eventsourced.CommandHandler). They take a context class of type <code>CommandContext</code>.</p>
+<p>By default, the name of the command that the method handles will be the name of the method with the first letter capitalized. So, a method called <code>getCart</code> will handle gRPC service call command named <code>GetCart</code>. This can be overridden by setting the <code>name</code> parameter on the <code>@CommandHandler</code> annotation.</p>
+<p>The command handler also can take the gRPC service call input type as a parameter, to receive the command message. This is optional, sometimes it&rsquo;s not needed, for example, our <code>GetCart</code> service call doesn&rsquo;t need any information from the message, since it&rsquo;s just returning the current state as is. Meanwhile, the <code>AddItem</code> service call does need information from the message, since it needs to know the product id, description and quantity to add to the cart.</p>
+<p>The return type of the command handler must be the output type for the gRPC service call, this will be sent as the reply.</p>
+<p>The following shows the implementation of the <code>GetCart</code> command handler. This command handler is a read-only command handler, it doesn&rsquo;t emit any events, it just returns some state:</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L86-L87" target="_blank" title="Go to snippet source"></a><code class="language-kt">@CommandHandler
+fun getCart(): Shoppingcart.Cart = Shoppingcart.Cart.newBuilder().addAllItems(cart.values).build()</code></pre>
+<h3><a href="#emitting-events" name="emitting-events" class="anchor"><span class="anchor-link"></span></a>Emitting events</h3>
+<p>Commands that modify the state may do so by emitting events.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>The <strong>only</strong> way a command handler may modify its state is by emitting an event. Any modifications made directly to the state from the command handler will not be persisted, and when the entity is passivated and next reloaded, those modifications will not be present.</p></div>
+<p>A command handler may emit an event by taking in a <code>CommandContext</code> parameter, and invoking the <code>emit</code> method on it. Invoking <code>emit</code> will immediately invoke the associated event handler for that event - this both validates that the event can be applied to the current state, as well as updates the state so that subsequent processing in the command handler can use it.</p>
+<p>Here&rsquo;s an example of a command handler that emits an event:</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L91-L106" target="_blank" title="Go to snippet source"></a><code class="language-kt">@CommandHandler
+fun addItem(item: Shoppingcart.AddLineItem, ctx: CommandContext): Empty {
+    if (item.quantity &lt;= 0) {
+        ctx.fail(&quot;Cannot add negative quantity of to item ${item.productId}&quot; )
+    }
+    ctx.emit(
+        Domain.ItemAdded.newBuilder()
+            .setItem(
+                Domain.LineItem.newBuilder()
+                    .setProductId(item.productId)
+                    .setName(item.name)
+                    .setQuantity(item.quantity)
+                    .build())
+            .build())
+    return Empty.getDefaultInstance()
+}</code></pre>
+<p>This command handler also validates the command, ensuring the quantity items added is greater than zero. Invoking <code>ctx.fail</code> fails the command - this method throws so there&rsquo;s no need to explicitly throw an exception.</p>
+<h2><a href="#handling-events" name="handling-events" class="anchor"><span class="anchor-link"></span></a>Handling events</h2>
+<p>Event handlers are invoked at two points, when restoring entities from the journal, before any commands are handled, and each time a new event is emitted. An event handlers responsibility is to update the state of the entity according to the event. Event handlers are the only place where its safe to mutate the state of the entity at all.</p>
+<p>Event handlers are declared by annotating a method with <code>@EventHandler</code> (io.cloudstate.kotlinsupport.api.eventsourced.EventHandler). They take a context class of type <code>EventContext</code>.</p>
+<p>Event handlers are differentiated by the type of event they handle. By default, the type of event an event handler handles will be determined by looking for a single non context parameter that the event handler takes. If for any reason this needs to be overridden, or if the event handler method doesn&rsquo;t take any non context parameter (because the event type may be all that needs to be known to handle the event), the type of event the handler handles can be specified using the <code>eventClass</code> parameter on the <code>@EventHandler</code> annotation.</p>
+<p>Event handlers may be declared for a superclass or interface of the types they handle, for example an event handler that declares an <code>Object</code> parameter will handle all events. In the case where multiple event handlers match, Cloudstate will match the most specific event handler, which is decided by walking up the superclass tree, and matching all interfaces along the way.</p>
+<p>Here&rsquo;s an example event handler for the <code>ItemAdded</code> event. A utility method, <code>convert</code> is also defined to assist it.</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L58-L70" target="_blank" title="Go to snippet source"></a><code class="language-kt">@EventHandler
+fun itemAdded(itemAdded: Domain.ItemAdded) {
+    var item = cart[itemAdded.item.productId]
+
+    item = if (item == null) {
+        convert(itemAdded.item)
+    } else {
+        item.toBuilder()
+                .setQuantity(item.quantity + itemAdded.item.quantity)
+                .build()
+    }
+    cart[item!!.productId] = item
+}</code></pre>
+<h2><a href="#producing-and-handling-snapshots" name="producing-and-handling-snapshots" class="anchor"><span class="anchor-link"></span></a>Producing and handling snapshots</h2>
+<p>Snapshots are an important optimisation for event sourced entities that may contain many events, to ensure that they can be loaded quickly even when they have very long journals. To produce a snapshot, a method annotated with <code>@Snapshot</code> (io.cloudstate.kotlinsupport.api.eventsourced.Snapshot) must be declared. It takes a context class of type <code>SnapshotContext</code> (io.cloudstate.javasupport.eventsourced.SnapshotContext), and must return a snapshot of the current state in serializable form.</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L29-L44" target="_blank" title="Go to snippet source"></a><code class="language-kt">@Snapshot
+fun snapshot(): Domain.Cart =
+    Domain.Cart.newBuilder()
+        .addAllItems(
+            cart.values.stream()
+                .map { item: Shoppingcart.LineItem? -&gt; this.convert(item) }
+                .collect(Collectors.toList())
+        )
+        .build()
+
+private fun convert(item: Shoppingcart.LineItem?): Domain.LineItem =
+        Domain.LineItem.newBuilder()
+                .setProductId(item!!.productId)
+                .setName(item.name)
+                .setQuantity(item.quantity)
+                .build()</code></pre>
+<p>When the entity is loaded again, the snapshot will first be loaded before any other events are received, and passed to a snapshot handler. Snapshot handlers are declare by annotating a method with <code>@SnapshotHandler</code> (io.cloudstate.kotlinsupport.api.eventsourced.SnapshotHandler), and it can take a context class of type <code>SnapshotContext</code> (io.cloudstate.javasupport.eventsourced.SnapshotContext).</p>
+<p>Multiple snapshot handlers may be defined to handle multiple different types of snapshots, the type matching is done in the same way as for events.</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L48-L54" target="_blank" title="Go to snippet source"></a><code class="language-kt">@SnapshotHandler
+fun handleSnapshot(cart: Domain.Cart) {
+    this.cart.clear()
+    for (item in cart.itemsList) {
+        this.cart[item.productId] = convert(item)
+    }
+}</code></pre>
+<h2><a href="#registering-the-entity" name="registering-the-entity" class="anchor"><span class="anchor-link"></span></a>Registering the entity</h2>
+<p>Once you&rsquo;ve created your entity, you can register it with the <code>cloudState</code> (io.cloudstate.kotlinsupport.cloudState) server, by invoking the <code>registerEventSourcedEntity</code> function. In addition to passing your entity class and service descriptor, you also need to pass any descriptors that you use for persisting events, for example, the <code>domain.proto</code> descriptor.</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L122-L132" target="_blank" title="Go to snippet source"></a><code class="language-kt">fun main() {
+    cloudstate {
+        eventsourced {
+            entityService = ShoppingCartEntity::class
+            descriptor = Shoppingcart.getDescriptor().findServiceByName(&quot;ShoppingCart&quot;)
+            additionalDescriptors = mutableListOf(Shoppingcart.getDescriptor(), Domain.getDescriptor() )
+        }
+    }.start()
+            .toCompletableFuture()
+            .get()
+}</code></pre>
+<p>Additionally you can define some properties of the server or the execution environment:</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/ShoppingCartEntity.kt#L136-L154" target="_blank" title="Go to snippet source"></a><code class="language-kt">fun main() {
+    cloudstate {
+        config {
+            host = &quot;0.0.0.0&quot;
+            port = 8080
+            loglevel = &quot;INFO&quot;
+        }
+
+        eventsourced {
+            entityService = ShoppingCartEntity::class
+            descriptor = Shoppingcart.getDescriptor().findServiceByName(&quot;ShoppingCart&quot;)
+            additionalDescriptors = mutableListOf(Shoppingcart.getDescriptor(), Domain.getDescriptor() )
+            snapshotEvery = 1
+            persistenceId = &quot;shopping-cart&quot;
+        }
+    }.start()
+            .toCompletableFuture()
+            .get()
+}</code></pre>
+<p>The complete code for our entity class would look like this:</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/test/kotlin/docs/user/eventsourced/behavior/ShoppingCartEntity.kt#L13-L99" target="_blank" title="Go to snippet source"></a><code class="language-kt">@EventSourcedEntity
+class ShoppingCartEntity(@EntityId private val entityId: String) {
+    private val cart: MutableMap&lt;String, Shoppingcart.LineItem?&gt; = mutableMapOf&lt;String, Shoppingcart.LineItem?&gt;()
+
+    @Snapshot
+    fun snapshot(): Domain.Cart =
+        Domain.Cart.newBuilder()
+            .addAllItems(
+                cart.values.stream()
+                    .map { item: Shoppingcart.LineItem? -&gt; this.convert(item) }
+                    .collect(Collectors.toList())
+            )
+            .build()
+
+    @SnapshotHandler
+    fun handleSnapshot(cart: Domain.Cart) {
+        this.cart.clear()
+        for (item in cart.itemsList) {
+            this.cart[item.productId] = convert(item)
+        }
+    }
+
+    @EventHandler
+    fun itemAdded(itemAdded: Domain.ItemAdded) {
+        var item = cart[itemAdded.item.productId]
+
+        item = if (item == null) {
+            convert(itemAdded.item)
+        } else {
+            item.toBuilder()
+                    .setQuantity(item.quantity + itemAdded.item.quantity)
+                    .build()
+        }
+        cart[item!!.productId] = item
+    }
+
+    @EventHandler
+    fun itemRemoved(itemRemoved: Domain.ItemRemoved): Shoppingcart.LineItem? = cart.remove(itemRemoved.productId)
+
+    @CommandHandler
+    fun getCart(): Shoppingcart.Cart = Shoppingcart.Cart.newBuilder().addAllItems(cart.values).build()
+
+    @CommandHandler
+    fun addItem(item: Shoppingcart.AddLineItem, ctx: CommandContext): Empty {
+        if (item.quantity &lt;= 0) {
+            ctx.fail(&quot;Cannot add negative quantity of to item ${item.productId}&quot; )
+        }
+        ctx.emit(
+            Domain.ItemAdded.newBuilder()
+                .setItem(
+                    Domain.LineItem.newBuilder()
+                        .setProductId(item.productId)
+                        .setName(item.name)
+                        .setQuantity(item.quantity)
+                        .build())
+                .build())
+        return Empty.getDefaultInstance()
+    }
+
+    @CommandHandler
+    fun removeItem(item: Shoppingcart.RemoveLineItem, ctx: CommandContext): Empty {
+        if (!cart.containsKey(item.productId)) {
+            ctx.fail(&quot;Cannot remove item ${item.productId} because it is not in the cart.&quot;)
+        }
+        ctx.emit(
+            Domain.ItemRemoved.newBuilder()
+                .setProductId(item.productId)
+                .build())
+        return Empty.getDefaultInstance()
+    }
+
+    private fun convert(item: Domain.LineItem): Shoppingcart.LineItem =
+        Shoppingcart.LineItem.newBuilder()
+            .setProductId(item.productId)
+            .setName(item.name)
+            .setQuantity(item.quantity)
+            .build()
+
+
+    private fun convert(item: Shoppingcart.LineItem?): Domain.LineItem =
+        Domain.LineItem.newBuilder()
+            .setProductId(item!!.productId)
+            .setName(item.name)
+            .setQuantity(item.quantity)
+            .build()
+
+}</code></pre>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/main/paradox/user/lang/kotlin/eventsourced.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../../../user/lang/kotlin/crdt.html">CRDT</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../../user/lang/kotlin/eventsourced.html#event-sourcing" class="header">Event sourcing</a>
+  <ul>
+    <li><a href="../../../user/lang/kotlin/eventsourced.html#persistence-types-and-serialization" class="header">Persistence types and serialization</a></li>
+    <li><a href="../../../user/lang/kotlin/eventsourced.html#state" class="header">State</a></li>
+    <li><a href="../../../user/lang/kotlin/eventsourced.html#constructing" class="header">Constructing</a></li>
+    <li><a href="../../../user/lang/kotlin/eventsourced.html#handling-commands" class="header">Handling commands</a>
+    <ul>
+      <li><a href="../../../user/lang/kotlin/eventsourced.html#emitting-events" class="header">Emitting events</a></li>
+    </ul></li>
+    <li><a href="../../../user/lang/kotlin/eventsourced.html#handling-events" class="header">Handling events</a></li>
+    <li><a href="../../../user/lang/kotlin/eventsourced.html#producing-and-handling-snapshots" class="header">Producing and handling snapshots</a></li>
+    <li><a href="../../../user/lang/kotlin/eventsourced.html#registering-the-entity" class="header">Registering the entity</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<a href="../../../../../.."><img src="../../../images/cloudstate-stacked-white.svg"></a>
+<p>© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="../../../../../../privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
+
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../../../js/magellan.js"></script>
+
+<style type="text/css">@import "../../../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../../../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../../../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+
+
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Building native images in Cloudstate · Cloudstate</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Cloudstate Documentation'/>
+<link rel="canonical" href="https://cloudstate.io/docs/core/current/developer/nativeimage.html"/>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+
+<!-- OneTrust Cookies Consent Notice start -->
+<script type="text/javascript">
+(function(w,d,s){if(w.location.protocol!="file:"){var f=d.getElementsByTagName(s)[0],j=d.createElement(s);
+j.async=true;j.src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js";
+j.charset="UTF-8";f.parentNode.insertBefore(j,f);}})(window,document,"script");</script>
+<!-- OneTrust Cookies Consent Notice end -->
+
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+Cloudstate Documentation
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../user/index.html" class="page">Using Cloudstate</a>
+  <ul>
+    <li><a href="../user/quickstart.html" class="page">Quickstart</a></li>
+    <li><a href="../user/features/index.html" class="page">Overview</a>
+    <ul>
+      <li><a href="../user/features/grpc.html" class="page">gRPC descriptors</a></li>
+      <li><a href="../user/features/eventsourced.html" class="page">Event sourcing</a></li>
+      <li><a href="../user/features/crdts.html" class="page">Conflict-free Replicated Data Types</a></li>
+      <li><a href="../user/features/effects.html" class="page">Forwarding and effects</a></li>
+    </ul></li>
+    <li><a href="../user/lang/index.html" class="page">Languages</a>
+    <ul>
+      <li><a href="../user/lang/javascript/index.html" class="page">JavaScript</a></li>
+      <li><a href="../user/lang/java/index.html" class="page">Java</a></li>
+      <li><a href="../user/lang/go/index.html" class="page">Go</a></li>
+      <li><a href="../user/lang/kotlin/index.html" class="page">Kotlin</a></li>
+      <li><a href="../user/lang/dart/index.html" class="page">Dart</a></li>
+      <li><a href="../user/lang/springboot/index.html" class="page">Spring Boot</a></li>
+      <li><a href="../user/lang/dotnet/index.html" class="page">.Net</a></li>
+    </ul></li>
+    <li><a href="../user/deployment/index.html" class="page">Deploying applications</a>
+    <ul>
+      <li><a href="../user/deployment/installing.html" class="page">Installing</a></li>
+      <li><a href="../user/deployment/deploying.html" class="page">Deploying a stateful service</a></li>
+      <li><a href="../user/deployment/stores/index.html" class="page">Stateful stores</a></li>
+      <li><a href="../user/deployment/monitoring.html" class="page">Monitoring</a></li>
+      <li><a href="../user/deployment/autoscaling.html" class="page">Autoscaling</a></li>
+      <li><a href="../user/deployment/security.html" class="page">Security</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="../spec/index.html" class="page">Protocol Specification</a></li>
+  <li><a href="../developer/index.html" class="page">Content for developers of Cloudstate</a>
+  <ul>
+    <li><a href="../developer/thebuild.html" class="page">The Cloudstate Build</a></li>
+    <li><a href="../developer/nativeimage.html" class="active page">Building native images in Cloudstate</a></li>
+    <li><a href="../developer/language-support/index.html" class="page">Language support</a>
+    <ul>
+      <li><a href="../developer/language-support/serialization.html" class="page">Cloudstate serialization convention</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+<div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+<div class="wrapper">
+<div class="brand">
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Cloudstate Banner" href="https://www.lightbend.com?r=oss-banner-cloudstate" target="_blank">
+<img class="lightbend-logo" src="../images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+</div>
+<div class="nav">
+<a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your apps with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">
+<span>Enhance your apps with</span>
+<img class="lightbend-logo" src="../images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+<div class="drop-down">
+<svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<path fill="#ffffff" d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z M10,0.4
+c-5.302,0-9.6,4.298-9.6,9.6c0,5.303,4.298,9.6,9.6,9.6s9.6-4.297,9.6-9.6C19.6,4.698,15.302,0.4,10,0.4z M10,18.354
+c-4.615,0-8.354-3.74-8.354-8.354c0-4.614,3.739-8.354,8.354-8.354c4.613,0,8.354,3.74,8.354,8.354
+C18.354,14.614,14.613,18.354,10,18.354z" />
+</svg>
+<div class="drop-down-content">
+<div class="lightbend-family">
+<a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+<img class="akka-full-color-logo" src="../images/banner-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+</a>
+<a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+<img class="cloudflow-full-color-logo" src="../images/banner-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+</a>
+<a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+<img class="lagom-full-color-logo" src="../images/banner-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+</a>
+<a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+<img class="play-full-color-logo" src="../images/banner-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+</a>
+<a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+<img class="scala-full-color-logo" src="../images/banner-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+</a>
+<div class="cloudstate current">
+<img class="cloudstate-full-color-logo" src="../images/banner-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+<span>Get developer assistance and expert support from Lightbend.</span>
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+</div>
+</div>
+<div class="title">The Lightbend Family</div>
+</div>      
+</div>
+</div>
+</div>
+</div>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../../.."><img src="../images/cloudstate-horizontal-white.svg" alt="Cloudstate"/></a></div>
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column site-nav-container">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+Cloudstate Documentation
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../user/index.html" class="page">Using Cloudstate</a>
+  <ul>
+    <li><a href="../user/quickstart.html" class="page">Quickstart</a></li>
+    <li><a href="../user/features/index.html" class="page">Overview</a>
+    <ul>
+      <li><a href="../user/features/grpc.html" class="page">gRPC descriptors</a></li>
+      <li><a href="../user/features/eventsourced.html" class="page">Event sourcing</a></li>
+      <li><a href="../user/features/crdts.html" class="page">Conflict-free Replicated Data Types</a></li>
+      <li><a href="../user/features/effects.html" class="page">Forwarding and effects</a></li>
+    </ul></li>
+    <li><a href="../user/lang/index.html" class="page">Languages</a>
+    <ul>
+      <li><a href="../user/lang/javascript/index.html" class="page">JavaScript</a></li>
+      <li><a href="../user/lang/java/index.html" class="page">Java</a></li>
+      <li><a href="../user/lang/go/index.html" class="page">Go</a></li>
+      <li><a href="../user/lang/kotlin/index.html" class="page">Kotlin</a></li>
+      <li><a href="../user/lang/dart/index.html" class="page">Dart</a></li>
+      <li><a href="../user/lang/springboot/index.html" class="page">Spring Boot</a></li>
+      <li><a href="../user/lang/dotnet/index.html" class="page">.Net</a></li>
+    </ul></li>
+    <li><a href="../user/deployment/index.html" class="page">Deploying applications</a>
+    <ul>
+      <li><a href="../user/deployment/installing.html" class="page">Installing</a></li>
+      <li><a href="../user/deployment/deploying.html" class="page">Deploying a stateful service</a></li>
+      <li><a href="../user/deployment/stores/index.html" class="page">Stateful stores</a></li>
+      <li><a href="../user/deployment/monitoring.html" class="page">Monitoring</a></li>
+      <li><a href="../user/deployment/autoscaling.html" class="page">Autoscaling</a></li>
+      <li><a href="../user/deployment/security.html" class="page">Security</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="../spec/index.html" class="page">Protocol Specification</a></li>
+  <li><a href="../developer/index.html" class="page">Content for developers of Cloudstate</a>
+  <ul>
+    <li><a href="../developer/thebuild.html" class="page">The Cloudstate Build</a></li>
+    <li><a href="../developer/nativeimage.html" class="active page">Building native images in Cloudstate</a></li>
+    <li><a href="../developer/language-support/index.html" class="page">Language support</a>
+    <ul>
+      <li><a href="../developer/language-support/serialization.html" class="page">Cloudstate serialization convention</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Cloudstate</a></li>
+  <li><a href="../developer/index.html">Content for developers of Cloudstate</a></li>
+  <li>Building native images in Cloudstate</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#building-native-images-in-cloudstate" name="building-native-images-in-cloudstate" class="anchor"><span class="anchor-link"></span></a>Building native images in Cloudstate</h1>
+<p>Cloudstate uses the GraalVM native image compiler to compile native images, to ensure that when a Cloudstate proxy starts due to autoscaling, it is immediately ready to handle load at full capacity, with no classloading or JIT overheads.</p>
+<p>GraalVM native image builds can be very slow, taking significant resources on a machine (greater than 16GB), so to address this, Cloudstate supports the use of build agents running on GCP.</p>
+<h2><a href="#using-gcp-build-agents" name="using-gcp-build-agents" class="anchor"><span class="anchor-link"></span></a>Using GCP build agents</h2>
+<p>To use a GCP build agent, you need to have a GCP account and project, with <code>gcloud</code> logged in. It&rsquo;s recommended that you set your default project using <code>gcloud config set project &lt;some-project&gt;</code>, and your default availability zone to the zone that is geographically closest to you, using <code>gcloud config set compute/zone &lt;us-east1&gt;</code>, however if you prefer not to do this you can also select these by using the <code>GCP_AGENT_PROJECT</code> and <code>GCP_AGENT_ZONE</code> environment variables.</p>
+<p>Once you have <code>gcloud</code> configured, start sbt with the environment variable <code>GCP_AGENT_ENABLED</code> set to <code>true</code>, for example:</p>
+<pre class="prettyprint"><code class="language-bash">GCP_AGENT_ENABLED=true sbt
+</code></pre>
+<p>When you do this, sbt will start the GCP agent as needed, and shut it down when you exit sbt. The instance name will default to <code>$USER-gcp-build-agent</code>, this can be overridden using the <code>GCP_INSTANCE_NAME</code> environment variable. If for some reason sbt doesn&rsquo;t shutdown gracefully, you may need to kill the instance yourself, using <code>gcloud compute instances delete &lt;instance-name&gt;</code>. By default, preemptible instances will be used, this means Google will automatically shut down the instance after 24 hours if you don&rsquo;t.</p>
+<p>Since instances are started by sbt, and then shutdown when you exit sbt, it is strongly advised that you use an sbt shell session, rather than running individual commands. That is, instead of running:</p>
+<pre class="prettyprint"><code class="language-bash">GCP_AGENT_ENABLED=true sbt proxy-core/docker:publish
+GCP_AGENT_ENABLED=true sbt proxy-postgres/docker:publish
+</code></pre>
+<p>Run:</p>
+<pre class="prettyprint"><code class="language-bash">GCP_AGENT_ENABLED=true sbt
+</code></pre>
+<p>Then once in the sbt shell, run:</p>
+<pre class="prettyprint"><code class="language-bash">proxy-core/docker:publish
+proxy-postgres/docker:publish
+</code></pre>
+<p>This way, the same instance will be reused, rather than having to pay the cost of starting up and shutting down the instance each time. Note also that it&rsquo;s not just the cost of starting up and shutting down the instance that you&rsquo;re paying, on the first build, all docker base images will need to be fetched, none of your existing layers will be cached, and the Docker context won&rsquo;t be in the cache either. Subsequent runs within the same sbt session will have a significant performance improvement as these caches will all be warmed.</p>
+<h2><a href="#building-the-images" name="building-the-images" class="anchor"><span class="anchor-link"></span></a>Building the images</h2>
+<p>In our build, we have multiple different images that we want to build from the same project - both native and non native images, along with different configurations. To support this, we need to reconfigure sbt for each image we want to build. To support this, we have a number of command helpers that dynamically configure sbt, then run a selected command. These are:</p>
+<ul>
+  <li><code>dockerBuildInMemory</code></li>
+  <li><code>dockerBuildNativeInMemory</code></li>
+  <li><code>dockerBuildCassandra</code></li>
+  <li><code>dockerBuildNativeCassandra</code></li>
+  <li><code>dockerBuildNoStore</code></li>
+  <li><code>dockerBuildNativeNoStore</code></li>
+  <li><code>dockerBuildPostgres</code></li>
+  <li><code>dockerBuildNativePostgres</code></li>
+  <li><code>dockerBuildAllNonNative</code></li>
+  <li><code>dockerBuildAllNative</code></li>
+</ul>
+<h3><a href="#just-building-an-image" name="just-building-an-image" class="anchor"><span class="anchor-link"></span></a>Just building an image</h3>
+<p>To just build a native image, run the selected command above, followed by <code>publishLocal</code>, eg:</p>
+<pre><code>dockerBuildNativeInMemory publishLocal
+</code></pre>
+<p>Contrary to the name of the command, this will build the image remotely if you have that enabled - the reason for this is that the remote build agent support doesn&rsquo;t redefine any of the sbt docker plugin commands, it simply configures the sbt docker plugin to run against the remote docker daemon. So <code>publishLocal</code> usually means just build an image in the docker daemon, but don&rsquo;t push it, and since our docker daemon happens to be running remotely through ssh port forwarding, it&rsquo;s done remotely.</p>
+<p>Just building the image isn&rsquo;t very useful if you&rsquo;re using the remote agent, since then your image is in the remote agents docker image cache, which is not a very useful place for it to be.</p>
+<h3><a href="#building-and-pushing-an-image" name="building-and-pushing-an-image" class="anchor"><span class="anchor-link"></span></a>Building and pushing an image</h3>
+<p>If you wish to push an image to a public repository somewhere, for example to test it in the cloud, then instead use <code>publish</code>. Note that unless you&rsquo;re pushing to the official <code>cloudstateio</code> Docker hub repository, you will want to override the default registry/username to something else, this can be done by setting system properties on sbt startup:</p>
+<pre class="prettyprint"><code class="language-bash">GCP_AGENT_ENABLED=true sbt -Ddocker.registry=gcr.io -Ddocker.username=mygcrproject
+</code></pre>
+<p>Now you can build and push an image to that repo by running:</p>
+<pre><code>dockerBuildNativeInMemory publish
+</code></pre>
+<h3><a href="#building-and-pulling-an-image" name="building-and-pulling-an-image" class="anchor"><span class="anchor-link"></span></a>Building and pulling an image</h3>
+<p>If you want to pull the image to make it available to your local docker daemon so you can do some testing locally on your machine, a <code>publishLocalPull</code> command is provided. When you run this, after building the image, it will push it to a registry running on the remote agent. Then it will do a <code>docker pull</code> using the local Docker daemon, from the registry running on the remote agent. The reason for doing this <code>push</code>/<code>pull</code> behavior, rather than doing a <code>save</code> followed by <code>load</code>, is that the save/load exports the full image as a tarball, meaning every time you run it, you have to download every layer including the base image. In contrast, the <code>push</code>/<code>pull</code> only pulls layers that you don&rsquo;t already have in your local docker daemon, the result being that you only download the native image layer, not the entire image including the base image.</p>
+<h2><a href="#starting-the-native-image-locally" name="starting-the-native-image-locally" class="anchor"><span class="anchor-link"></span></a>Starting the native image locally</h2>
+<p>Since the native image needs to call back into the host to connect to the user function, the user function needs to be told to bind to <code>0.0.0.0</code>. It will depend on the user function as to how you do this, but here&rsquo;s an example, run from a node user function:</p>
+<pre><code>HOST=0.0.0.0 node index.js
+</code></pre>
+<p>Now, run the docker image. If using Mac or Windows, you can run:</p>
+<pre><code>docker run --rm -e USER_FUNCTION_HOST=host.docker.internal -p 9000:9000 \
+  cloudstateio/cloudstate-proxy-native-dev-mode:latest
+</code></pre>
+<p>If on Linux, there&rsquo;s no automatic way to know what the hosts IP address is, so instead:</p>
+<pre><code>docker run --rm -e USER_FUNCTION_HOST=$(ip -4 addr show docker0 | grep -Po &#39;inet \K[\d.]+&#39;) \
+  -p 9000:9000 cloudstateio/cloudstate-proxy-native-dev-mode:latest
+</code></pre>
+<h2><a href="#running-the-tck-against-the-native-image" name="running-the-tck-against-the-native-image" class="anchor"><span class="anchor-link"></span></a>Running the TCK against the native image</h2>
+<p>To run the TCK against the native image, start sbt with the <code>config.resource</code> property set to <code>native-image.conf</code>, eg:</p>
+<pre class="prettyprint"><code class="language-bash">GCP_AGENT_ENABLED=true sbt -Dconfig.resource=native-image.conf
+</code></pre>
+<p>Now after building the dev mode native image, you can run the integration tests:</p>
+<pre><code>dockerBuildNativeDevMode publishLocalPull
+tck/it:test
+</code></pre>
+<h2><a href="#dealing-with-preemptible-issues" name="dealing-with-preemptible-issues" class="anchor"><span class="anchor-link"></span></a>Dealing with preemptible issues</h2>
+<p>By default, the agent build uses preemptible instances, which are about 5 times cheaper than on demand instances. The downside of this, sometimes, the instances will be terminated unexpectedly. To avoid this, it&rsquo;s recommended that you set your default compute zone to one that is in lower demand. For example, in a given region, zone a is typically in highest demand, so zone b or c is often a better choice. Also, some regions have high demand than others, <code>us-east1</code> for example is probably a bad choice. Be aware that by default, N2 instances are used, and these are not available in every zone. The machine type can be changed using the <code>GCP_MACHINE_TYPE</code> environment variable.</p>
+<p>If you still have issues with instances being terminated, you can switch to on demand instances by setting the <code>GCP_PREEMPTIBLE</code> environment variable to <code>false</code>.</p>
+<p>When dealing with preemptible instances, there are a few commands that can be run to help. <code>gcpAgentStatus</code> will tell you the status of the agent. If <code>Terminated</code>, this indicates that the instance has been preemptively terminated. When this has happened, run <code>gcpAgentReset</code>, this will restart the agent and port forwarding if necessary. The agent can be manually managed using <code>gcpAgentStart</code>, <code>gcpAgentStop</code> and <code>gcpAgentPortForward</code>.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/cloudstateio/cloudstate/tree/v0.5.1/docs/src/main/paradox/developer/nativeimage.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../developer/language-support/index.html">Language support</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../developer/nativeimage.html#building-native-images-in-cloudstate" class="header">Building native images in Cloudstate</a>
+  <ul>
+    <li><a href="../developer/nativeimage.html#using-gcp-build-agents" class="header">Using GCP build agents</a></li>
+    <li><a href="../developer/nativeimage.html#building-the-images" class="header">Building the images</a>
+    <ul>
+      <li><a href="../developer/nativeimage.html#just-building-an-image" class="header">Just building an image</a></li>
+      <li><a href="../developer/nativeimage.html#building-and-pushing-an-image" class="header">Building and pushing an image</a></li>
+      <li><a href="../developer/nativeimage.html#building-and-pulling-an-image" class="header">Building and pulling an image</a></li>
+    </ul></li>
+    <li><a href="../developer/nativeimage.html#starting-the-native-image-locally" class="header">Starting the native image locally</a></li>
+    <li><a href="../developer/nativeimage.html#running-the-tck-against-the-native-image" class="header">Running the TCK against the native image</a></li>
+    <li><a href="../developer/nativeimage.html#dealing-with-preemptible-issues" class="header">Dealing with preemptible issues</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<a href="../../../.."><img src="../images/cloudstate-stacked-white.svg"></a>
+<p>© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="../../../../privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
+
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+
+
+</html>

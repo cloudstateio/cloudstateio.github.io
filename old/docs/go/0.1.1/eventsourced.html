@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Event sourcing · Cloudstate Go</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='docs'/>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+
+<!-- OneTrust Cookies Consent Notice start -->
+<script type="text/javascript">
+(function(w,d,s){if(w.location.protocol!="file:"){var f=d.getElementsByTagName(s)[0],j=d.createElement(s);
+j.async=true;j.src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js";
+j.charset="UTF-8";f.parentNode.insertBefore(j,f);}})(window,document,"script");</script>
+<!-- OneTrust Cookies Consent Notice end -->
+
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+Cloudstate Go
+</a>
+</div>
+<div class="nav-version">
+Version 0.1.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html" class="page">Getting started with stateful services in Go</a></li>
+  <li><a href="eventsourced.html" class="active page">Event sourcing</a></li>
+  <li><a href="crdt.html" class="page">Conflict-free Replicated Data Types</a></li>
+  <li><a href="effects.html" class="page">Forwarding and effects</a></li>
+  <li><a href="serialization.html" class="page">Serialization</a></li>
+  <li><a href="api.html" class="page">Go API docs</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+<div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+<div class="wrapper">
+<div class="brand">
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Cloudstate Banner" href="https://www.lightbend.com?r=oss-banner-cloudstate" target="_blank">
+<img class="lightbend-logo" src="images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+</div>
+<div class="nav">
+<a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your Cloudstate app with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/cloudstate-by-lightbend?r=oss-banner-cloudstate" target="_blank">
+<span>Enhance your Cloudstate app with</span>
+<img class="lightbend-logo" src="images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+<div class="drop-down">
+<svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<path fill="#ffffff" d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z M10,0.4
+c-5.302,0-9.6,4.298-9.6,9.6c0,5.303,4.298,9.6,9.6,9.6s9.6-4.297,9.6-9.6C19.6,4.698,15.302,0.4,10,0.4z M10,18.354
+c-4.615,0-8.354-3.74-8.354-8.354c0-4.614,3.739-8.354,8.354-8.354c4.613,0,8.354,3.74,8.354,8.354
+C18.354,14.614,14.613,18.354,10,18.354z" />
+</svg>
+<div class="drop-down-content">
+<div class="lightbend-family">
+<a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+<img class="akka-full-color-logo" src="images/banner-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+</a>
+<a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+<img class="cloudflow-full-color-logo" src="images/banner-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+</a>
+<a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+<img class="lagom-full-color-logo" src="images/banner-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+</a>
+<a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+<img class="play-full-color-logo" src="images/banner-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+</a>
+<a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+<img class="scala-full-color-logo" src="images/banner-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+</a>
+<div class="cloudstate current">
+<img class="cloudstate-full-color-logo" src="images/banner-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+<span>From the creators of <strong>Cloudstate</strong>, get developer assistance and expert support from Lightbend.</span>
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/cloudstate-by-lightbend?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+</div>
+</div>
+<div class="title">The Lightbend Family</div>
+</div>      
+</div>
+</div>
+</div>
+</div>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../.."><img src="images/cloudstate-horizontal-white.svg" alt="Cloudstate Go"/></a></div>
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column site-nav-container">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+Cloudstate Go
+</a>
+</div>
+<div class="nav-version">
+Version 0.1.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html" class="page">Getting started with stateful services in Go</a></li>
+  <li><a href="eventsourced.html" class="active page">Event sourcing</a></li>
+  <li><a href="crdt.html" class="page">Conflict-free Replicated Data Types</a></li>
+  <li><a href="effects.html" class="page">Forwarding and effects</a></li>
+  <li><a href="serialization.html" class="page">Serialization</a></li>
+  <li><a href="api.html" class="page">Go API docs</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Cloudstate Go</a></li>
+  <li>Event sourcing</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#event-sourcing" name="event-sourcing" class="anchor"><span class="anchor-link"></span></a>Event sourcing</h1>
+<p>This page documents how to implement Cloudstate event sourced entities in Go. For information on what Cloudstate event sourced entities are, please read the general <a href="https://cloudstate.io/docs/core/current/user/features/eventsourced.html">Event sourcing</a> documentation first.</p>
+<p>An event sourced entity can be created by embedding the <code>cloudstate.EventEmitter</code> type and also implementing the <code>cloudstate.Entity</code> interface.</p>
+<pre class="prettyprint"><code class="language-go">type ShoppingCart struct {
+	// our domain object
+	cart []*domain.LineItem
+	// as an Emitter we can emit events
+	cloudstate.EventEmitter
+}
+</code></pre>
+<p>Then by composing the Cloudstate entity with a <code>cloudstate.EventSourcedEntity</code> and register it with <code>CloudState.Register()</code>, your entity gets configured to be an event sourced entity and handled by the Cloudstate instance from now on.</p>
+<pre class="prettyprint"><code class="language-go">type EventSourcedEntity struct {
+	// ServiceName is the fully qualified name of the service that implements this entities interface.
+	// Setting it is mandatory.
+	ServiceName string
+	// PersistenceID is used to namespace events in the journal, useful for
+	// when you share the same database between multiple entities. It defaults to
+	// the simple name for the entity type.
+	// It’s good practice to select one explicitly, this means your database
+	// isn’t depend on type names in your code.
+	// Setting it is mandatory.
+	PersistenceID string
+	// The snapshotEvery parameter controls how often snapshots are taken,
+	// so that the entity doesn&#39;t need to be recovered from the whole journal
+	// each time it’s loaded. If left unset, it defaults to 100.
+	// Setting it to a negative number will result in snapshots never being taken.
+	SnapshotEvery int64
+
+	// EntityFactory is a factory method which generates a new Entity.
+	EntityFunc func() Entity
+
+	// internal
+	registerOnce sync.Once
+}
+</code></pre>
+<p>The <code>ServiceName</code> is the fully qualified name of the gRPC service that implements this entity&rsquo;s interface. Setting it is mandatory.</p>
+<p>The <code>PersistenceID</code> is used to namespace events in the journal, useful for when you share the same database between multiple entities. It is recommended to be the name for the entity type (in this case, <code>ShoppingCart</code>). Setting it is mandatory.</p>
+<p>The <code>SnapshotEvery</code> parameter controls how often snapshots are taken, so that the entity doesn&rsquo;t need to be recovered from the whole journal each time it&rsquo;s loaded. If left unset, it defaults to 100. Setting it to a negative number will result in snapshots never being taken.</p>
+<p>The <code>EntityFunc</code> is a factory method which generates a new Entity whenever Cloudstate has to initialize a new entity. </p>
+<h2><a href="#persistence-types-and-serialization" name="persistence-types-and-serialization" class="anchor"><span class="anchor-link"></span></a>Persistence types and serialization</h2>
+<p>Event sourced entities persist events and snapshots, and these need to be serialized when persisted. The most straightforward way to persist events and snapshots is to use protobufs. Cloudstate will automatically detect if an emitted event is a protobuf, and serialize it as such. For other serialization options, including JSON, see <a href="https://cloudstate.io/docs/core/current/developer/language-support/serialization.html">Serialization</a>.</p>
+<p>While protobufs are the recommended format for persisting events, it is recommended that you do not persist your service&rsquo;s protobuf messages, rather, you should create new messages, even if they are identical to the service&rsquo;s. While this may introduce some overhead in needing to convert from one type to the other, the reason for doing this is that it will allow the service&rsquo;s public interface to evolve independently from its data storage format, which should be private.</p>
+<p>For our shopping cart example, we&rsquo;ll create a new file called <code>domain.proto</code>, the name domain is selected to indicate that these are my application&rsquo;s domain objects:</p>
+<pre class="prettyprint"><code class="language-proto">// These are the messages that get persisted - the events, plus the current state (Cart) for snapshots.
+syntax = &quot;proto3&quot;;
+
+package com.example.shoppingcart.persistence;
+
+option go_package = &quot;persistence&quot;;
+
+message LineItem {
+    string productId = 1;
+    string name = 2;
+    int32 quantity = 3;
+}
+
+// The item added event.
+message ItemAdded {
+    LineItem item = 1;
+}
+
+// The item removed event.
+message ItemRemoved {
+    string productId = 1;
+}
+
+// The shopping cart state.
+message Cart {
+    repeated LineItem items = 1;
+}</code></pre>
+<h2><a href="#state" name="state" class="anchor"><span class="anchor-link"></span></a>State</h2>
+<p>Each entity should store its state locally in a mutable variable, either a mutable field or a multiple structure such as an array type or slice. For our shopping cart, the state is a slice of products, so we&rsquo;ll create a slice of LineItems to contain that:</p>
+<pre class="prettyprint"><code class="language-go">	cart []*domain.LineItem</code></pre>
+<h2><a href="#constructing" name="constructing" class="anchor"><span class="anchor-link"></span></a>Constructing</h2>
+<p>The Cloudstate Go Support Library needs to know how to construct and initialize entities. For this, an entity has to provide a factory function, <code>EntityFunc</code>, which is set during registration of the event sourced entity.</p>
+<pre class="prettyprint"><code class="language-go">	err = server.RegisterEventSourcedEntity(
+		&amp;cloudstate.EventSourcedEntity{
+			ServiceName:   &quot;com.example.shoppingcart.ShoppingCart&quot;,
+			PersistenceID: &quot;ShoppingCart&quot;,
+			EntityFunc:    NewShoppingCart,
+		},
+		cloudstate.DescriptorConfig{
+			Service: &quot;shoppingcart/shoppingcart.proto&quot;,
+		}.AddDomainDescriptor(&quot;domain.proto&quot;),
+	)</code></pre>
+<p>The entity factory function returns a <code>cloudstate.Entity</code> which is composed of two interfaces to handle commands and events.</p>
+<pre class="prettyprint"><code class="language-go">func NewShoppingCart() cloudstate.Entity {
+	return &amp;ShoppingCart{
+		cart:         make([]*domain.LineItem, 0),
+		EventEmitter: cloudstate.NewEmitter(), // TODO: the EventEmitter could be provided by the event sourced handler
+	}
+}
+</code></pre>
+<h2><a href="#handling-commands" name="handling-commands" class="anchor"><span class="anchor-link"></span></a>Handling commands</h2>
+<p>An event sourced entity implements the composed <code>cloudstate.Entity</code> interface. <code>cloudstate.Entity</code> embeds the <code>cloudstate.EventHandler</code> interface and therefore entities implementing it get commands from Cloudstate through the event handler&rsquo;s <code>HandleCommand</code> method.</p>
+<p>The command types received by an event sourced entity are declared by the gRPC Server interface which is generated from the protobuf definitions. The Cloudstate Go Support library together with the registered <code>cloudstate.EventSourcedEntity</code> is then able to dispatch commands it gets from the Cloudstate proxy to the event sourced entity.</p>
+<pre class="prettyprint"><code class="language-go">func (sc *ShoppingCart) HandleCommand(ctx context.Context, command interface{}) (handled bool, reply interface{}, err error) {
+	switch cmd := command.(type) {
+	case *shoppingcart.GetShoppingCart:
+		reply, err := sc.GetCart(ctx, cmd)
+		return true, reply, err
+	case *shoppingcart.RemoveLineItem:
+		reply, err := sc.RemoveItem(ctx, cmd)
+		return true, reply, err
+	case *shoppingcart.AddLineItem:
+		reply, err := sc.AddItem(ctx, cmd)
+		return true, reply, err
+	default:
+		return false, reply, err
+	}
+}
+</code></pre>
+<p>The return type of the command handler is by definition of the service interface, the output type for the gRPC service call, this will be sent as the reply.</p>
+<p>The following shows the implementation of the <code>GetCart</code> command handler. This command handler is a read-only command handler, it doesn&rsquo;t emit any events, it just returns some state:</p>
+<pre class="prettyprint"><code class="language-go">func (sc *ShoppingCart) GetCart(_ context.Context, _ *shoppingcart.GetShoppingCart) (*shoppingcart.Cart, error) {
+	cart := &amp;shoppingcart.Cart{}
+	for _, item := range sc.cart {
+		cart.Items = append(cart.Items, &amp;shoppingcart.LineItem{
+			ProductId: item.ProductId,
+			Name:      item.Name,
+			Quantity:  item.Quantity,
+		})
+	}
+	return cart, nil
+}
+</code></pre>
+<h3><a href="#emitting-events" name="emitting-events" class="anchor"><span class="anchor-link"></span></a>Emitting events</h3>
+<p>Commands that modify the state may do so by emitting events.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>The <strong>only</strong> way a command handler may modify its state is by emitting an event. Any modifications made directly to the state from the command handler will not be persisted, and when the entity is passivated and next reloaded, those modifications will not be present.</p></div>
+<p>A command handler may emit an event by using the embedded <code>cloudstate.EventEmitter</code> and invoking the <code>Emit</code> method on it. Calling <code>Emit</code> will immediately invoke the associated event handler for that event - this both validates that the event can be applied to the current state, as well as updates the state so that subsequent processing in the command handler can use it.</p>
+<p>Here&rsquo;s an example of a command handler that emits an event:</p>
+<pre class="prettyprint"><code class="language-go">func (sc *ShoppingCart) AddItem(_ context.Context, li *shoppingcart.AddLineItem) (*empty.Empty, error) {
+	if li.GetQuantity() &lt;= 0 {
+		return nil, fmt.Errorf(&quot;cannot add negative quantity of to item %s&quot;, li.GetProductId())
+	}
+	sc.Emit(&amp;domain.ItemAdded{
+		Item: &amp;domain.LineItem{
+			ProductId: li.ProductId,
+			Name:      li.Name,
+			Quantity:  li.Quantity,
+		}})
+	return &amp;empty.Empty{}, nil
+}
+</code></pre>
+<p>This command handler also validates the command, ensuring the quantity of items added is greater than zero. Returning an <code>error</code> fails the command and the support library takes care of signaling that back to the requesting proxy as a <code>Failure</code> reply. </p>
+<h2><a href="#handling-events" name="handling-events" class="anchor"><span class="anchor-link"></span></a>Handling events</h2>
+<p>Event handlers are invoked at two points, when restoring entities from the journal, before any commands are handled, and each time a new event is emitted. An event handler&rsquo;s responsibility is to update the state of the entity according to the event. Event handlers are the only place where it&rsquo;s safe to mutate the state of the entity at all.</p>
+<p>Event handlers are declared by implementing the <code>cloudstate.EventHandler</code> interface.</p>
+<pre class="prettyprint"><code class="language-go">type EventHandler interface {
+	HandleEvent(ctx context.Context, event interface{}) (handled bool, err error)
+}
+</code></pre>
+<p>Events emitted by command handlers get dispatched to the implemented event handler which then decides how to proceed with the event. </p>
+<pre class="prettyprint"><code class="language-go">func (sc *ShoppingCart) HandleEvent(_ context.Context, event interface{}) (handled bool, err error) {
+	switch e := event.(type) {
+	case *domain.ItemAdded:
+		return true, sc.ItemAdded(e)
+	case *domain.ItemRemoved:
+		return true, sc.ItemRemoved(e)
+	default:
+		return false, nil
+	}
+}
+</code></pre>
+<p>Here&rsquo;s an example of a concrete event handler for the <code>ItemAdded</code> event.</p>
+<pre class="prettyprint"><code class="language-go">func (sc *ShoppingCart) ItemAdded(added *domain.ItemAdded) error { // TODO: enable handling for values
+	if item, _ := sc.find(added.Item.ProductId); item != nil {
+		item.Quantity += added.Item.Quantity
+	} else {
+		sc.cart = append(sc.cart, &amp;domain.LineItem{
+			ProductId: added.Item.ProductId,
+			Name:      added.Item.Name,
+			Quantity:  added.Item.Quantity,
+		})
+	}
+	return nil
+}
+</code></pre>
+<h2><a href="#producing-and-handling-snapshots" name="producing-and-handling-snapshots" class="anchor"><span class="anchor-link"></span></a>Producing and handling snapshots</h2>
+<p>Snapshots are an important optimisation for event sourced entities that may contain many events, to ensure that they can be loaded quickly even when they have very long journals. To produce a snapshot, the <code>cloudstate.Snapshotter</code> interface has to be implemented that must return a snapshot of the current state in serializable form. </p>
+<pre class="prettyprint"><code class="language-go">type Snapshotter interface {
+	Snapshot() (snapshot interface{}, err error)
+}
+</code></pre>
+<p>Here is an example of the TCK shopping cart example creating snapshots for the current <code>domain.Cart</code> state of the shopping cart.</p>
+<pre class="prettyprint"><code class="language-go">func (sc *ShoppingCart) Snapshot() (snapshot interface{}, err error) {
+	return domain.Cart{
+		Items: append(make([]*domain.LineItem, len(sc.cart)), sc.cart...),
+	}, nil
+}
+</code></pre>
+<p>When the entity is loaded again, the snapshot will first be loaded before any other events are received, and passed to a snapshot handler. Snapshot handlers are declared by implementing the <code>cloudstate.SnapshotHandler</code> interface.</p>
+<pre class="prettyprint"><code class="language-go">type SnapshotHandler interface {
+	HandleSnapshot(snapshot interface{}) (handled bool, err error)
+}
+</code></pre>
+<p>A snapshot handler then can type-switch over types the corresponding <code>cloudstate.Snapshotter</code> interface has implemented. </p>
+<pre class="prettyprint"><code class="language-go">func (sc *ShoppingCart) HandleSnapshot(snapshot interface{}) (handled bool, err error) {
+	switch value := snapshot.(type) {
+	case domain.Cart:
+		sc.cart = append(sc.cart[:0], value.Items...)
+		return true, nil
+	default:
+		return false, nil
+	}
+}
+</code></pre>
+<h2><a href="#registering-the-entity" name="registering-the-entity" class="anchor"><span class="anchor-link"></span></a>Registering the entity</h2>
+<p>Once you&rsquo;ve created your entity, you can register it with the <code>cloudstate.Cloudstate</code> server, by invoking the <code>Register</code> method of a Cloudstate instance. In addition to passing your entity type and service name, you also need to pass any descriptors that you use for persisting events, for example, the <code>domain.proto</code> descriptor.</p>
+<p>During registration the optional ServiceName and the ServiceVersion can be configured. (TODO: give an example on how to pick values for these after the spec defines semantics )</p>
+<pre class="prettyprint"><code class="language-go">	err = server.RegisterEventSourcedEntity(
+		&amp;cloudstate.EventSourcedEntity{
+			ServiceName:   &quot;com.example.shoppingcart.ShoppingCart&quot;,
+			PersistenceID: &quot;ShoppingCart&quot;,
+			EntityFunc:    NewShoppingCart,
+		},
+		cloudstate.DescriptorConfig{
+			Service: &quot;shoppingcart/shoppingcart.proto&quot;,
+		}.AddDomainDescriptor(&quot;domain.proto&quot;),
+	)</code></pre>
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="crdt.html">Conflict-free Replicated Data Types</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="eventsourced.html#event-sourcing" class="header">Event sourcing</a>
+  <ul>
+    <li><a href="eventsourced.html#persistence-types-and-serialization" class="header">Persistence types and serialization</a></li>
+    <li><a href="eventsourced.html#state" class="header">State</a></li>
+    <li><a href="eventsourced.html#constructing" class="header">Constructing</a></li>
+    <li><a href="eventsourced.html#handling-commands" class="header">Handling commands</a>
+    <ul>
+      <li><a href="eventsourced.html#emitting-events" class="header">Emitting events</a></li>
+    </ul></li>
+    <li><a href="eventsourced.html#handling-events" class="header">Handling events</a></li>
+    <li><a href="eventsourced.html#producing-and-handling-snapshots" class="header">Producing and handling snapshots</a></li>
+    <li><a href="eventsourced.html#registering-the-entity" class="header">Registering the entity</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<a href="../../.."><img src="images/cloudstate-stacked-white.svg"></a>
+<p>© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="../../../privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
+
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+
+
+</html>

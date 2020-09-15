@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Getting started with stateful services in Go · Cloudstate Go</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='docs'/>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+
+<!-- OneTrust Cookies Consent Notice start -->
+<script type="text/javascript">
+(function(w,d,s){if(w.location.protocol!="file:"){var f=d.getElementsByTagName(s)[0],j=d.createElement(s);
+j.async=true;j.src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js";
+j.charset="UTF-8";f.parentNode.insertBefore(j,f);}})(window,document,"script");</script>
+<!-- OneTrust Cookies Consent Notice end -->
+
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+Cloudstate Go
+</a>
+</div>
+<div class="nav-version">
+Version 0.1.0
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html" class="active page">Getting started with stateful services in Go</a></li>
+  <li><a href="eventsourced.html" class="page">Event sourcing</a></li>
+  <li><a href="crdt.html" class="page">Conflict-free Replicated Data Types</a></li>
+  <li><a href="effects.html" class="page">Forwarding and effects</a></li>
+  <li><a href="serialization.html" class="page">Serialization</a></li>
+  <li><a href="api.html" class="page">Go API docs</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+<div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+<div class="wrapper">
+<div class="brand">
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Cloudstate Banner" href="https://www.lightbend.com?r=oss-banner-cloudstate" target="_blank">
+<img class="lightbend-logo" src="images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+</div>
+<div class="nav">
+<a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your Cloudstate app with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/cloudstate-by-lightbend?r=oss-banner-cloudstate" target="_blank">
+<span>Enhance your Cloudstate app with</span>
+<img class="lightbend-logo" src="images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+<div class="drop-down">
+<svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<path fill="#ffffff" d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z M10,0.4
+c-5.302,0-9.6,4.298-9.6,9.6c0,5.303,4.298,9.6,9.6,9.6s9.6-4.297,9.6-9.6C19.6,4.698,15.302,0.4,10,0.4z M10,18.354
+c-4.615,0-8.354-3.74-8.354-8.354c0-4.614,3.739-8.354,8.354-8.354c4.613,0,8.354,3.74,8.354,8.354
+C18.354,14.614,14.613,18.354,10,18.354z" />
+</svg>
+<div class="drop-down-content">
+<div class="lightbend-family">
+<a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+<img class="akka-full-color-logo" src="images/banner-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+</a>
+<a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+<img class="cloudflow-full-color-logo" src="images/banner-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+</a>
+<a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+<img class="lagom-full-color-logo" src="images/banner-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+</a>
+<a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+<img class="play-full-color-logo" src="images/banner-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+</a>
+<a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+<img class="scala-full-color-logo" src="images/banner-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+</a>
+<div class="cloudstate current">
+<img class="cloudstate-full-color-logo" src="images/banner-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+<span>From the creators of <strong>Cloudstate</strong>, get developer assistance and expert support from Lightbend.</span>
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/cloudstate-by-lightbend?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+</div>
+</div>
+<div class="title">The Lightbend Family</div>
+</div>      
+</div>
+</div>
+</div>
+</div>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../.."><img src="images/cloudstate-horizontal-white.svg" alt="Cloudstate Go"/></a></div>
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column site-nav-container">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+Cloudstate Go
+</a>
+</div>
+<div class="nav-version">
+Version 0.1.0
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html" class="active page">Getting started with stateful services in Go</a></li>
+  <li><a href="eventsourced.html" class="page">Event sourcing</a></li>
+  <li><a href="crdt.html" class="page">Conflict-free Replicated Data Types</a></li>
+  <li><a href="effects.html" class="page">Forwarding and effects</a></li>
+  <li><a href="serialization.html" class="page">Serialization</a></li>
+  <li><a href="api.html" class="page">Go API docs</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Cloudstate Go</a></li>
+  <li>Getting started with stateful services in Go</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#getting-started-with-stateful-services-in-go" name="getting-started-with-stateful-services-in-go" class="anchor"><span class="anchor-link"></span></a>Getting started with stateful services in Go</h1>
+<h2><a href="#prerequisites" name="prerequisites" class="anchor"><span class="anchor-link"></span></a>Prerequisites</h2>
+<dl>
+  <dt>Go version</dt>
+  <dd>Cloudstate Go support requires at least Go 1.14</dd>
+  <dt>Build tool</dt>
+  <dd>Cloudstate does not require any particular build tool, you can select your own.</dd>
+  <dt>protoc</dt>
+  <dd>Since Cloudstate is based on gRPC, you need a protoc compiler to compile gRPC protobuf descriptors. This can be done manually through the <a href="https://github.com/protocolbuffers/protobuf#user-content-protocol-compiler-installation">Protocol Buffer Compiler project</a>.</dd>
+  <dt>docker</dt>
+  <dd>Cloudstate runs in Kubernetes with <a href="https://www.docker.com">Docker</a>, hence you will need Docker to build a container that you can deploy to Kubernetes. Most popular build tools have plugins that assist in building Docker images.</dd>
+</dl>
+<p>In addition to the above, you will need to install the Cloudstate Go support library by issuing <code>go get -u github.com/cloudstateio/go-support/cloudstate</code> or with Go module support let the dependency be downloaded by <code>go [build|run|test]</code>. </p>
+<p>By using the Go module support your go.mod file will reference the latest version of the support library or you can define which version you like to use.</p>
+<dl>
+  <dt>go get</dt>
+  <dd>
+  <pre class="prettyprint"><code class="nocode">go get -u github.com/cloudstateio/go-support/cloudstate
+</code></pre></dd>
+  <dt>import path</dt>
+  <dd>
+  <pre class="prettyprint"><code class="nocode">import &quot;github.com/cloudstateio/go-support/cloudstate&quot;
+</code></pre></dd>
+  <dt>go.mod
+  </dt>
+  <dd>
+  <pre><code>module example.com/yourpackage
+require (
+    github.com/cloudstateio/go-support 0.1.0
+)
+go 1.14
+</code></pre></dd>
+</dl>
+<h2><a href="#protobuf-files" name="protobuf-files" class="anchor"><span class="anchor-link"></span></a>Protobuf files</h2>
+<p>The Cloudstate Go Support Library provides no dedicated tool beside the protoc compiler to build your protobuf files. The Cloudstate protocol protobuf files as well as the shopping cart example application protobuf files are provided by the Cloudstate Repository.</p>
+<p>In addition to the <code>protoc</code> compiler, the gRPC Go plugin is needed to compile the protobuf file to <code>*.pb.go</code> files. Please follow the instructions at the <a href="https://github.com/golang/protobuf">Go support for Protocol Buffers</a> project page to install the protoc compiler as well as the <code>protoc-gen-go</code> plugin which also includes the Google standard protobuf types.</p>
+<p>To build the example shopping cart application shown earlier in <a href="https://cloudstate.io/docs/core/current/user/features/grpc.html">gRPC descriptors</a>, you could simply paste that protobuf into <code>protos/shoppingcart.proto</code>. You may wish to also define the Go package using the <code>go_package</code> proto option, to ensure the package name used conforms to Go package naming conventions.</p>
+<pre class="prettyprint"><code class="language-proto">option go_package = &quot;example/shoppingcart&quot;;
+</code></pre>
+<p>Now if you place your protobuf files under <code>protobuf/</code> and run <code>protoc --go_out=. --proto_path=protobuf ./protobuf/*.proto</code>, you&rsquo;ll find your generated protobuf files in <code>example/shoppingcart</code>.</p>
+<h2><a href="#creating-a-main-package" name="creating-a-main-package" class="anchor"><span class="anchor-link"></span></a>Creating a main package</h2>
+<p>Your main package will be responsible for creating the Cloudstate gRPC server, registering the entities for it to serve, and starting it. To do this, you can use the CloudState server type, for example:</p>
+<pre class="prettyprint"><code class="language-go">func main() {
+	server, err := cloudstate.New(cloudstate.Config{
+		ServiceName:    &quot;shopping-cart&quot;,
+		ServiceVersion: &quot;0.1.0&quot;,
+	})
+	if err != nil {
+		log.Fatalf(&quot;CloudState.New failed: %v&quot;, err)
+	}
+	err = server.RegisterEventSourcedEntity(
+		&amp;cloudstate.EventSourcedEntity{
+			ServiceName:   &quot;com.example.shoppingcart.ShoppingCart&quot;,
+			PersistenceID: &quot;ShoppingCart&quot;,
+			EntityFunc:    NewShoppingCart,
+		},
+		cloudstate.DescriptorConfig{
+			Service: &quot;shoppingcart/shoppingcart.proto&quot;,
+		}.AddDomainDescriptor(&quot;domain.proto&quot;),
+	)
+	if err != nil {
+		log.Fatalf(&quot;CloudState failed to register entity: %v&quot;, err)
+	}
+	err = server.Run()
+	if err != nil {
+		log.Fatalf(&quot;CloudState failed to run: %v&quot;, err)
+	}
+}
+</code></pre>
+<p>We will see more details on registering entities in the coming pages.</p>
+<h2><a href="#interfaces-to-be-implemented" name="interfaces-to-be-implemented" class="anchor"><span class="anchor-link"></span></a>Interfaces to be implemented</h2>
+<p>Cloudstate entities in Go work by implementing interfaces and composing types. </p>
+<p>To get support for the Cloudstate event emission the Cloudstate entity should embed the <code>cloudstate.EventEmitter</code> type. The EventEmitter allows the entity to emit events during the handling of commands.</p>
+<p>Second, during registration of the entity, an entity factory function has to be provided so Cloudstate gets to know how to create and initialize an event sourced entity. </p>
+<pre class="prettyprint"><code class="language-go">	EntityFunc func() Entity</code></pre>
+<p>This entity factory function returns a <code>cloudstate.Entity</code> which itself is a composite interface of a <code>cloudstate.CommandHandler</code> and a <code>cloudstate.EventHandler</code>. Every event sourced entity has to implement these two interfaces.</p>
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="eventsourced.html">Event sourcing</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html#getting-started-with-stateful-services-in-go" class="header">Getting started with stateful services in Go</a>
+  <ul>
+    <li><a href="gettingstarted.html#prerequisites" class="header">Prerequisites</a></li>
+    <li><a href="gettingstarted.html#protobuf-files" class="header">Protobuf files</a></li>
+    <li><a href="gettingstarted.html#creating-a-main-package" class="header">Creating a main package</a></li>
+    <li><a href="gettingstarted.html#interfaces-to-be-implemented" class="header">Interfaces to be implemented</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<a href="../../.."><img src="images/cloudstate-stacked-white.svg"></a>
+<p>© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="../../../privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
+
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+
+
+</html>

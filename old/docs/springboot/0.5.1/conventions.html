@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Conventions and Restrictions · Spring Boot</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='docs'/>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+
+<!-- OneTrust Cookies Consent Notice start -->
+<script type="text/javascript">
+(function(w,d,s){if(w.location.protocol!="file:"){var f=d.getElementsByTagName(s)[0],j=d.createElement(s);
+j.async=true;j.src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js";
+j.charset="UTF-8";f.parentNode.insertBefore(j,f);}})(window,document,"script");</script>
+<!-- OneTrust Cookies Consent Notice end -->
+
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+Spring Boot
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html" class="page">Getting started with Spring Boot</a></li>
+  <li><a href="configuration.html" class="page">Configuration</a></li>
+  <li><a href="cdi.html" class="page">Context Injection</a></li>
+  <li><a href="conventions.html" class="active page">Conventions and Restrictions</a></li>
+  <li><a href="examples.html" class="page">Examples</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+<div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+<div class="wrapper">
+<div class="brand">
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lightbend Logo - Cloudstate Banner" href="https://www.lightbend.com?r=oss-banner-cloudstate" target="_blank">
+<img class="lightbend-logo" src="images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+</div>
+<div class="nav">
+<a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your Cloudstate app with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/cloudstate-by-lightbend?r=oss-banner-cloudstate" target="_blank">
+<span>Enhance your Cloudstate app with</span>
+<img class="lightbend-logo" src="images/banner-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+</a>
+<div class="drop-down">
+<svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<path fill="#ffffff" d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z M10,0.4
+c-5.302,0-9.6,4.298-9.6,9.6c0,5.303,4.298,9.6,9.6,9.6s9.6-4.297,9.6-9.6C19.6,4.698,15.302,0.4,10,0.4z M10,18.354
+c-4.615,0-8.354-3.74-8.354-8.354c0-4.614,3.739-8.354,8.354-8.354c4.613,0,8.354,3.74,8.354,8.354
+C18.354,14.614,14.613,18.354,10,18.354z" />
+</svg>
+<div class="drop-down-content">
+<div class="lightbend-family">
+<a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+<img class="akka-full-color-logo" src="images/banner-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+</a>
+<a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+<img class="cloudflow-full-color-logo" src="images/banner-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+</a>
+<a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+<img class="lagom-full-color-logo" src="images/banner-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+</a>
+<a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+<img class="play-full-color-logo" src="images/banner-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+</a>
+<a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+<img class="scala-full-color-logo" src="images/banner-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+</a>
+<div class="cloudstate current">
+<img class="cloudstate-full-color-logo" src="images/banner-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+<span>From the creators of <strong>Cloudstate</strong>, get developer assistance and expert support from Lightbend.</span>
+<a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/cloudstate-by-lightbend?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+</div>
+</div>
+<div class="title">The Lightbend Family</div>
+</div>      
+</div>
+</div>
+</div>
+</div>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../.."><img src="images/cloudstate-horizontal-white.svg" alt="Spring Boot"/></a></div>
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column site-nav-container">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+Spring Boot
+</a>
+</div>
+<div class="nav-version">
+Version 0.5.1
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="gettingstarted.html" class="page">Getting started with Spring Boot</a></li>
+  <li><a href="configuration.html" class="page">Configuration</a></li>
+  <li><a href="cdi.html" class="page">Context Injection</a></li>
+  <li><a href="conventions.html" class="active page">Conventions and Restrictions</a></li>
+  <li><a href="examples.html" class="page">Examples</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Spring Boot</a></li>
+  <li>Conventions and Restrictions</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#conventions-and-restrictions" name="conventions-and-restrictions" class="anchor"><span class="anchor-link"></span></a>Conventions and Restrictions</h1>
+<p>Both Springboot and Cloudstate have some conventions and / or restrictions for creating objects. In the sections below we describe those that are most relevant</p>
+<h2><a href="#registering-protobuf-descriptors" name="registering-protobuf-descriptors" class="anchor"><span class="anchor-link"></span></a>Registering Protobuf Descriptors</h2>
+<p>As mentioned earlier, there are two ways to register the protobuf descriptor files and here we will explain each one in detail.</p>
+<p>First using the Spring configuration.</p>
+<p>Spring&rsquo;s bean declaration conventions define that the method name is exactly the name that will be registered in the Spring injection container as a qualifier. So if you use method names other than those defined in the Cloudstate Springboot support convention like (entity.getSimpleName() + &ldquo;ServiceDescriptor&rdquo;) for example then you will need to use the name property of the &lsquo;<code>@Bean</code>&rsquo; annotation and define the name following these conventions.</p><div class="callout note "><div class="callout-title">Important</div>
+<p>Remembering that the first letter must always be lowercase, as well as the method and variable naming convention in Java </p></div>
+<p>If your entity class is called ShoppingCartEntity then you can declare the beans as below:</p>
+<pre class="prettyprint"><code class="language-java">@Bean(name = &quot;shoppingCartEntityServiceDescriptor&quot;)
+public Descriptors.ServiceDescriptor serviceDescriptor() {
+    return Shoppingcart.getDescriptor().findServiceByName(&quot;ShoppingCart&quot;);
+}
+
+@Bean(name = &quot;shoppingCartEntityFileDescriptors&quot;)
+public Descriptors.FileDescriptor[] fileDescriptors() {
+   return new Descriptors.FileDescriptor[] {com.example.shoppingcart.persistence.Domain.getDescriptor()};
+}</code></pre>
+<p>Or like this:</p>
+<pre class="prettyprint"><code class="language-java">@Bean
+public Descriptors.ServiceDescriptor shoppingCartEntityServiceDescriptor() {
+   return Shoppingcart.getDescriptor().findServiceByName(&quot;ShoppingCart&quot;);
+}
+
+@Bean
+public Descriptors.FileDescriptor[] shoppingCartEntityFileDescriptors() {
+    return new Descriptors.FileDescriptor[] {com.example.shoppingcart.persistence.Domain.getDescriptor()};
+}</code></pre>
+<p>The other way is to use the created entity class itself and declare some annotated static methods like the example below:</p>
+<pre class="prettyprint"><code class="language-java">@EntityServiceDescriptor
+public static Descriptors.ServiceDescriptor getDescriptor() {
+    return Shoppingcart.getDescriptor().findServiceByName(&quot;ShoppingCart&quot;);
+}
+
+@EntityAdditionaDescriptors
+public static Descriptors.FileDescriptor[] getAdditionalDescriptors() {
+    return new Descriptors.FileDescriptor[]{com.example.shoppingcart.persistence.Domain.getDescriptor()};
+}</code></pre>
+<p>We prefer that you adopt the version based on the Spring conventions using configuration classes as in the <a href="gettingstarted.html">Getting Started</a> example.</p>
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="examples.html">Examples</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="conventions.html#conventions-and-restrictions" class="header">Conventions and Restrictions</a>
+  <ul>
+    <li><a href="conventions.html#registering-protobuf-descriptors" class="header">Registering Protobuf Descriptors</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<a href="../../.."><img src="images/cloudstate-stacked-white.svg"></a>
+<p>© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="../../../privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></p>
+
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+
+
+</html>
