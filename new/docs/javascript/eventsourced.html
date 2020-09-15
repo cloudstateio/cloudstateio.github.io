@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implementing event sourced entities :: Cloudstate Documentation</title>
+
+<link rel="stylesheet" href="../_/css/site.css?v-01">
+<link rel="shortcut icon" href="../_/img/favicon.ico" />
+
+<meta itemprop="name" content="Implementing event sourced entities | Cloudstate Documentation">
+<meta name="twitter:title" content="Implementing event sourced entities | Cloudstate Documentation">
+<meta property="og:title" content="Implementing event sourced entities | Cloudstate Documentation" />
+
+<meta property="og:type" content="website" />
+
+<meta name="generator" content="Antora 2.3.3">
+
+<link rel="canonical" href="https://cloudstate.io/docs/javascript/eventsourced.html">
+<meta property="og:url" content="https://cloudstate.io/docs/javascript/eventsourced.html" />
+
+
+
+<meta property="og:site_name" content="Cloudstate Documentation" />
+<meta name="author" content="Cloudstate Documentation">
+<meta itemprop="image" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png">
+<meta name="twitter:image:src" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png">
+<meta property="og:image" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png" />
+<meta property="og:image:secure_url" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png" />
+<!--Head Scripts -->
+<script src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js" type="text/javascript" charset="UTF-8"></script>
+<!--Head Scripts YouTube Embed-->
+<script type="text/javascript">
+	var ytID;
+	function OptanonWrapper() {
+		//find each YouTube embed and only load if cookies have been approved
+		$( "a.yt-widget" ).each(function( index ) {
+			var anchor = $(this);
+			var ytURL = $(this).attr("href");
+			var queryString = anchor[0].search;
+			let params = new URLSearchParams(queryString);
+			ytID = params.get("v");
+			$(this).before('<div class="flex-video-wrapper"><div class="flex-video"><div id="yt-'+ytID+'" class="cookie-warning youtube-warning"><a class="optanon-allow-all">Accept cookies to view video</a><span>Alternatively you can watch the video <a href="'+ytURL+'" target="_blank">here on YouTube</a></span></div></div></div>');
+			$(this).removeAttr("href").removeClass("yt-widget").addClass("yt-widget-hide");
+		});
+
+		$( ".youtube-warning" ).each(function( index ) {
+			Optanon.InsertHtml('<iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/'+ytID+'?rel=0&modestbranding=0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>', 'yt-'+ytID, null, {deleteSelectorContent: true}, 4);
+		});
+	}
+</script>  </head>
+  <body class="article  cloudstate">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://cloudstate.io">
+        <img class="header-logo" src="../_/img/cloudstate-reverse.svg">
+      </a>
+      <a href="https://cloudstate.io/docs/" id="site-id" class="site-id">Documentation</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+  <div class="wrapper">
+    <div class="nav">
+      <a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your apps with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">
+        <span class="banner-btn-text">Enhance your apps with</span>
+        <img class="lightbend-logo" src="../_/img/lightbend-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+      </a>
+      <div class="drop-down">
+        <svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+          <g>
+            <circle cx="10" cy="10" r="9" />
+            <path d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+            c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z" />
+          </g>
+        </svg>
+        <div class="drop-down-content">
+          <div class="lightbend-family">
+            <a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+              <img class="akka-full-color-logo" src="../_/img/lightbend-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+            </a>
+            <a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+              <img class="cloudflow-full-color-logo" src="../_/img/lightbend-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+            </a>
+            <a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+              <img class="lagom-full-color-logo" src="../_/img/lightbend-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+            </a>
+            <a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+              <img class="play-full-color-logo" src="../_/img/lightbend-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+            </a>
+            <a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+              <img class="scala-full-color-logo" src="../_/img/lightbend-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+            </a>
+            <div class="cloudstate current">
+              <img class="cloudstate-full-color-logo" src="../_/img/lightbend-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+              <span>Get developer assistance and expert support from Lightbend.</span>
+              <a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+            </div>
+          </div>
+          <div class="title">The Lightbend Family</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="main-wrapper">
+<div class="navigation-container" data-component="" data-version="master">
+  <aside class="navigation">
+    <div class="panels">
+<div class="navigation-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../stateless-limitations.html">Current limitations of Serverless platforms</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../crud-limitations.html">Rethinking CRUD</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cloudstate-solution.html">The Cloudstate solution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../working.html">Working with Cloudstate</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../examples.html">Example Applications</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../concepts/index.html">Important concepts</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/glossary.html">Glossary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/grpc.html">gRPC</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/crdts.html">Conflict-free replicated data types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/effects.html">Forwarding and effects</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../develop/index.html">Developing Cloudstate services</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/install.html">Installing Cloudstate</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/examples.html">Available Cloudstate examples</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/tutorial.html">The shopping cart tutorial</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../dart/index.html">Implementing in Dart</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../go/index.html">Implementing in Go</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../java/index.html">Implementing in Java</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/crdt.html">Conflict-free Replicated Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/effects.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/serialization.html">Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/api.html">Java API docs</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="index.html">Implementing in JavaScript</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crdt.html">Conflict-free Replicated Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="effects.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="api.html">JavaScript API docs</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kotlin/index.html">Implementing in Kotlin</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../python/index.html">Implementing in Python</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../springboot/index.html">Implementing in Spring Boot</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../dotnet/index.html">Implementing in .Net</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../deploy/index.html">Deploying to production systems</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/install-production.html">Setting up a production cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/deploying.html">Deploying stateful services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../deploy/stateful-stores.html">Stateful stores</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/cassandra.html">Cassandra</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/postgresql.html">PostgresSQL</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/inmemory.html">In memory store</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/monitoring.html">Monitoring</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/autoscaling.html">Autoscaling</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/security.html">Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../contribute/index.html">Contributing to the project</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/build-native.html">Building native images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/serialization.html">Serialization conventions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/language-support.html">Language support</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/knative-integration.html">Knative integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/graalvm-integration.html">GraalVM integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/testing.html">Testing</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="navigation-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Cloudstate</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Cloudstate</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+  <main class="main">
+<div class="toolbar" role="navigation">
+  <button class="navigation-toggle"></button>
+<nav class="crumbs" aria-label="breadcrumbs">
+  <ul>
+    <li class="crumb"><a href="index.html">Implementing in JavaScript</a></li>
+    <li class="crumb"><a href="eventsourced.html">Event sourcing</a></li>
+  </ul>
+</nav>
+</div>
+    <div class="col-content">
+<article id="page-content" class="doc">
+			<h1>Implementing event sourced entities</h1>
+
+		<fieldset class="supergroup-switch">
+
+
+		</fieldset>
+
+		<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This page documents how to implement Cloudstate event sourced entities in JavaScript. For information on what Cloudstate event sourced entities are, please read the general <a href="../concepts/eventsourced.html" class="page">Event sourcing</a> documentation first.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="persistence-types-and-serialization"><a class="anchor" href="#persistence-types-and-serialization"></a>Persistence types and serialization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Event sourced entities persist events and snapshots, and these need to be serialized when persisted. A snapshot is the current state of the entity, and so the entities state must be serializable. The most straight forward way to persist events and the state is to use protobufs. Cloudstate will automatically detect if an emitted event or snapshot is a protobuf, and serialize it as such using <code>protobufjs</code>. See <a href="https://www.npmjs.com/package/protobufjs" class="bare">https://www.npmjs.com/package/protobufjs</a> for more information on <code>protobufjs</code>. For other serialization options, including JSON, see <a href="serialization.html" class="page">Serialization</a>.</p>
+</div>
+<div class="paragraph">
+<p>While protobufs are the recommended format for persisting events, it is recommended that you do not persist your services protobuf messages, rather, you should create new messages, even if they are identical to the services. While this may introduce some overhead in needing to convert from one type to the other, the reason for doing this is that it will allow the services public interface to evolve independently from its data storage format, which should be private.</p>
+</div>
+<div class="paragraph">
+<p>For our shopping cart example, we&#8217;ll create a new file called <code>domain.proto</code>, the name domain is selected to indicate that these are my applications domain objects:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package example.shoppingcart.domain;
+
+message LineItem {
+    string productId = 1;
+    string name = 2;
+    int32 quantity = 3;
+}
+
+message ItemAdded {
+    LineItem item = 1;
+}
+
+message ItemRemoved {
+    string productId = 1;
+}
+
+message CheckedOut {}
+
+message Cart {
+    repeated LineItem items = 1;
+    bool checkedout = 2;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this file, the <code>Cart</code> message is the state, while <code>ItemAdded</code> and <code>ItemRemoved</code> are events. Note that the events are in past tense - events are facts, indisputable things that happened in the past. A fact never becomes false, once you&#8217;ve added an item to a shopping cart, it never becomes untrue that that item was added to the cart. It may be removed later, but that doesn&#8217;t change the fact that it was added, it only changes the current state of the cart, not what happened in the past. The names of your events should always be in past tense, communicating the indisputable fact that they represent.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creating-an-entity"><a class="anchor" href="#creating-an-entity"></a>Creating an entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An event sourced entity can be created using the <a href="_attachments/api/module-cloudstate.EventSourced.html">EventSourced</a> class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">const EventSourced = require("cloudstate").EventSourced;
+
+const entity = new EventSourced(
+    ["shoppingcart.proto", "domain.proto"],
+    "example.shoppingcart.ShoppingCartService",
+    {
+        persistenceId: "shopping-cart",
+        snapshotEvery: 100
+    }
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we pass in the protobuf files that contain our service and our domain protocol, <code>shoppingcart.proto</code> and <code>domain.proto</code>. Cloudstate needs the protobuf file that your service lives in so that it can load it and read it. It also needs the protobuf file that your domain events and snapshots are in so that when it receives these events and snapshots from the proxy, and can know how to deserialize them.</p>
+</div>
+<div class="paragraph">
+<p>We also pass in the fully qualified name of the service our event sourced entity implements, <code>example.shoppingcart.ShoppingCartService</code>. We also are specifying some options.</p>
+</div>
+<div class="paragraph">
+<p>The <code>persistenceId</code> is used to namespace events in the journal, useful for when you share the same database between multiple entities. It defaults to <code>entity</code>, so it&#8217;s a good idea to select one explicitly.</p>
+</div>
+<div class="paragraph">
+<p>The <code>snapshotEvery</code> parameter controls how often snapshots are taken, so that the entity doesn&#8217;t need to be recovered from the whole journal each time it&#8217;s loaded. If left unset, it defaults to 100. Setting it to a negative number will result in snapshots never being taken. Typically, leaving it at the default is good enough, we only recommend changing it if you have specific data from performance tests to justify a change.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-protobuf-types"><a class="anchor" href="#using-protobuf-types"></a>Using protobuf types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you pass an event or snapshot to Cloudstate to persist, it needs to know how to serialize that. Simply passing a regular object does not provide enough information to know how protobuf should serialize the objects. Hence, any event or snapshot types that you want to use, you have to lookup the protobuf type for, and then use the <code>create</code> method to create it.</p>
+</div>
+<div class="paragraph">
+<p>The <code>EventSourced</code> class provides a helper method called <a href="_attachments/api/module-cloudstate.EventSourced.html#lookupType"><code>lookupType</code></a> to facilitate this. So before implementing anything, we&#8217;ll look up these types so we can use them later.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">const pkg = "example.shoppingcart.domain.";
+const ItemAdded = entity.lookupType(pkg + "ItemAdded");
+const ItemRemoved = entity.lookupType(pkg + "ItemRemoved");
+const Cart = entity.lookupType(pkg + "Cart");</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="initial-state"><a class="anchor" href="#initial-state"></a>Initial state</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When there are no snapshots persisted for an entity (such as when the entity is first created), the entity needs to have an initial state. Note that event sourced entities are not explicitly created, they are implicitly created when a command arrives for them. Additionally, creating an entity doesn&#8217;t mean anything is persisted, nothing is persisted until an event is created for that entity. So, if user "X" opens their shopping cart for the first time, an entity will be created, but it will have no events in the log yet, and just be in the initial state.</p>
+</div>
+<div class="paragraph">
+<p>To create the initial state, we set the <a href="_attachments/api/module-cloudstate.EventSourced.html#initial"><code>initial</code></a> callback. This takes the id of the entity being created, and returns a new empty state, in this case, an empty shopping cart:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">entity.initial = entityId =&gt; Cart.create({items: []});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the use of <code>Cart.create()</code>, this creates a protobuf message using the <code>Cart</code> protobuf message type that we looked up earlier.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="behavior"><a class="anchor" href="#behavior"></a>Behavior</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now we need to define the behavior for our entity. The behavior consists of two parts, command handlers, and event handlers.</p>
+</div>
+<div class="sect2">
+<h3 id="command-handlers"><a class="anchor" href="#command-handlers"></a>Command handlers</h3>
+<div class="paragraph">
+<p>A <a href="_attachments/api/module-cloudstate.EventSourced.html#~commandHandler">command handler</a> is a function that takes a command, the current state, and an <a href="_attachments/api/module-cloudstate.EventSourced.EventSourcedCommandContext.html"><code>EventSourcedCommandContext</code></a>. It implements a service call on the entities gRPC interface.</p>
+</div>
+<div class="paragraph">
+<p>The command is the input message type for the gRPC service call. For example, the <code>GetCart</code> service call has an input type of <code>GetShoppingCart</code>, while the <code>AddItem</code> service call has an input type of <code>AddLineItem</code>. The command will be an object that matches the structure of these protobuf types.</p>
+</div>
+<div class="paragraph">
+<p>The command handler must return a message of the same type as the output type of the gRPC service call, in the case of our <code>GetCart</code> command, this must be a <code>Cart</code> message. Note that unlike for the state and events, this message does not need to be created using a looked up protobuf message type - Cloudstate already knows the output type of the gRPC service call and so can infer it itself. It only has to be a plain JavaScript object that matches the structure of the protobuf type.</p>
+</div>
+<div class="paragraph">
+<p>The following shows the implementation of the <code>GetCart</code> command handler. This command handler is a read-only command handler, it doesn&#8217;t emit any events, it just returns some state:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">function getCart(request, cart) {
+    return cart;
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="emitting-events"><a class="anchor" href="#emitting-events"></a>Emitting events</h4>
+<div class="paragraph">
+<p>Commands that modify the state MUST do so by emitting events.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The <strong>only</strong> way a command handler may modify its state is by emitting an event. Any modifications made directly to the state from the command handler will not be persisted, and will be lost as soon as the command handler finishes executing.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A command handler may emit an event by using the <a href="_attachments/api/module-cloudstate.EventSourced.EventSourcedCommandContext.html#emit"><code>emit</code></a> method on the <code>EventSourcedCommandContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s an example of a command handler that emits an event:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">function addItem(addItem, cart, ctx) {
+    if (addItem.quantity &lt; 1) {
+        ctx.fail("Cannot add negative quantity to item " + addItem.productId);
+    } else {
+        const itemAdded = ItemAdded.create({
+            item: {
+                productId: addItem.productId,
+                name: addItem.name,
+                quantity: addItem.quantity
+            }
+        });
+        ctx.emit(itemAdded);
+        return {};
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command handler also validates the command, ensuring the quantity items added is greater than zero. Invoking <a href="_attachments/api/module-cloudstate.EventSourced.EventSourcedCommandContext.html#fail"><code>fail</code></a> fails the command - this method throws so there&#8217;s no need to explicitly throw an exception.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="event-handlers"><a class="anchor" href="#event-handlers"></a>Event handlers</h3>
+<div class="paragraph">
+<p>An <a href="_attachments/api/module-cloudstate.EventSourced.html#~eventHandler">event handler</a> is invoked at two points, when restoring entities from the journal, before any commands are handled, and each time a new event is emitted. An event handlers responsibility is to update the state of the entity according to the event. Event handlers are the only place where its safe to mutate the state of the entity at all.</p>
+</div>
+<div class="paragraph">
+<p>An event handler must be declared for each type of event that gets emitted. The type is defined by the protobuf message type in the case of protobuf events, or the <code>type</code> property on a JSON object in the case of JSON events. The mapping for these type names to functions will be discussed later, for now we&#8217;ll just look at the functions.</p>
+</div>
+<div class="paragraph">
+<p>Event handlers take the event they are handling, and the state, and must return the new state. The handler may update the existing state passed in, but it still has to return that state as its return value.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s an example event handler for the <code>ItemAdded</code> event:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">function itemAdded(added, cart) {
+    const existing = cart.items.find(item =&gt; {
+        return item.productId === added.item.productId;
+    });
+
+    if (existing) {
+        existing.quantity = existing.quantity + added.item.quantity;
+    } else {
+        cart.items.push(added.item);
+    }
+
+    return cart;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setting-the-behavior"><a class="anchor" href="#setting-the-behavior"></a>Setting the behavior</h3>
+<div class="paragraph">
+<p>Once you have your command handler and event handler functions implemented, you can now set your behavior. The <a href="_attachments/api/module-cloudstate.EventSourced.html#~behaviorCallback">behavior callback</a> takes the current state of the entity, and returns an object with two properties, <code>commandHandlers</code> and <code>eventHandlers</code>. The callback may return different sets of handlers according to the current state, this will be explored more <a href="#multiple-behaviors">a little later</a>, for now we&#8217;ll just implement an entity with one set of handlers.</p>
+</div>
+<div class="paragraph">
+<p>The behavior callback can be set by setting the <a href="_attachments/api/module-cloudstate.EventSourced.html#behavior"><code>behavior</code></a> property on the entity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">entity.behavior = cart =&gt; {
+    return {
+        commandHandlers: {
+            AddItem: addItem,
+            RemoveItem: removeItem,
+            GetCart: getCart
+        },
+        eventHandlers: {
+            ItemAdded: itemAdded,
+            ItemRemoved: itemRemoved
+        }
+    };
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The command handlers are a mapping of the gRPC service call names to the command handler functions we implemented. Note the names, as in the gRPC convention for service call names, are upper cased.</p>
+</div>
+<div class="paragraph">
+<p>The event handlers are a mapping of event names to the event handler functions that we implemented. The event names must match the type of the events that are being persisted. In the case of protobuf messages, this is either the fully qualified name of the protobuf message, or the unqualified name of the protobuf message. For JSON messages, this is the value of the <code>type</code> property in the message.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="multiple-behaviors"><a class="anchor" href="#multiple-behaviors"></a>Multiple behaviors</h3>
+<div class="paragraph">
+<p>In the examples above, our shopping cart entity only has one behavior. An entity may have different states, where command and event handling may differ according to the state it is currently in. While this could be implemented using if statements in the handlers, Cloudstate also provides multiple behavior support, so that an entity can change its behavior. This multiple behavior support allows implementing entities as finite state machines.</p>
+</div>
+<div class="paragraph">
+<p>The entities behavior can be changed by returning different sets of handlers from the <code>behavior</code> callback after inspecting the state. This callback is invoked each time a handler is needed, so there&#8217;s no need to explicitly transition behaviors.</p>
+</div>
+<div class="paragraph">
+<p>In the example below, we show a shopping cart that also has a checkout command. Once checked out, the shopping cart no longer accepts any commands to add or remove items, its state and therefore behavior changes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">function checkout(checkout, cart, ctx) {
+    ctx.emit(CheckedOut.create({}));
+    return {};
+}
+
+function checkedOut(checkedOut, cart) {
+    cart.checkedOut = true;
+    return cart;
+}
+
+function alreadyCheckedOut(cmd, state, ctx) {
+    ctx.fail("Cart is already checked out!");
+}
+
+entity.behavior = cart =&gt; {
+    if (cart.checkedout) {
+        return {
+            commandHandlers: {
+                AddItem: alreadyCheckedOut,
+                RemoveItem: alreadyCheckedOut,
+                Checkout: alreadyCheckedOut,
+                GetCart: getCart
+            },
+            eventHandlers : {}
+        };
+    } else {
+        return {
+            commandHandlers: {
+                AddItem: addItem,
+                RemoveItem: removeItem,
+                Checkout: checkout,
+                GetCart: getCart
+            },
+            eventHandlers: {
+                ItemAdded: itemAdded,
+                ItemRemoved: itemRemoved,
+                CheckedOut: checkedOut
+            }
+        };
+    }
+};</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="starting-the-entity"><a class="anchor" href="#starting-the-entity"></a>Starting the entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you only have a single entity, as a convenience, you can start it directly, by invoking the <a href="_attachments/api/module-cloudstate.EventSourced.html#start"><code>start</code></a> method, like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">entity.start();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can add it to the <code>Cloudstate</code> server explicitly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">const CloudState = require("cloudstate").CloudState;
+const server = new CloudState();
+server.addEntity(entity);</code></pre>
+</div>
+</div>
+</div>
+</div>
+		<nav class="pagination">
+  <span class="prev"><a href="getting-started.html">Getting started</a></span>
+  <span class="next"><a href="crdt.html">Conflict-free Replicated Data Types</a></span>
+</nav>
+</article>
+<aside class="toc sidebar">
+  <div class="toc-menu"></div>
+</aside>
+    </div>
+<div class="main-footer">
+  <div class="page-source">
+Found an error in this documentation? Please feel free to <a href="https://github.com/cloudstateio/cloudstate/edit/master/node-support/docs/src/modules/javascript/pages/eventsourced.adoc">edit this page</a> and contribute a pull request.
+</div>
+  <div class="footer-box">
+    <footer class="footer">
+      <div class="footer-logo"><a href="https://cloudstate.io"><img src="../_/img/cloudstate-color.svg"></a></div>
+      <div class="footer-content">© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="https:///cloudstate.io/privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></div>
+    </footer>
+  </div>
+</div>
+  </main>
+</div>
+<!--Footer Scripts Global-->
+<script src="../_/js/site.js"></script>
+<script src="../_/js/vendor/highlight.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="../_/js/vendor/groups.js"></script>
+<script>hljs.initHighlighting()</script>
+<script src="../_/js/vendor/jquery.waypoints.min.js"></script>
+<script src="../_/js/vendor/inview.min.js"></script>
+
+<script>
+(function($) {
+	$(function() {
+		
+		var pageViewedTriggerElement = '#page-content';
+		//override #page-content if a custom trigger is present in page
+		if($("#page-viewed-trigger").length){
+			pageViewedTriggerElement = '#page-viewed-trigger';
+		}
+
+		var inview = new Waypoint.Inview({
+			element: $(pageViewedTriggerElement)[0],
+				entered: function(direction) {
+				//fire custom Jquery event that Marketo can listen for
+				$.event.trigger({
+					type: "pageContentViewed"
+				});
+			}
+		})
+
+	});
+})(jQuery);
+</script>
+
+<!--Marketo-->
+<script>
+
+    //store munchkin status to use in other functions
+    var munchkinLive = false;
+
+    //marketo munchkin
+    (function() {
+      var didInit = false;
+      function initMunchkin() {
+        if(didInit === false) {
+          didInit = true;
+          Munchkin.init('558-NCX-702', { 'asyncOnly': true, 'disableClickDelay': true });
+          munchkinLive = true;
+        }
+      }
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = '//munchkin.marketo.net/munchkin.js';
+      s.onreadystatechange = function() {
+        if (this.readyState == 'complete' || this.readyState == 'loaded') {
+          initMunchkin();
+        }
+      };
+      s.onload = initMunchkin;
+      document.getElementsByTagName('head')[0].appendChild(s);
+    })();
+
+
+    //wait for jquery as we use a custom jquery event, triggered by waypoint.
+    (function($) {
+      $(function() {
+        var pageViewed = false;
+        
+        $(document).on("pageContentViewed", handlePageContentViewed);
+        
+        function handlePageContentViewed(e) {
+          var viewedPagePath = "/viewed"+window.location.pathname;
+          if(!pageViewed && munchkinLive){
+            Munchkin.munchkinFunction('visitWebPage', {
+              'url': viewedPagePath
+              }
+            );
+            pageViewed = true;
+          }
+        };
+
+
+      });
+    })(jQuery);
+
+</script><!--Footer Scripts Cloudstate-->
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+  </body>
+</html>

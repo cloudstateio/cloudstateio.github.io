@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conflict-free Replicated Data Types :: Cloudstate Documentation</title>
+
+<link rel="stylesheet" href="../_/css/site.css?v-01">
+<link rel="shortcut icon" href="../_/img/favicon.ico" />
+
+<meta itemprop="name" content="Conflict-free Replicated Data Types | Cloudstate Documentation">
+<meta name="twitter:title" content="Conflict-free Replicated Data Types | Cloudstate Documentation">
+<meta property="og:title" content="Conflict-free Replicated Data Types | Cloudstate Documentation" />
+
+<meta property="og:type" content="website" />
+
+<meta name="generator" content="Antora 2.3.3">
+
+<link rel="canonical" href="https://cloudstate.io/docs/java/crdt.html">
+<meta property="og:url" content="https://cloudstate.io/docs/java/crdt.html" />
+
+
+
+<meta property="og:site_name" content="Cloudstate Documentation" />
+<meta name="author" content="Cloudstate Documentation">
+<meta itemprop="image" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png">
+<meta name="twitter:image:src" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png">
+<meta property="og:image" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png" />
+<meta property="og:image:secure_url" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png" />
+<!--Head Scripts -->
+<script src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js" type="text/javascript" charset="UTF-8"></script>
+<!--Head Scripts YouTube Embed-->
+<script type="text/javascript">
+	var ytID;
+	function OptanonWrapper() {
+		//find each YouTube embed and only load if cookies have been approved
+		$( "a.yt-widget" ).each(function( index ) {
+			var anchor = $(this);
+			var ytURL = $(this).attr("href");
+			var queryString = anchor[0].search;
+			let params = new URLSearchParams(queryString);
+			ytID = params.get("v");
+			$(this).before('<div class="flex-video-wrapper"><div class="flex-video"><div id="yt-'+ytID+'" class="cookie-warning youtube-warning"><a class="optanon-allow-all">Accept cookies to view video</a><span>Alternatively you can watch the video <a href="'+ytURL+'" target="_blank">here on YouTube</a></span></div></div></div>');
+			$(this).removeAttr("href").removeClass("yt-widget").addClass("yt-widget-hide");
+		});
+
+		$( ".youtube-warning" ).each(function( index ) {
+			Optanon.InsertHtml('<iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/'+ytID+'?rel=0&modestbranding=0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>', 'yt-'+ytID, null, {deleteSelectorContent: true}, 4);
+		});
+	}
+</script>  </head>
+  <body class="article  cloudstate">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://cloudstate.io">
+        <img class="header-logo" src="../_/img/cloudstate-reverse.svg">
+      </a>
+      <a href="https://cloudstate.io/docs/" id="site-id" class="site-id">Documentation</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+  <div class="wrapper">
+    <div class="nav">
+      <a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your apps with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">
+        <span class="banner-btn-text">Enhance your apps with</span>
+        <img class="lightbend-logo" src="../_/img/lightbend-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+      </a>
+      <div class="drop-down">
+        <svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+          <g>
+            <circle cx="10" cy="10" r="9" />
+            <path d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+            c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z" />
+          </g>
+        </svg>
+        <div class="drop-down-content">
+          <div class="lightbend-family">
+            <a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+              <img class="akka-full-color-logo" src="../_/img/lightbend-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+            </a>
+            <a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+              <img class="cloudflow-full-color-logo" src="../_/img/lightbend-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+            </a>
+            <a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+              <img class="lagom-full-color-logo" src="../_/img/lightbend-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+            </a>
+            <a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+              <img class="play-full-color-logo" src="../_/img/lightbend-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+            </a>
+            <a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+              <img class="scala-full-color-logo" src="../_/img/lightbend-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+            </a>
+            <div class="cloudstate current">
+              <img class="cloudstate-full-color-logo" src="../_/img/lightbend-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+              <span>Get developer assistance and expert support from Lightbend.</span>
+              <a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+            </div>
+          </div>
+          <div class="title">The Lightbend Family</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="main-wrapper">
+<div class="navigation-container" data-component="" data-version="master">
+  <aside class="navigation">
+    <div class="panels">
+<div class="navigation-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../stateless-limitations.html">Current limitations of Serverless platforms</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../crud-limitations.html">Rethinking CRUD</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cloudstate-solution.html">The Cloudstate solution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../working.html">Working with Cloudstate</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../examples.html">Example Applications</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../concepts/index.html">Important concepts</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/glossary.html">Glossary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/grpc.html">gRPC</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/crdts.html">Conflict-free replicated data types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/effects.html">Forwarding and effects</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../develop/index.html">Developing Cloudstate services</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/install.html">Installing Cloudstate</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/examples.html">Available Cloudstate examples</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/tutorial.html">The shopping cart tutorial</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../dart/index.html">Implementing in Dart</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../go/index.html">Implementing in Go</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="index.html">Implementing in Java</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="crdt.html">Conflict-free Replicated Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="effects.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="api.html">Java API docs</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../javascript/index.html">Implementing in JavaScript</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/crdt.html">Conflict-free Replicated Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/effects.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/serialization.html">Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/api.html">JavaScript API docs</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kotlin/index.html">Implementing in Kotlin</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../python/index.html">Implementing in Python</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../springboot/index.html">Implementing in Spring Boot</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../dotnet/index.html">Implementing in .Net</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../deploy/index.html">Deploying to production systems</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/install-production.html">Setting up a production cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/deploying.html">Deploying stateful services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../deploy/stateful-stores.html">Stateful stores</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/cassandra.html">Cassandra</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/postgresql.html">PostgresSQL</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/inmemory.html">In memory store</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/monitoring.html">Monitoring</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/autoscaling.html">Autoscaling</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/security.html">Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../contribute/index.html">Contributing to the project</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/build-native.html">Building native images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/serialization.html">Serialization conventions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/language-support.html">Language support</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/knative-integration.html">Knative integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/graalvm-integration.html">GraalVM integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/testing.html">Testing</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="navigation-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Cloudstate</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Cloudstate</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+  <main class="main">
+<div class="toolbar" role="navigation">
+  <button class="navigation-toggle"></button>
+<nav class="crumbs" aria-label="breadcrumbs">
+  <ul>
+    <li class="crumb"><a href="index.html">Implementing in Java</a></li>
+    <li class="crumb"><a href="crdt.html">Conflict-free Replicated Data Types</a></li>
+  </ul>
+</nav>
+</div>
+    <div class="col-content">
+<article id="page-content" class="doc">
+			<h1>Conflict-free Replicated Data Types</h1>
+
+		<fieldset class="supergroup-switch">
+
+
+		</fieldset>
+
+		<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This page documents how to implement Cloudstate CRDT entities in Java. For information on what Cloudstate CRDT entities are, please read the general <a href="../concepts/crdts.html" class="page">Conflict-free Replicated Data Type</a> documentation first.</p>
+</div>
+<div class="paragraph">
+<p>A CRDT can be created by annotating it with the <a href="_attachments/api/io/cloudstate/javasupport/crdt/CrdtEntity.html"><code>@CrdtEntity</code></a> annotation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CrdtEntity
+public class ShoppingCartEntity {</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="accessing-and-creating-an-entitys-crdt"><a class="anchor" href="#accessing-and-creating-an-entitys-crdt"></a>Accessing and creating an entity&#8217;s CRDT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each CRDT entity manages one root CRDT. That CRDT will either be supplied to the entity by the proxy when it is started, or, if no CRDT exists for the entity when it is started, it can be created by the entity using a <a href="_attachments/api/io/cloudstate/javasupport/crdt/CrdtFactory.html"><code>CrdtFactory</code></a> extending context.</p>
+</div>
+<div class="paragraph">
+<p>There are multiple ways that a CRDT entity may access its CRDT. It may have the CRDT injected directly into its constructor or a command handler - the value can be wrapped in an <code>Optional</code> to distinguish between entities that have been created and CRDTs that have not yet been created. If not wrapped in <code>Optional</code>, the CRDT will be created automatically, according to its type. The CRDT can also be read from any <a href="_attachments/api/io/cloudstate/javasupport/crdt/CrdtContext.html"><code>CrdtContext</code></a> via the <a href="_attachments/api/io/cloudstate/javasupport/crdt/CrdtContext.html#state-java.lang.Class-"><code>state</code></a> method.</p>
+</div>
+<div class="paragraph">
+<p>An entity&#8217;s CRDT can be created from the entity&#8217;s constructor using the <code>CrdtFactory</code> methods on <a href="_attachments/api/io/cloudstate/javasupport/crdt/CrdtCreationContext.html"><code>CrdtCreationContext</code></a>, or using the same methods in a command handler using the <a href="_attachments/api/io/cloudstate/javasupport/crdt/CommandContext.html"><code>CommandContext</code></a>. Note that the CRDT may only be created once, and only if it hasn&#8217;t been provided by the CloudState proxy already. Any attempt to create a CRDT when one already exists will throw an <code>IllegalStateException</code>.</p>
+</div>
+<div class="paragraph">
+<p>For most use cases, simply injecting the CRDT directly into the constructor, and storing in a local field, will be the most convenient and straightforward method of using a CRDT. In our shopping cart example, we&#8217;re going to use an <a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegisterMap.html"><code>LWWRegisterMap</code></a>, this shows how it may be injected:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">private final LWWRegisterMap&lt;String, Shoppingcart.LineItem&gt; items;
+
+public ShoppingCartEntity(LWWRegisterMap&lt;String, Shoppingcart.LineItem&gt; items) {
+  this.items = items;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In addition to the CRDT, the constructor may accept a <a href="_attachments/api/io/cloudstate/javasupport/crdt/CrdtCreationContext.html"><code>CrdtCreationContext</code></a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="handling-commands"><a class="anchor" href="#handling-commands"></a>Handling commands</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Command handlers can be declared by annotating a method with <a href="_attachments/api/io/cloudstate/javasupport/crdt/CommandHandler.html"><code>@CommandHandler</code></a>. They take a context class of type <a href="_attachments/api/io/cloudstate/javasupport/crdt/CommandContext.html"><code>CommandContext</code></a>.</p>
+</div>
+<div class="paragraph">
+<p>By default, the name of the command that the method handles will be the name of the method with the first letter capitalized. So, a method called <code>getCart</code> will handle gRPC service call command named <code>GetCart</code>. This can be overridden by setting the <code>name</code> parameter on the <code>@CommandHandler</code> annotation.</p>
+</div>
+<div class="paragraph">
+<p>The command handler also can take the gRPC service call input type as a parameter, to receive the command message. This is optional, sometimes it&#8217;s not needed. For example, our <code>GetCart</code> service call doesn&#8217;t need any information from the message, since it&#8217;s just returning the current state as is. Meanwhile, the <code>AddItem</code> service call does need information from the message, since it needs to know the product id, description and quantity to add to the cart.</p>
+</div>
+<div class="paragraph">
+<p>The return type of the command handler must be the output type for the gRPC service call, this will be sent as the reply.</p>
+</div>
+<div class="paragraph">
+<p>The following shows the implementation of the <code>GetCart</code> command handler. This command handler is a read-only command handler, it doesn&#8217;t update the CRDT, it just returns some state:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CommandHandler
+public Shoppingcart.Cart getCart() {
+  return Shoppingcart.Cart.newBuilder().addAllItems(items.values()).build();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="updating-a-crdt"><a class="anchor" href="#updating-a-crdt"></a>Updating a CRDT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Due to CloudState&#8217;s <a href="../concepts/crdts.html#approach-to-crdts-in-cloudstate" class="page">take in turns approach</a>, CRDTs may only be updated in command handlers and <a href="#responding-to-stream-cancellation">stream cancellation callbacks</a>.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s a command handler for the <code>AddItem</code> command that adds the item to the shopping cart:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CommandHandler
+public Empty addItem(Shoppingcart.AddLineItem item, CommandContext ctx) {
+  if (item.getQuantity() &lt;= 0) {
+    ctx.fail("Cannot add a negative quantity of items.");
+  }
+  if (items.containsKey(item.getProductId())) {
+    items.computeIfPresent(
+        item.getProductId(),
+        (id, old) -&gt; old.toBuilder().setQuantity(old.getQuantity() + item.getQuantity()).build());
+  } else {
+    items.put(
+        item.getProductId(),
+        Shoppingcart.LineItem.newBuilder()
+            .setProductId(item.getProductId())
+            .setName(item.getName())
+            .setQuantity(item.getQuantity())
+            .build());
+  }
+  return Empty.getDefaultInstance();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="deleting-a-crdt"><a class="anchor" href="#deleting-a-crdt"></a>Deleting a CRDT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A CRDT can be deleted by invoking <a href="_attachments/api/io/cloudstate/javasupport/crdt/CommandContext.html#delete--"><code>CommandContext.delete</code></a>. Once a CRDT is deleted, the entity will be shut down, and all subsequent commands for the entity will be rejected.</p>
+</div>
+<div class="paragraph">
+<p>Caution should be taken when deleting CRDTs - the Reference Implementation of the proxy needs to maintain tombstones for each CRDT deleted, so over time, if many CRDTs are created and deleted, this will result in not just running out of memory, but increased network usage as the tombstones still need to be gossipped through the cluster for replication.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="streamed-command-handlers"><a class="anchor" href="#streamed-command-handlers"></a>Streamed command handlers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Streamed commands can be used to receive and publish updates to the state. If a gRPC service call has a streamed result type, the handler for that call can accept a <a href="_attachments/api/io/cloudstate/javasupport/crdt/StreamedCommandContext.html"><code>StreamedCommandContext</code></a>, and use that to register callbacks.</p>
+</div>
+<div class="sect2">
+<h3 id="responding-to-changes"><a class="anchor" href="#responding-to-changes"></a>Responding to changes</h3>
+<div class="paragraph">
+<p>If the command handler wishes to publish changes to the stream it can register a callback with <a href="_attachments/api/io/cloudstate/javasupport/crdt/StreamedCommandContext.html#onChange-java.util.function.Function-"><code>onChange</code></a>, which will be invoked every time the CRDT changes.</p>
+</div>
+<div class="paragraph">
+<p>The callback is then able to return a message to be sent to the client (or empty, if it wishes to send no message in response to that particular change). The callback may not modify the CRDT itself, but it may emit effects that may modify the CRDT.</p>
+</div>
+<div class="paragraph">
+<p>If the shopping cart service had a <code>WatchCart</code> call, like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">rpc WatchCart(GetShoppingCart) returns (stream Cart);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>that could be implemented like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@CommandHandler
+public Shoppingcart.Cart watchCart(StreamedCommandContext&lt;Shoppingcart.Cart&gt; ctx) {
+
+  ctx.onChange(subscription -&gt; Optional.of(getCart()));
+
+  return getCart();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ending-the-stream"><a class="anchor" href="#ending-the-stream"></a>Ending the stream</h3>
+<div class="paragraph">
+<p>The <code>onChange</code> callback can end the stream by invoking <a href="_attachments/api/io/cloudstate/javasupport/crdt/SubscriptionContext.html#endStream--"><code>endStream</code></a> on the <a href="_attachments/api/io/cloudstate/javasupport/crdt/SubscriptionContext.html"><code>SubscriptionContext</code></a> it is passed. If it does this, it will not receive an <code>onCancel</code> callback.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="responding-to-stream-cancellation"><a class="anchor" href="#responding-to-stream-cancellation"></a>Responding to stream cancellation</h3>
+<div class="paragraph">
+<p>A streamed command handler may also register an <a href="_attachments/api/io/cloudstate/javasupport/crdt/StreamedCommandContext.html#onCancel-java.util.function.Consumer-"><code>onCancel</code></a> callback to be notified when the stream is cancelled. The cancellation callback handler may update the CRDT. This is useful if the CRDT is being used to track connections, for example, when using <a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html"><code>Vote</code></a> CRDTs to track a user&#8217;s online status.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="types-of-crdts"><a class="anchor" href="#types-of-crdts"></a>Types of CRDTs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Cloudstate Java support library offers Java classes for each of the <a href="../concepts/crdts.html#crdts-available-in-cloudstate" class="page">CRDTs available in Cloudstate</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="counters-and-flags"><a class="anchor" href="#counters-and-flags"></a>Counters and flags</h3>
+<div class="paragraph">
+<p><a href="_attachments/api/io/cloudstate/javasupport/crdt/GCounter.html"><code>GCounter</code></a>, <a href="_attachments/api/io/cloudstate/javasupport/crdt/PNCounter.html"><code>PNCounter</code></a> and <a href="_attachments/api/io/cloudstate/javasupport/crdt/Flag.html"><code>Flag</code></a> are available, offering operations relevant to each CRDT.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="vote"><a class="anchor" href="#vote"></a>Vote</h3>
+<div class="paragraph">
+<p><a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html"><code>Vote</code></a> is available for the Vote CRDT. The Vote CRDT allows updating the current node&#8217;s vote using the <a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html#vote-boolean-"><code>vote</code></a> method, the current nodes vote can be queried using the <a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html#getSelfVote--"><code>getSelfVote</code></a> method.</p>
+</div>
+<div class="paragraph">
+<p>For determining the result of a vote, <a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html#getVoters--"><code>getVoters</code></a> and <a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html#getVotesFor--"><code>getVotesFor</code></a> can be used to check the total number of nodes, and the number of nodes that have voted for the condition, respectively. In addition, convenience methods are provided for common vote decision approaches, <a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html#isAtLeastOne--"><code>isAtLeastOne</code></a> returns true if there is at least one voter for the condition, <a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html#isMajority--"><code>isMajority</code></a> returns true if the number of votes for is more than half the number of voters, and <a href="_attachments/api/io/cloudstate/javasupport/crdt/Vote.html#isUnanimous--"><code>isUnanimous</code></a> returns true if the number of votes for equals the number of voters.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="registers"><a class="anchor" href="#registers"></a>Registers</h3>
+<div class="paragraph">
+<p><a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegister.html"><code>LWWRegister</code></a> provides the LWWRegister CRDT. It can be interacted with using the <a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegister.html#set-T-"><code>set</code></a> and <a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegister.html#get--"><code>get</code></a> methods. If you wish to use a custom clock, you can use the <a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegister.html#set-T-io.cloudstate.javasupport.crdt.LWWRegister.Clock-long-"><code>set</code></a> overload that allows passing a custom clock and custom clock value.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Direct mutations to <a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegister.html"><code>LWWRegister</code></a> and <a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegisterMap.html"><code>LWWRegisterMap</code></a> values will not be replicated to other nodes, only mutations triggered through using the <a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegister.html#set-T-"><code>set</code></a> and <a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegisterMap.html#put-K-V-"><code>put</code></a> methods will be replicated. Hence, the following update will not be replicated:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">myLwwRegister.get().setSomeField("foo");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This update however will be replicated:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MyValue myValue = myLwwRegister.get();
+myValue.setSomeField("foo");
+myLwwRegister.set(myValue);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In general, we recommend that these values be immutable, as this will prevent accidentally mutating without realising the update won&#8217;t be applied. If using protobufs as values, this will be straightforward, since compiled protobuf classes are immutable.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sets-and-maps"><a class="anchor" href="#sets-and-maps"></a>Sets and Maps</h3>
+<div class="paragraph">
+<p>Cloudstate Java support provides <a href="_attachments/api/io/cloudstate/javasupport/crdt/GSet.html"><code>GSet</code></a> and <a href="_attachments/api/io/cloudstate/javasupport/crdt/ORSet.html"><code>ORSet</code></a> that implement the <code>java.util.Set</code> interface, and <a href="_attachments/api/io/cloudstate/javasupport/crdt/ORMap.html"><code>ORMap</code></a> that implements the <code>java.util.Map</code>. However, not all operations are implemented - <code>GSet</code> doesn&#8217;t support any removal operations, and <code>ORMap</code> does not support any operations that would replace an existing value in the map.</p>
+</div>
+<div class="paragraph">
+<p>To insert a value into an <code>ORMap</code>, you should use the <a href="_attachments/api/io/cloudstate/javasupport/crdt/ORMap.html#getOrCreate-K-java.util.function.Function-"><code>getOrCreate</code></a> method. The passed in callback will give you a <a href="_attachments/api/io/cloudstate/javasupport/crdt/CrdtFactory.html"><code>CrdtFactory</code></a> that you can use to create the CRDT value that you wish to use.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>With all maps and sets, map keys and set values must be immutable. Cloudstate ignores the individual mutation of the key or value (not replicated to other nodes). Furthermore, their serialized form must be stable.
+The Cloudstate proxy uses the serialized form of the values to track changes in the set or map. If the same value serializes to two different sets of bytes on different occasions, they will be treated as different elements in the set or map.</p>
+</div>
+<div class="paragraph">
+<p>This is particularly relevant when using protobufs. The ordering of map entries in a serialized protobuf is undefined, and very often will be different for two equal maps. Hence, maps should never be used as keys in <code>ORMap</code> or as values in <code>GSet</code>, <code>ORSet</code>.
+For the rest of the protobuf specification, while no guarantees are made on the stability by the protobuf specification itself, the Java libraries do produce stable orderings of fields and stable output of non-map values. Care should be taken when changing the protobuf structure. Many changes, that are backwards compatible from a protobuf standpoint, do not necessarily translate into stable serializations.</p>
+</div>
+<div class="paragraph">
+<p>If using JSON serialization, it is recommended that you explicitly define the field ordering using Jackson&#8217;s <code>@JsonPropertyOrder</code> annotation, and as with protobufs, never use <code>Map</code> or <code>Set</code> in your JSON objects since the ordering of those is not stable.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Some wrapper classes are also provided for ORMap. These provide more convenient APIs for working with values of particular CRDT types. They are:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><a href="_attachments/api/io/cloudstate/javasupport/crdt/LWWRegisterMap.html"><code>LWWRegisterMap</code></a></dt>
+<dd>
+<p>A map of LWWRegister values. This exposes the LWWRegister values as values directly in the map.</p>
+</dd>
+<dt class="hdlist1"><a href="_attachments/api/io/cloudstate/javasupport/crdt/PNCounterMap.html"><code>PNCounterMap</code></a></dt>
+<dd>
+<p>A map of PNCounter values. This exposes the current value of the PNCounters directly as values in the map, and offers <a href="_attachments/api/io/cloudstate/javasupport/crdt/PNCounterMap.html#increment-java.lang.Object-long-"><code>increment</code></a> and <a href="_attachments/api/io/cloudstate/javasupport/crdt/PNCounterMap.html#decrement-java.lang.Object-long-"><code>decrement</code></a> methods to update the values.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="registering-the-entity"><a class="anchor" href="#registering-the-entity"></a>Registering the entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you&#8217;ve created your entity, you can register it with the <a href="_attachments/api/io/cloudstate/javasupport/CloudState.html"><code>CloudState</code></a> server, by invoking the <a href="api/io/cloudstate/javasupport/CloudState.html#registerEventSourcedEntity-java.lang.Class-com.google.protobuf.Descriptors.ServiceDescriptor-com.google.protobuf.Descriptors.FileDescriptor...-"><code>registerCrdtEntity</code></a> method.
+In addition to passing your entity class and service descriptor, if you use protobuf for serialization and any protobuf message definitions are missing from your service descriptor (they are not declared directly in the file, nor as dependencies), then you&#8217;ll need to pass those protobuf descriptors as well.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public static void main(String... args) {
+  new CloudState()
+      .registerCrdtEntity(
+          ShoppingCartEntity.class,
+          Shoppingcart.getDescriptor().findServiceByName("ShoppingCartService"))
+      .start();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+		<nav class="pagination">
+  <span class="prev"><a href="eventsourced.html">Event sourcing</a></span>
+  <span class="next"><a href="effects.html">Forwarding and effects</a></span>
+</nav>
+</article>
+<aside class="toc sidebar">
+  <div class="toc-menu"></div>
+</aside>
+    </div>
+<div class="main-footer">
+  <div class="page-source">
+Found an error in this documentation? Please feel free to <a href="https://github.com/cloudstateio/cloudstate/edit/master/java-support/docs/src/modules/java/pages/crdt.adoc">edit this page</a> and contribute a pull request.
+</div>
+  <div class="footer-box">
+    <footer class="footer">
+      <div class="footer-logo"><a href="https://cloudstate.io"><img src="../_/img/cloudstate-color.svg"></a></div>
+      <div class="footer-content">© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="https:///cloudstate.io/privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></div>
+    </footer>
+  </div>
+</div>
+  </main>
+</div>
+<!--Footer Scripts Global-->
+<script src="../_/js/site.js"></script>
+<script src="../_/js/vendor/highlight.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="../_/js/vendor/groups.js"></script>
+<script>hljs.initHighlighting()</script>
+<script src="../_/js/vendor/jquery.waypoints.min.js"></script>
+<script src="../_/js/vendor/inview.min.js"></script>
+
+<script>
+(function($) {
+	$(function() {
+		
+		var pageViewedTriggerElement = '#page-content';
+		//override #page-content if a custom trigger is present in page
+		if($("#page-viewed-trigger").length){
+			pageViewedTriggerElement = '#page-viewed-trigger';
+		}
+
+		var inview = new Waypoint.Inview({
+			element: $(pageViewedTriggerElement)[0],
+				entered: function(direction) {
+				//fire custom Jquery event that Marketo can listen for
+				$.event.trigger({
+					type: "pageContentViewed"
+				});
+			}
+		})
+
+	});
+})(jQuery);
+</script>
+
+<!--Marketo-->
+<script>
+
+    //store munchkin status to use in other functions
+    var munchkinLive = false;
+
+    //marketo munchkin
+    (function() {
+      var didInit = false;
+      function initMunchkin() {
+        if(didInit === false) {
+          didInit = true;
+          Munchkin.init('558-NCX-702', { 'asyncOnly': true, 'disableClickDelay': true });
+          munchkinLive = true;
+        }
+      }
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = '//munchkin.marketo.net/munchkin.js';
+      s.onreadystatechange = function() {
+        if (this.readyState == 'complete' || this.readyState == 'loaded') {
+          initMunchkin();
+        }
+      };
+      s.onload = initMunchkin;
+      document.getElementsByTagName('head')[0].appendChild(s);
+    })();
+
+
+    //wait for jquery as we use a custom jquery event, triggered by waypoint.
+    (function($) {
+      $(function() {
+        var pageViewed = false;
+        
+        $(document).on("pageContentViewed", handlePageContentViewed);
+        
+        function handlePageContentViewed(e) {
+          var viewedPagePath = "/viewed"+window.location.pathname;
+          if(!pageViewed && munchkinLive){
+            Munchkin.munchkinFunction('visitWebPage', {
+              'url': viewedPagePath
+              }
+            );
+            pageViewed = true;
+          }
+        };
+
+
+      });
+    })(jQuery);
+
+</script><!--Footer Scripts Cloudstate-->
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+  </body>
+</html>

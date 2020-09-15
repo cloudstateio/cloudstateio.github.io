@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting started with Cloudstate services in JavaScript :: Cloudstate Documentation</title>
+
+<link rel="stylesheet" href="../_/css/site.css?v-01">
+<link rel="shortcut icon" href="../_/img/favicon.ico" />
+
+<meta itemprop="name" content="Getting started with Cloudstate services in JavaScript | Cloudstate Documentation">
+<meta name="twitter:title" content="Getting started with Cloudstate services in JavaScript | Cloudstate Documentation">
+<meta property="og:title" content="Getting started with Cloudstate services in JavaScript | Cloudstate Documentation" />
+
+<meta property="og:type" content="website" />
+
+<meta name="generator" content="Antora 2.3.3">
+
+<link rel="canonical" href="https://cloudstate.io/docs/javascript/getting-started.html">
+<meta property="og:url" content="https://cloudstate.io/docs/javascript/getting-started.html" />
+
+
+
+<meta property="og:site_name" content="Cloudstate Documentation" />
+<meta name="author" content="Cloudstate Documentation">
+<meta itemprop="image" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png">
+<meta name="twitter:image:src" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png">
+<meta property="og:image" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png" />
+<meta property="og:image:secure_url" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png" />
+<!--Head Scripts -->
+<script src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js" type="text/javascript" charset="UTF-8"></script>
+<!--Head Scripts YouTube Embed-->
+<script type="text/javascript">
+	var ytID;
+	function OptanonWrapper() {
+		//find each YouTube embed and only load if cookies have been approved
+		$( "a.yt-widget" ).each(function( index ) {
+			var anchor = $(this);
+			var ytURL = $(this).attr("href");
+			var queryString = anchor[0].search;
+			let params = new URLSearchParams(queryString);
+			ytID = params.get("v");
+			$(this).before('<div class="flex-video-wrapper"><div class="flex-video"><div id="yt-'+ytID+'" class="cookie-warning youtube-warning"><a class="optanon-allow-all">Accept cookies to view video</a><span>Alternatively you can watch the video <a href="'+ytURL+'" target="_blank">here on YouTube</a></span></div></div></div>');
+			$(this).removeAttr("href").removeClass("yt-widget").addClass("yt-widget-hide");
+		});
+
+		$( ".youtube-warning" ).each(function( index ) {
+			Optanon.InsertHtml('<iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/'+ytID+'?rel=0&modestbranding=0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>', 'yt-'+ytID, null, {deleteSelectorContent: true}, 4);
+		});
+	}
+</script>  </head>
+  <body class="article  cloudstate">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://cloudstate.io">
+        <img class="header-logo" src="../_/img/cloudstate-reverse.svg">
+      </a>
+      <a href="https://cloudstate.io/docs/" id="site-id" class="site-id">Documentation</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+  <div class="wrapper">
+    <div class="nav">
+      <a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your apps with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">
+        <span class="banner-btn-text">Enhance your apps with</span>
+        <img class="lightbend-logo" src="../_/img/lightbend-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+      </a>
+      <div class="drop-down">
+        <svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+          <g>
+            <circle cx="10" cy="10" r="9" />
+            <path d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+            c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z" />
+          </g>
+        </svg>
+        <div class="drop-down-content">
+          <div class="lightbend-family">
+            <a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+              <img class="akka-full-color-logo" src="../_/img/lightbend-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+            </a>
+            <a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+              <img class="cloudflow-full-color-logo" src="../_/img/lightbend-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+            </a>
+            <a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+              <img class="lagom-full-color-logo" src="../_/img/lightbend-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+            </a>
+            <a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+              <img class="play-full-color-logo" src="../_/img/lightbend-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+            </a>
+            <a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+              <img class="scala-full-color-logo" src="../_/img/lightbend-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+            </a>
+            <div class="cloudstate current">
+              <img class="cloudstate-full-color-logo" src="../_/img/lightbend-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+              <span>Get developer assistance and expert support from Lightbend.</span>
+              <a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+            </div>
+          </div>
+          <div class="title">The Lightbend Family</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="main-wrapper">
+<div class="navigation-container" data-component="" data-version="master">
+  <aside class="navigation">
+    <div class="panels">
+<div class="navigation-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../stateless-limitations.html">Current limitations of Serverless platforms</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../crud-limitations.html">Rethinking CRUD</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cloudstate-solution.html">The Cloudstate solution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../working.html">Working with Cloudstate</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../examples.html">Example Applications</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../concepts/index.html">Important concepts</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/glossary.html">Glossary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/grpc.html">gRPC</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/crdts.html">Conflict-free replicated data types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/effects.html">Forwarding and effects</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../develop/index.html">Developing Cloudstate services</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/install.html">Installing Cloudstate</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/examples.html">Available Cloudstate examples</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/tutorial.html">The shopping cart tutorial</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../dart/index.html">Implementing in Dart</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../go/index.html">Implementing in Go</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../java/index.html">Implementing in Java</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/crdt.html">Conflict-free Replicated Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/effects.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/serialization.html">Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/api.html">Java API docs</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="index.html">Implementing in JavaScript</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crdt.html">Conflict-free Replicated Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="effects.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="api.html">JavaScript API docs</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kotlin/index.html">Implementing in Kotlin</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../python/index.html">Implementing in Python</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../springboot/index.html">Implementing in Spring Boot</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../dotnet/index.html">Implementing in .Net</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../deploy/index.html">Deploying to production systems</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/install-production.html">Setting up a production cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/deploying.html">Deploying stateful services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../deploy/stateful-stores.html">Stateful stores</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/cassandra.html">Cassandra</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/postgresql.html">PostgresSQL</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/inmemory.html">In memory store</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/monitoring.html">Monitoring</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/autoscaling.html">Autoscaling</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/security.html">Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../contribute/index.html">Contributing to the project</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/build-native.html">Building native images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/serialization.html">Serialization conventions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/language-support.html">Language support</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/knative-integration.html">Knative integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/graalvm-integration.html">GraalVM integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute/testing.html">Testing</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="navigation-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Cloudstate</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Cloudstate</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+  <main class="main">
+<div class="toolbar" role="navigation">
+  <button class="navigation-toggle"></button>
+<nav class="crumbs" aria-label="breadcrumbs">
+  <ul>
+    <li class="crumb"><a href="index.html">Implementing in JavaScript</a></li>
+    <li class="crumb"><a href="getting-started.html">Getting started</a></li>
+  </ul>
+</nav>
+</div>
+    <div class="col-content">
+<article id="page-content" class="doc">
+			<h1>Getting started with Cloudstate services in JavaScript</h1>
+
+		<fieldset class="supergroup-switch">
+
+
+		</fieldset>
+
+		<div class="sect1">
+<h2 id="prerequisites"><a class="anchor" href="#prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following are required to start writing Cloudstate services in JavaScript:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Node version</dt>
+<dd>
+<p>Cloudstate uses the <a href="https://github.com/grpc/grpc-node">grpc node package</a>, which compiles a native gRPC implementation using node-gyp. It requires a minimum of node 4.0.</p>
+</dd>
+<dt class="hdlist1">Build tool</dt>
+<dd>
+<p>Cloudstate doesn&#8217;t require any particular build tool, though npm install scripts do need to be run.</p>
+</dd>
+<dt class="hdlist1">protoc</dt>
+<dd>
+<p>Cloudstate requires using the protoc compiler to serialize your protobuf definitions into the protobuf binary descriptor format. Helper scripts are provided to automatically download the protoc compiler for your platform and do this compilation.</p>
+</dd>
+<dt class="hdlist1">docker</dt>
+<dd>
+<p>Cloudstate runs in Kubernetes with [Docker], hence you will need Docker to build a container that you can deploy to Kubernetes.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Once you have the above, you need to add the <code>cloudstate</code> package to your project, which can be done by running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">npm install cloudstate --save</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="generating-the-protobuf-descriptor-set"><a class="anchor" href="#generating-the-protobuf-descriptor-set"></a>Generating the protobuf descriptor set</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A Cloudstate user function needs to report to the Cloudstate proxy the gRPC descriptor that its serving, serialized to binary using the Protobuf <a href="https://developers.google.com/protocol-buffers/docs/techniques#self-description"><code>FileDescriptorSet</code> message type</a>. While there is some support for this in the <a href="https://www.npmjs.com/package/protobufjs">protobufjs</a> library that is used by Cloudstate to load descriptors, it is somewhat incomplete and buggy. Hence, Cloudstate requires that you precompile this descriptor using <code>protoc</code> instead.</p>
+</div>
+<div class="paragraph">
+<p>Cloudstate provides a utility that does this for you, downloading the <code>protoc</code> binary for your platform, and running it with the necessary arguments and include paths. This can be run manually by running <code>node_modules/cloudstate/bin/compile-descriptor.js</code>, or we recommend adding it as a <code>prestart</code> script to your npm build:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "scripts": {
+    "prestart": "compile-descriptor my-descriptor.proto"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Multiple protobuf files can be passed, in addition, any arguments accepted by <code>protoc</code> can be passed, for example, if you are importing files from other directories, you can add those directories as an include path by adding <code>-Ipath/to/protobuf/dir</code>.</p>
+</div>
+<div class="paragraph">
+<p>By default, the descriptor is written to <code>user-function.desc</code>, if you wish to change this, you can set <code>--descriptor_set_out=my-descriptor.desc</code>. Note that if you output the descriptor to a different path, you will also need to pass that custom path to the constructor of the <code>CloudState</code> class when you got to instantiate it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="package-json-example"><a class="anchor" href="#package-json-example"></a>package.json example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A minimal <code>package.json</code> for a shopping cart example is shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "name": "shopping-cart",
+  "version": "0.1.0",
+  "dependencies": {
+    "cloudstate": "^0.0.3"
+  },
+  "scripts": {
+    "prestart": "compile-descriptor shoppingcart.proto",
+    "start": "node index.js"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="protobuf-files"><a class="anchor" href="#protobuf-files"></a>Protobuf files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can place protobuf files in your project wherever you like, for example, in the root directory, or in a directory named <code>protos</code>. In the <code>package.json</code> above we&#8217;ve placed the shopping cart application example shown earlier in <a href="../concepts/grpc.html" class="page">gRPC descriptors</a> in a file in the root folder called <code>shoppingcart.proto</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creating-and-starting-a-server"><a class="anchor" href="#creating-and-starting-a-server"></a>Creating and starting a server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are two ways to create and start a Cloudstate gRPC server. The first is to create an <a href="_attachments/api/module-cloudstate.Entity.html"><code>Entity</code></a>, and invoke <a href="_attachments/api/module-cloudstate.Entity.html#start"><code>start</code></a> on it. This allows creating a server that serves a single entity, with the default options. We&#8217;ll look at this more in the subsequent pages. Alternatively, you can use the <a href="_attachments/api/module-cloudstate.CloudState.html"><code>CloudState</code></a> class, add one or more entities to it, and then invoke <a href="_attachments/api/module-cloudstate.CloudState.html#start"><code>start</code></a>, like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">const cloudstate = require("cloudstate");
+const shoppingcart = require("./shoppingcart");
+
+const server = new cloudstate.CloudState();
+server.addEntity(shoppingcart);
+server.start();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you created your protobuf file descriptor set at a different location to the default of <code>user-function.desc</code>, you can configure that here:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">const server = new cloudstate.CloudState({
+    descriptorSetPath: "my-descriptor.desc"
+});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For the full range of options available on the <code>CloudState</code> class, see <a href="_attachments/api/module-cloudstate.CloudState.html#~options"><code>CloudState~options</code></a>.</p>
+</div>
+</div>
+</div>
+		<nav class="pagination">
+  <span class="prev"><a href="index.html">Implementing in JavaScript</a></span>
+  <span class="next"><a href="eventsourced.html">Event sourcing</a></span>
+</nav>
+</article>
+<aside class="toc sidebar">
+  <div class="toc-menu"></div>
+</aside>
+    </div>
+<div class="main-footer">
+  <div class="page-source">
+Found an error in this documentation? Please feel free to <a href="https://github.com/cloudstateio/cloudstate/edit/master/node-support/docs/src/modules/javascript/pages/getting-started.adoc">edit this page</a> and contribute a pull request.
+</div>
+  <div class="footer-box">
+    <footer class="footer">
+      <div class="footer-logo"><a href="https://cloudstate.io"><img src="../_/img/cloudstate-color.svg"></a></div>
+      <div class="footer-content">© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="https:///cloudstate.io/privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></div>
+    </footer>
+  </div>
+</div>
+  </main>
+</div>
+<!--Footer Scripts Global-->
+<script src="../_/js/site.js"></script>
+<script src="../_/js/vendor/highlight.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="../_/js/vendor/groups.js"></script>
+<script>hljs.initHighlighting()</script>
+<script src="../_/js/vendor/jquery.waypoints.min.js"></script>
+<script src="../_/js/vendor/inview.min.js"></script>
+
+<script>
+(function($) {
+	$(function() {
+		
+		var pageViewedTriggerElement = '#page-content';
+		//override #page-content if a custom trigger is present in page
+		if($("#page-viewed-trigger").length){
+			pageViewedTriggerElement = '#page-viewed-trigger';
+		}
+
+		var inview = new Waypoint.Inview({
+			element: $(pageViewedTriggerElement)[0],
+				entered: function(direction) {
+				//fire custom Jquery event that Marketo can listen for
+				$.event.trigger({
+					type: "pageContentViewed"
+				});
+			}
+		})
+
+	});
+})(jQuery);
+</script>
+
+<!--Marketo-->
+<script>
+
+    //store munchkin status to use in other functions
+    var munchkinLive = false;
+
+    //marketo munchkin
+    (function() {
+      var didInit = false;
+      function initMunchkin() {
+        if(didInit === false) {
+          didInit = true;
+          Munchkin.init('558-NCX-702', { 'asyncOnly': true, 'disableClickDelay': true });
+          munchkinLive = true;
+        }
+      }
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = '//munchkin.marketo.net/munchkin.js';
+      s.onreadystatechange = function() {
+        if (this.readyState == 'complete' || this.readyState == 'loaded') {
+          initMunchkin();
+        }
+      };
+      s.onload = initMunchkin;
+      document.getElementsByTagName('head')[0].appendChild(s);
+    })();
+
+
+    //wait for jquery as we use a custom jquery event, triggered by waypoint.
+    (function($) {
+      $(function() {
+        var pageViewed = false;
+        
+        $(document).on("pageContentViewed", handlePageContentViewed);
+        
+        function handlePageContentViewed(e) {
+          var viewedPagePath = "/viewed"+window.location.pathname;
+          if(!pageViewed && munchkinLive){
+            Munchkin.munchkinFunction('visitWebPage', {
+              'url': viewedPagePath
+              }
+            );
+            pageViewed = true;
+          }
+        };
+
+
+      });
+    })(jQuery);
+
+</script><!--Footer Scripts Cloudstate-->
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+  </body>
+</html>

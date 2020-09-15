@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture :: Cloudstate Documentation</title>
+
+<link rel="stylesheet" href="../_/css/site.css?v-01">
+<link rel="shortcut icon" href="../_/img/favicon.ico" />
+
+<meta itemprop="name" content="Architecture | Cloudstate Documentation">
+<meta name="twitter:title" content="Architecture | Cloudstate Documentation">
+<meta property="og:title" content="Architecture | Cloudstate Documentation" />
+
+<meta property="og:type" content="website" />
+
+<meta name="generator" content="Antora 2.3.3">
+
+<link rel="canonical" href="https://cloudstate.io/docs/contribute/architecture.html">
+<meta property="og:url" content="https://cloudstate.io/docs/contribute/architecture.html" />
+
+
+
+<meta property="og:site_name" content="Cloudstate Documentation" />
+<meta name="author" content="Cloudstate Documentation">
+<meta itemprop="image" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png">
+<meta name="twitter:image:src" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png">
+<meta property="og:image" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png" />
+<meta property="og:image:secure_url" content="https://cloudstate.io/dist/images/cloudstate-distributed-state-management-for-serverless.png" />
+<!--Head Scripts -->
+<script src="https://cdn.cookielaw.org/consent/a14b53db-7715-45da-be81-7fd0cafc385d.js" type="text/javascript" charset="UTF-8"></script>
+<!--Head Scripts YouTube Embed-->
+<script type="text/javascript">
+	var ytID;
+	function OptanonWrapper() {
+		//find each YouTube embed and only load if cookies have been approved
+		$( "a.yt-widget" ).each(function( index ) {
+			var anchor = $(this);
+			var ytURL = $(this).attr("href");
+			var queryString = anchor[0].search;
+			let params = new URLSearchParams(queryString);
+			ytID = params.get("v");
+			$(this).before('<div class="flex-video-wrapper"><div class="flex-video"><div id="yt-'+ytID+'" class="cookie-warning youtube-warning"><a class="optanon-allow-all">Accept cookies to view video</a><span>Alternatively you can watch the video <a href="'+ytURL+'" target="_blank">here on YouTube</a></span></div></div></div>');
+			$(this).removeAttr("href").removeClass("yt-widget").addClass("yt-widget-hide");
+		});
+
+		$( ".youtube-warning" ).each(function( index ) {
+			Optanon.InsertHtml('<iframe id="player" class="youtube-embed-player" src="//www.youtube.com/embed/'+ytID+'?rel=0&modestbranding=0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>', 'yt-'+ytID, null, {deleteSelectorContent: true}, 4);
+		});
+	}
+</script>  </head>
+  <body class="article  cloudstate">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://cloudstate.io">
+        <img class="header-logo" src="../_/img/cloudstate-reverse.svg">
+      </a>
+      <a href="https://cloudstate.io/docs/" id="site-id" class="site-id">Documentation</a>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div id="lightbend-banner" class="lightbend-banner cloudstate full-width" data-category="OSS Lightbend Banner Impression" data-label="Cloudstate Banner Impression">
+  <div class="wrapper">
+    <div class="nav">
+      <a class="banner-btn oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Enhance your apps with Lightbend [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">
+        <span class="banner-btn-text">Enhance your apps with</span>
+        <img class="lightbend-logo" src="../_/img/lightbend-logos/lightbend-reverse.svg" alt="Lightbend" title="Lightbend">
+      </a>
+      <div class="drop-down">
+        <svg class="svg-chevon-circle-down" version="1.1" id="Chevron_circled_down" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+          <g>
+            <circle cx="10" cy="10" r="9" />
+            <path d="M12.505,8.698L10,11L7.494,8.698c-0.198-0.196-0.518-0.196-0.718,0c-0.197,0.196-0.197,0.515,0,0.71l2.864,2.807
+            c0.199,0.196,0.52,0.196,0.717,0l2.864-2.807c0.199-0.195,0.198-0.514,0-0.71C13.024,8.502,12.704,8.502,12.505,8.698z" />
+          </g>
+        </svg>
+        <div class="drop-down-content">
+          <div class="lightbend-family">
+            <a href="https://akka.io" class="akka oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Akka - Logo Tag Line - Cloudstate Banner">
+              <img class="akka-full-color-logo" src="../_/img/lightbend-logos/akka-full-color.svg" alt="Akka by Lightbend" title="Akka by Lightbend">
+            </a>
+            <a href="https://cloudflow.io" class="cloudflow oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Cloudflow - Logo Tag Line - Cloudstate Banner">
+              <img class="cloudflow-full-color-logo" src="../_/img/lightbend-logos/cloudflow-full-color.svg" alt="Cloudflow by Lightbend" title="Cloudflow by Lightbend">
+            </a>
+            <a href="https://www.lagomframework.com" class="lagom oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Lagom - Logo Tag Line - Cloudstate Banner">
+              <img class="lagom-full-color-logo" src="../_/img/lightbend-logos/lagom-full-color.svg" alt="Lagom Framework by Lightbend" title="Lagom Framework by Lightbend">
+            </a>
+            <a href="https://www.playframework.com" class="play oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Play - Logo Tag Line - Cloudstate Banner">
+              <img class="play-full-color-logo" src="../_/img/lightbend-logos/play-full-color.svg" alt="Play Framework by Lightbend" title="Play Framework by Lightbend">
+            </a>
+            <a href="https://www.scala-lang.org" class="scala oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Scala - Logo Tag Line - Cloudstate Banner">
+              <img class="scala-full-color-logo" src="../_/img/lightbend-logos/scala-full-color.svg" alt="Scala by Lightbend" title="Scala by Lightbend">
+            </a>
+            <div class="cloudstate current">
+              <img class="cloudstate-full-color-logo" src="../_/img/lightbend-logos/cloudstate-full-color.svg" alt="Cloudstate by Lightbend" title="Cloudstate by Lightbend">
+              <span>Get developer assistance and expert support from Lightbend.</span>
+              <a class="oss-track-link-label" data-category="OSS Lightbend Banner Clicks" data-label="Learn More [Button] - Cloudstate Banner" href="https://www.lightbend.com/lightbend-subscription?r=oss-banner-cloudstate" target="_blank">Learn More</a>
+            </div>
+          </div>
+          <div class="title">The Lightbend Family</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="main-wrapper">
+<div class="navigation-container" data-component="" data-version="master">
+  <aside class="navigation">
+    <div class="panels">
+<div class="navigation-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../stateless-limitations.html">Current limitations of Serverless platforms</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../crud-limitations.html">Rethinking CRUD</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cloudstate-solution.html">The Cloudstate solution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../working.html">Working with Cloudstate</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../examples.html">Example Applications</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../concepts/index.html">Important concepts</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/glossary.html">Glossary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/grpc.html">gRPC</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/crdts.html">Conflict-free replicated data types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts/effects.html">Forwarding and effects</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../develop/index.html">Developing Cloudstate services</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/install.html">Installing Cloudstate</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/examples.html">Available Cloudstate examples</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../develop/tutorial.html">The shopping cart tutorial</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../dart/index.html">Implementing in Dart</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../go/index.html">Implementing in Go</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../java/index.html">Implementing in Java</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/crdt.html">Conflict-free Replicated Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/effects.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/serialization.html">Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../java/api.html">Java API docs</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../javascript/index.html">Implementing in JavaScript</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/eventsourced.html">Event sourcing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/crdt.html">Conflict-free Replicated Data Types</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/effects.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/serialization.html">Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../javascript/api.html">JavaScript API docs</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kotlin/index.html">Implementing in Kotlin</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../python/index.html">Implementing in Python</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../springboot/index.html">Implementing in Spring Boot</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../dotnet/index.html">Implementing in .Net</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../deploy/index.html">Deploying to production systems</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/install-production.html">Setting up a production cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/deploying.html">Deploying stateful services</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="../deploy/stateful-stores.html">Stateful stores</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/cassandra.html">Cassandra</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/postgresql.html">PostgresSQL</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../deploy/inmemory.html">In memory store</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/monitoring.html">Monitoring</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/autoscaling.html">Autoscaling</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../deploy/security.html">Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-toggle"></button>
+    <a class="nav-link" href="index.html">Contributing to the project</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="getting-started.html">Getting started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="build-native.html">Building native images</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Serialization conventions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="language-support.html">Language support</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="knative-integration.html">Knative integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="graalvm-integration.html">GraalVM integration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="testing.html">Testing</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="navigation-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Cloudstate</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Cloudstate</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+  <main class="main">
+<div class="toolbar" role="navigation">
+  <button class="navigation-toggle"></button>
+<nav class="crumbs" aria-label="breadcrumbs">
+  <ul>
+    <li class="crumb"><a href="index.html">Contributing to the project</a></li>
+    <li class="crumb"><a href="architecture.html">Architecture</a></li>
+  </ul>
+</nav>
+</div>
+    <div class="col-content">
+<article id="page-content" class="doc">
+			<h1>Architecture</h1>
+
+		<fieldset class="supergroup-switch">
+
+
+		</fieldset>
+
+		<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This page describes important pieces of the Cloudstate architecture, including:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A common intermediate representation, which allow services to be written in different languages from the underlying functionality.</p>
+</li>
+<li>
+<p>A plugable Kubernetes operator.</p>
+</li>
+<li>
+<p>An autoscaling implementation</p>
+</li>
+<li>
+<p>Support for popular databases</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="common-intermediate-representation"><a class="anchor" href="#common-intermediate-representation"></a>Common Intermediate Representation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The gRPC protocol spoken between the Akka sidecar and the user code is a Common Intermediate Representation (IR) as defined by Hellerstein et. al. in <a href="http://cidrdb.org/cidr2019/papers/p119-hellerstein-cidr19.pdf">Serverless Computing: One Step Forward, Two Steps Back</a>. This is used to allow user functions to take advantage of the features afforded by distributed systems technologies such as Akka, without needing to be written in the same language as those technologies. The protocol also allows the sidecar to be implemented using any technology, not just Akka. Cloudstate&#8217;s Akka based implementation is provided as a reference implementation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>There are two parts to the IR.</p>
+</li>
+<li>
+<p>The first is <strong>discovery:</strong> This is where a user function declares what services it wishes to expose, and what stateful features it needs those services to be enriched with. This is done by the sidecar making a call on the user function, using the IR protocol, to request a descriptor that describes it. This descriptor contains a serialized protobuf definition of the services that the user function wishes to expose. Each service is declared to have a particular entity type, supported types include Event Sourcing and CRDTs.</p>
+</li>
+<li>
+<p>The second part of the IR is <strong>a pluggable entity type protocol:</strong> Each entity type defines its own gRPC protocol for communicating between the sidecar and the user function. Here is a snippet of the event sourcing protocol:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">service EventSourced {
+    rpc handle(stream EventSourcedStreamIn) returns (stream EventSourcedStreamOut) {}
+}
+
+message EventSourcedStreamIn {
+    oneof message {
+        EventSourcedEvent event = 1;
+        Command command = 2;
+    }
+}
+
+message EventSourcedStreamOut {
+    oneof message {
+        EventSourcedReply reply = 1;
+        Failure failure = 2;
+    }
+}
+
+message EventSourcedReply {
+    oneof response {
+        Reply reply = 1;
+        Forward forward = 2;
+    }
+    repeated google.protobuf.Any events = 3;
+}</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When a command for an entity arrives, the following messages are sent using this protocol:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>If there is no existing <code>handle</code> stream for that entity, the <code>handle</code> streamed call is invoked. This stream will be kept open as long as more commands arrive for that entity, after a period of inactivity, the stream will be shut down.</p>
+</li>
+<li>
+<p>The sidecar loads the event journal for that entity, and passes each event to the user function using the <code>EventSourcedEvent</code> message.</p>
+</li>
+<li>
+<p>Once the entities event journal has been replayed, the command is sent to the user function.</p>
+</li>
+<li>
+<p>The user function processes the command, and responds with an <code>EventSourcedReply</code>. This contains one of two responses, a <code>Reply</code> to send to the original source, or a <code>Forward</code> to forward processing to another entity. It also contains zero or more events to be persisted. These events will be persisted before the reply or forward is sent.</p>
+</li>
+<li>
+<p>Subsequent commands may be received while the entity stream is still active, these can be processed without replaying the event journal.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The user function is expected to hold the current state of the entity in the context of the streamed function call.</p>
+</div>
+<div class="paragraph">
+<p>The <code>Command</code> message contains, among other things, the name of a gRPC rpc call that is being invoked - this RPC call was declared during the discovery phase. It also contains the payload of that gRPC call, along with an extracted entity id, that identifies which entity the call is for. Entity ids are declared through the use of a Protobuf field extension, here is an example user function message that declares an entity id:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">message AddLineItem {
+    string user_id = 1 [(.cloudstate.entity_key) = true];
+    string product_id = 2;
+    string name = 3;
+    int32 quantity = 4;
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="support-for-http-and-json"><a class="anchor" href="#support-for-http-and-json"></a>Support for HTTP and JSON</h3>
+<div class="paragraph">
+<p>The Akka sidecar supports serving the gRPC user functions services both as gRPC, as well as using HTTP/JSON, using the <a href="https://cloud.google.com/service-infrastructure/docs/service-management/reference/rpc/google.api##http">gRPC HTTP extensions</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="kubernetes-operator"><a class="anchor" href="#kubernetes-operator"></a>Kubernetes Operator</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Deployment of Cloudstate entities is designed to work either in a stand alone fashion, or integrating with Knative. The design allows for integrations with other serverless technologies to be implemented in future.</p>
+</div>
+<div class="paragraph">
+<p>An operator is provided that transforms either the Cloudstate entity CRD, or the Knative Revision, into a kubernetes Deployment, which is configured with the Akka sidecar container injected, and the necessary RBAC permissions are created to allow cluster discovery, bootstrapping and formation, along with autoscaling.</p>
+</div>
+<div class="paragraph">
+<p>Integration with Knative currently requires a fork of Knative that makes deployers pluggable. The changes necessary can be found in this pull request: <a href="https://github.com/knative/serving/pull/4152">https://github.com/knative/serving/pull/4152</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="support-for-autoscaling"><a class="anchor" href="#support-for-autoscaling"></a>Support for Autoscaling</h3>
+<div class="paragraph">
+<p>Experiments with the Knative autoscaler have found that it is not suitable for scaling Akka clusters. Problems include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Scaling up an Akka cluster is not free. When a new node is added, shards are rebalanced to it, and state is replicated to it. Starting too many nodes at once, or starting nodes only to immediately stop them, will significantly degrade throughput and performance. The Knative autoscaler does not take this into consideration, and happily starts and stops many nodes very frequently.</p>
+</li>
+<li>
+<p>Particularly when CPU is constrained, JVM warmup/jitting can take a long time, and this warmup time needs to be taken into consideration before making further scaling decisions. Additionally, it takes time to replicate state and rebalance shards to a newly started node. The JVM warmup/jitting issues we hope to address by using Graal AOT compilation with SubstrateVM.</p>
+</li>
+<li>
+<p>The Knative proxy, which the Akka sidecar replaces, is highly coupled to the Knative autoscaler, and the interface between them is not well defined, making reliance on it from the Akka sidecar high risk in terms of future evolution of Knative.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For these reasons, we have implemented our own autoscaler. For simplicity, this autoscaler is implemented as a cluster singleton in the Akka sidecar cluster - Akka cluster remoting makes propagation of metrics from all nodes to the autoscaler singleton trivial. We collect the following metrics:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Average request concurrency per pod - this is the number of simultaneous requests being handled from outside the service. This includes requests currently being handled by user functions, requests being routed through other nodes for sharding, and requests currently interacting with the database.</p>
+</li>
+<li>
+<p>Average user function concurrency per pod - this is the number of simultaneous requests that the user function is handling.</p>
+</li>
+<li>
+<p>Average database concurrency per pod - this is the number of simultaneous operations being performed on the database at any one time. This is typically subtracted from request concurrency so that database performance does not impact decisions made based on request concurrency.</p>
+</li>
+<li>
+<p>Request rate - this is the rate at which incoming requests are arriving.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In general, scaling decisions are made when user function concurrency and request concurrency exceed or drop below configurable thresholds. The reason for using two metrics is that in sharding situations, request concurrency is highly dependent on the number of nodes.
+* When there is only one node, no requests are forwarded to other nodes, which means latency stays very low, which means request concurrency stays very low.
+* When there are two nodes, on average 50% of requests are forwarded to other nodes, when there are many nodes, this number increases.
+* For this reason, request concurrency is not a good metric to base scaling decisions on when the number of nodes is low, so user function concurrency is used. However, request concurrency is still an important metric because the impact of cluster sharding on the load being handled is non zero, and indeed, if it performs badly compared to the user function, then user function concurrency will stay low, while requests back up in cluster sharding buffers.
+* Hence, request concurrency is used as scaling metric, but set to something high that would never be triggered when there&#8217;s only one node, but is more likely to be triggered when load is higher.</p>
+</div>
+<div class="paragraph">
+<p>After a scaling decision has been made, the autoscaler enters a configurable stable waiting period. During this period, no concurrency based scaling decisions will be made - since it can take time for a new node to start and warm up, and therefore it will take time for concurrency to stabilise. Without the stable waiting period, a sudden increase in load will cause concurrency to increase linearly, and the autoscaler will start more and more nodes to handle this increasing concurrency. The new nodes will initially cause performance to degrade, as they warm up and have shards rebalanced to them, causing further scaling, which causes a feedback loop that sees nodes scaled to impractical numbers.</p>
+</div>
+<div class="paragraph">
+<p>During the waiting period, however, load may continue to increase, and we want to be able to respond to that. To detect increases in load, the incoming request rate is recorded when the autoscaler first enters the stable waiting period when scaling up. If this incoming request rate increases by a configurable threshold, further scaling decisions are made.</p>
+</div>
+<div class="paragraph">
+<p>This request rate based scaling is not used when scaling down, since the request rate when scaling down may be very low (for example, 0), making it impossible to reason about what an appropriate number of nodes to handle that request rate is. Instead, scaling down stable periods are much shorter than scaling up stable periods.</p>
+</div>
+<div class="paragraph">
+<p>When an upgrade is detected, request rate based scaling decisions are also made, since upgrades cause a temporary degradation in performance as state is replicated and rebalanced to newly upgraded nodes.</p>
+</div>
+<div class="paragraph">
+<p>At time of writing, the autoscaler only works in standalone mode, which uses one deployment per user function. Support for Knative&#8217;s one deployment per revision of a user function has not yet been implemented, nor has support in Knative to disable the Knative autoscaler when a custom deployer is used.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="database-support"><a class="anchor" href="#database-support"></a>Database support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Cloudstate Proxy Reference Implementation supports a number of databases. The table below indicates the range of support, the columns are explained as follows:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Journal</dt>
+<dd>
+<p>Whether event sourced journals are supported with this database. The RI event sourcing support is built using <a href="https://doc.akka.io/docs/akka/current/persistence.html">Akka Persistence</a> for the durable storage, which has support for a <a href="https://index.scala-lang.org/search?topics=akka-persistence">wide range</a> of NoSQL and SQL databases.</p>
+</dd>
+<dt class="hdlist1">Key-Value</dt>
+<dd>
+<p>Whether Key-Value support is implemented for this database. Key-Value support is not yet provided by the Cloudstate proxy, but will be in future.</p>
+</dd>
+<dt class="hdlist1">Native Image</dt>
+<dd>
+<p>Whether a GraalVM Native Image build is available for the Cloudstate Proxy for this database. It can be a considerable amount of effort getting a GraalVM native image working for any library, so not all proxies support it.</p>
+</dd>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Database</th>
+<th class="tableblock halign-left valign-top">Journal</th>
+<th class="tableblock halign-left valign-top">Key-Value</th>
+<th class="tableblock halign-left valign-top">Native image</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cassandra</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>&#10004;</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>&#10008;</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>&#10004;</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Postgresql</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>&#10004;</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>&#10008;</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong>&#10008;</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+		<nav class="pagination">
+  <span class="prev"><a href="index.html">Contributing to the project</a></span>
+  <span class="next"><a href="getting-started.html">Getting started</a></span>
+</nav>
+</article>
+<aside class="toc sidebar">
+  <div class="toc-menu"></div>
+</aside>
+    </div>
+<div class="main-footer">
+  <div class="page-source">
+Found an error in this documentation? Please feel free to <a href="https://github.com/cloudstateio/cloudstate/edit/master/docs-asciidoc/src/modules/contribute/pages/architecture.adoc">edit this page</a> and contribute a pull request.
+</div>
+  <div class="footer-box">
+    <footer class="footer">
+      <div class="footer-logo"><a href="https://cloudstate.io"><img src="../_/img/cloudstate-color.svg"></a></div>
+      <div class="footer-content">© Cloudstate <script>document.write(new Date().getFullYear());</script> | <a href="https:///cloudstate.io/privacy/">Privacy Policy</a> | <a class="optanon-toggle-display">Cookie Settings</a></div>
+    </footer>
+  </div>
+</div>
+  </main>
+</div>
+<!--Footer Scripts Global-->
+<script src="../_/js/site.js"></script>
+<script src="../_/js/vendor/highlight.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="../_/js/vendor/groups.js"></script>
+<script>hljs.initHighlighting()</script>
+<script src="../_/js/vendor/jquery.waypoints.min.js"></script>
+<script src="../_/js/vendor/inview.min.js"></script>
+
+<script>
+(function($) {
+	$(function() {
+		
+		var pageViewedTriggerElement = '#page-content';
+		//override #page-content if a custom trigger is present in page
+		if($("#page-viewed-trigger").length){
+			pageViewedTriggerElement = '#page-viewed-trigger';
+		}
+
+		var inview = new Waypoint.Inview({
+			element: $(pageViewedTriggerElement)[0],
+				entered: function(direction) {
+				//fire custom Jquery event that Marketo can listen for
+				$.event.trigger({
+					type: "pageContentViewed"
+				});
+			}
+		})
+
+	});
+})(jQuery);
+</script>
+
+<!--Marketo-->
+<script>
+
+    //store munchkin status to use in other functions
+    var munchkinLive = false;
+
+    //marketo munchkin
+    (function() {
+      var didInit = false;
+      function initMunchkin() {
+        if(didInit === false) {
+          didInit = true;
+          Munchkin.init('558-NCX-702', { 'asyncOnly': true, 'disableClickDelay': true });
+          munchkinLive = true;
+        }
+      }
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = '//munchkin.marketo.net/munchkin.js';
+      s.onreadystatechange = function() {
+        if (this.readyState == 'complete' || this.readyState == 'loaded') {
+          initMunchkin();
+        }
+      };
+      s.onload = initMunchkin;
+      document.getElementsByTagName('head')[0].appendChild(s);
+    })();
+
+
+    //wait for jquery as we use a custom jquery event, triggered by waypoint.
+    (function($) {
+      $(function() {
+        var pageViewed = false;
+        
+        $(document).on("pageContentViewed", handlePageContentViewed);
+        
+        function handlePageContentViewed(e) {
+          var viewedPagePath = "/viewed"+window.location.pathname;
+          if(!pageViewed && munchkinLive){
+            Munchkin.munchkinFunction('visitWebPage', {
+              'url': viewedPagePath
+              }
+            );
+            pageViewed = true;
+          }
+        };
+
+
+      });
+    })(jQuery);
+
+</script><!--Footer Scripts Cloudstate-->
+<!-- Google Tag Manager -->
+<script type="text/plain" class="optanon-category-2">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWL9BXX');</script>
+<!-- End Google Tag Manager -->
+  </body>
+</html>
