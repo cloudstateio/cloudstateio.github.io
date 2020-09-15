@@ -107,7 +107,7 @@ C18.354,14.614,14.613,18.354,10,18.354z" />
 </div>
 </div>
 <div class="title">The Lightbend Family</div>
-</div>      
+</div>
 </div>
 </div>
 </div>
@@ -168,7 +168,7 @@ Version 0.1.0
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
 <h1><a href="#event-sourcing" name="event-sourcing" class="anchor"><span class="anchor-link"></span></a>Event sourcing</h1>
-<p>This page documents how to implement Cloudstate event sourced entities in Go. For information on what Cloudstate event sourced entities are, please read the general <a href="https://cloudstate.io/docs/core/current/user/features/eventsourced.html">Event sourcing</a> documentation first.</p>
+<p>This page documents how to implement Cloudstate event sourced entities in Go. For information on what Cloudstate event sourced entities are, please read the general <a href="https://cloudstate.io/old/docs/core/current/user/features/eventsourced.html">Event sourcing</a> documentation first.</p>
 <p>An event sourced entity can be created by embedding the <code>cloudstate.EventEmitter</code> type and also implementing the <code>cloudstate.Entity</code> interface.</p>
 <pre class="prettyprint"><code class="language-go">type ShoppingCart struct {
 	// our domain object
@@ -207,7 +207,7 @@ Version 0.1.0
 <p>The <code>SnapshotEvery</code> parameter controls how often snapshots are taken, so that the entity doesn&rsquo;t need to be recovered from the whole journal each time it&rsquo;s loaded. If left unset, it defaults to 100. Setting it to a negative number will result in snapshots never being taken.</p>
 <p>The <code>EntityFunc</code> is a factory method which generates a new Entity whenever Cloudstate has to initialize a new entity. </p>
 <h2><a href="#persistence-types-and-serialization" name="persistence-types-and-serialization" class="anchor"><span class="anchor-link"></span></a>Persistence types and serialization</h2>
-<p>Event sourced entities persist events and snapshots, and these need to be serialized when persisted. The most straightforward way to persist events and snapshots is to use protobufs. Cloudstate will automatically detect if an emitted event is a protobuf, and serialize it as such. For other serialization options, including JSON, see <a href="https://cloudstate.io/docs/core/current/developer/language-support/serialization.html">Serialization</a>.</p>
+<p>Event sourced entities persist events and snapshots, and these need to be serialized when persisted. The most straightforward way to persist events and snapshots is to use protobufs. Cloudstate will automatically detect if an emitted event is a protobuf, and serialize it as such. For other serialization options, including JSON, see <a href="https://cloudstate.io/old/docs/core/current/developer/language-support/serialization.html">Serialization</a>.</p>
 <p>While protobufs are the recommended format for persisting events, it is recommended that you do not persist your service&rsquo;s protobuf messages, rather, you should create new messages, even if they are identical to the service&rsquo;s. While this may introduce some overhead in needing to convert from one type to the other, the reason for doing this is that it will allow the service&rsquo;s public interface to evolve independently from its data storage format, which should be private.</p>
 <p>For our shopping cart example, we&rsquo;ll create a new file called <code>domain.proto</code>, the name domain is selected to indicate that these are my application&rsquo;s domain objects:</p>
 <pre class="prettyprint"><code class="language-proto">// These are the messages that get persisted - the events, plus the current state (Cart) for snapshots.

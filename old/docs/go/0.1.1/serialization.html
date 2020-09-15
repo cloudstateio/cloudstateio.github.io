@@ -107,7 +107,7 @@ C18.354,14.614,14.613,18.354,10,18.354z" />
 </div>
 </div>
 <div class="title">The Lightbend Family</div>
-</div>      
+</div>
 </div>
 </div>
 </div>
@@ -214,11 +214,11 @@ Version 0.1.1
     </tr>
   </tbody>
 </table>
-<p>The details of how these are serialized can be found <a href="https://cloudstate.io/docs/core/current/developer/language-support/serialization.html#primitive-values">here</a>.</p><div class="callout note "><div class="callout-title">Important</div>
+<p>The details of how these are serialized can be found <a href="https://cloudstate.io/old/docs/core/current/developer/language-support/serialization.html#primitive-values">here</a>.</p><div class="callout note "><div class="callout-title">Important</div>
 <p>Go has a set of <a href="https://golang.org/ref/spec#Numeric_types">predeclared numeric</a> types with implementation-specific sizes. One of them is <code>int</code> which would be an int64 on 64-bit systems CPU architectures. Cloudstate does not support implicit conversion between an <code>int</code> and the corresponding <code>int64</code> as an input type for the serialization. The main reason not to support it is, that an <code>int</code> is not the same type as an <code>int64</code> and therefore a de-serialized value would have to be converted back to an <code>int</code> as it is of type <code>int64</code> during its serialized state. </p></div>
 <h2><a href="#json" name="json" class="anchor"><span class="anchor-link"></span></a>JSON</h2>
 <p>Cloudstate uses the standard library package <a href="https://golang.org/pkg/encoding/json/"><code>encoding/json</code></a> to serialize JSON. Any type that has a field declared with a string literal tag <code>json:&quot;fieldname&quot;</code> will be serialized to and from JSON using the <a href="https://golang.org/pkg/encoding/json/#Marshal">Marshaller and Unmarshaller</a> from the Go standard library package <code>encoding/json</code>.</p>
-<p>The details of how these are serialized can be found <a href="https://cloudstate.io/docs/core/current/developer/language-support/serialization.html#json-values">here</a>.</p>
+<p>The details of how these are serialized can be found <a href="https://cloudstate.io/old/docs/core/current/developer/language-support/serialization.html#json-values">here</a>.</p>
 <p>Note that if you are using JSON values in CRDT sets or maps, the serialization of these values <strong>must</strong> be stable. This means you must not use maps or sets in your value, and you should define an explicit ordering for the fields in your objects. <strong>(TODO: mention the ordering of fields here by the Go standard library implementation).</strong></p>
 <div class="nav-next">
 <p><strong>Next:</strong> <a href="api.html">Go API docs</a></p>

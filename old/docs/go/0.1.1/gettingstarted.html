@@ -107,7 +107,7 @@ C18.354,14.614,14.613,18.354,10,18.354z" />
 </div>
 </div>
 <div class="title">The Lightbend Family</div>
-</div>      
+</div>
 </div>
 </div>
 </div>
@@ -203,7 +203,7 @@ go 1.14
 <h2><a href="#protobuf-files" name="protobuf-files" class="anchor"><span class="anchor-link"></span></a>Protobuf files</h2>
 <p>The Cloudstate Go Support Library provides no dedicated tool beside the protoc compiler to build your protobuf files. The Cloudstate protocol protobuf files as well as the shopping cart example application protobuf files are provided by the Cloudstate Repository.</p>
 <p>In addition to the <code>protoc</code> compiler, the gRPC Go plugin is needed to compile the protobuf file to <code>*.pb.go</code> files. Please follow the instructions at the <a href="https://github.com/golang/protobuf">Go support for Protocol Buffers</a> project page to install the protoc compiler as well as the <code>protoc-gen-go</code> plugin which also includes the Google standard protobuf types.</p>
-<p>To build the example shopping cart application shown earlier in <a href="https://cloudstate.io/docs/core/current/user/features/grpc.html">gRPC descriptors</a>, you could simply paste that protobuf into <code>protos/shoppingcart.proto</code>. You may wish to also define the Go package using the <code>go_package</code> proto option, to ensure the package name used conforms to Go package naming conventions.</p>
+<p>To build the example shopping cart application shown earlier in <a href="https://cloudstate.io/old/docs/core/current/user/features/grpc.html">gRPC descriptors</a>, you could simply paste that protobuf into <code>protos/shoppingcart.proto</code>. You may wish to also define the Go package using the <code>go_package</code> proto option, to ensure the package name used conforms to Go package naming conventions.</p>
 <pre class="prettyprint"><code class="language-proto">option go_package = &quot;example/shoppingcart&quot;;
 </code></pre>
 <p>Now if you place your protobuf files under <code>protobuf/</code> and run <code>protoc --go_out=. --proto_path=protobuf ./protobuf/*.proto</code>, you&rsquo;ll find your generated protobuf files in <code>example/shoppingcart</code>.</p>

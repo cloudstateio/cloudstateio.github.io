@@ -106,7 +106,7 @@ C18.354,14.614,14.613,18.354,10,18.354z" />
 </div>
 </div>
 <div class="title">The Lightbend Family</div>
-</div>      
+</div>
 </div>
 </div>
 </div>
@@ -227,7 +227,7 @@ Version 0.5.1
 &lt;project xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
          xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
-    
+
     &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
     &lt;groupId&gt;io.cloudstate&lt;/groupId&gt;
     &lt;artifactId&gt;cloudstate-springboot-example&lt;/artifactId&gt;
@@ -364,12 +364,12 @@ Version 0.5.1
 <p>Subsequent source locations and build commands will assume the above Maven project, and may need to be adapted to your particular build tool and setup.</p>
 <h2><a href="#protobuf-files" name="protobuf-files" class="anchor"><span class="anchor-link"></span></a>Protobuf files</h2>
 <p>The Xolstice Maven plugin assumes a location of <code>src/main/proto</code> for your protobuf files. In addition, it includes any protobuf files from your application dependencies in the protoc include path, so there&rsquo;s nothing you need to do to pull in either the Cloudstate protobuf types, or any of the Google standard protobuf types, they are all automatically available for import.</p>
-<p>So, if you were to build the example shopping cart application shown earlier in <a href="https://cloudstate.io/docs/core/current/user/features/grpc.html">gRPC descriptors</a>, you could simply paste that protobuf into <code>src/main/proto/shoppingcart.proto</code>. You may wish to also define the java package, to ensure the package name used conforms to Java package naming conventions:</p>
+<p>So, if you were to build the example shopping cart application shown earlier in <a href="https://cloudstate.io/old/docs/core/current/user/features/grpc.html">gRPC descriptors</a>, you could simply paste that protobuf into <code>src/main/proto/shoppingcart.proto</code>. You may wish to also define the java package, to ensure the package name used conforms to Java package naming conventions:</p>
 <pre class="prettyprint"><code class="language-proto">option java_package = &quot;com.example.shoppingcart&quot;;
 </code></pre>
 <p>Now if you run <code>mvn compile</code>, you&rsquo;ll find your generated protobuf files in <code>target/generated-sources/protobuf/java</code>.</p>
 <h2><a href="#write-your-cloudstate-function-" name="write-your-cloudstate-function-" class="anchor"><span class="anchor-link"></span></a>Write your Cloudstate function:</h2>
-<p>In general you will write your entity functions in the usual way as you would if you were using the version of java support. For more information on how to create entity functions, see the specific documentation <a href="https://cloudstate.io/docs/core/current/user/lang/java/eventsourced.html#event-sourcing">here</a>, and <a href="https://cloudstate.io/docs/core/current/user/lang/java/crdt.html#conflict-free-replicated-data-types">here</a>.</p>
+<p>In general you will write your entity functions in the usual way as you would if you were using the version of java support. For more information on how to create entity functions, see the specific documentation <a href="https://cloudstate.io/old/docs/core/current/user/lang/java/eventsourced.html#event-sourcing">here</a>, and <a href="https://cloudstate.io/old/docs/core/current/user/lang/java/crdt.html#conflict-free-replicated-data-types">here</a>.</p>
 <p>The differences will be explained later in this documentation. Below is an example of an EventSourced user entity:</p>
 <pre class="prettyprint"><code class="language-java">/**
  * An event sourced entity.
